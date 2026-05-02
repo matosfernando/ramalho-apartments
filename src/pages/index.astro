@@ -1,195 +1,185 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import HeroSection from '../components/HeroSection.astro';
 import PropertyCarousel from '../components/PropertyCarousel.astro';
 
+const base = import.meta.env.BASE_URL;
+
 const title = "Ramalho Apartments | Premium Short-Term Rentals in Ponta Delgada, Azores";
-const description = "Discover our curated collection of luxury apartments in Ponta Delgada, Azores. Book directly for exclusive rates and personal service.";
+const description = "Discover our curated collection of apartments in Ponta Delgada, Azores. Book directly for the best rates and personal service.";
 
 const properties = [
   {
     title: "Classic City Stay",
     subtitle: "Home in Ponta Delgada, Azores",
-    description: "Charming apartment in the heart of Ponta Delgada with modern amenities and historic charm. Perfect for exploring the city center.",
     image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
-    href: "/ramalho",
-    price: "€60",
+    href: `${base}/ramalho`,
+    price: "€180",
+    nights: 3,
     rating: 4.9,
-    reviews: 48
+    bedrooms: 1,
+    beds: 1,
+    baths: 1,
   },
   {
     title: "Modern Urban Living",
     subtitle: "Home in Ponta Delgada, Azores",
-    description: "Contemporary apartment featuring sleek design, full kitchen, and panoramic city views. Ideal for modern travelers.",
     image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
-    href: "/amorim",
-    price: "€75",
+    href: `${base}/amorim`,
+    price: "€150",
+    nights: 2,
     rating: 5.0,
-    reviews: 32
+    bedrooms: 2,
+    beds: 2,
+    baths: 1,
   },
   {
     title: "Family Duplex",
     subtitle: "Home in Ponta Delgada, Azores",
-    description: "Spacious two-level apartment perfect for families and groups with multiple bedrooms and living areas. Great for reunions.",
     image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop",
-    href: "/amorim-duplex",
-    price: "€95",
+    href: `${base}/amorim-duplex`,
+    price: "€190",
+    nights: 2,
     rating: 4.8,
-    reviews: 25
-  }
-];
-
-const benefits = [
-  {
-    title: "Direct Booking Advantage",
-    description: "Book directly with us and save up to 20% compared to booking platforms.",
-    icon: "💰"
+    bedrooms: 3,
+    beds: 4,
+    baths: 2,
   },
-  {
-    title: "Personal Service",
-    description: "Experience genuine hospitality from our local team who knows Ponta Delgada inside and out.",
-    icon: "🤝"
-  },
-  {
-    title: "Local Expertise",
-    description: "Access our insider guide to the best restaurants, activities, and hidden gems in the Azores.",
-    icon: "🗺️"
-  },
-  {
-    title: "Flexible Check-in",
-    description: "Late arrivals and early departures are welcome. We work around your schedule.",
-    icon: "⏰"
-  },
-  {
-    title: "Premium Locations",
-    description: "All properties are strategically located in Ponta Delgada's most desirable neighborhoods.",
-    icon: "📍"
-  },
-  {
-    title: "24/7 Support",
-    description: "Need help? Contact us anytime via WhatsApp, email, or phone for instant assistance.",
-    icon: "📞"
-  }
 ];
 ---
 
 <Layout {title} {description}>
-  <!-- Hero Section -->
-  <HeroSection 
-    title="Welcome to Ramalho Apartments"
-    subtitle="Discover your perfect Azores escape in Ponta Delgada"
-    backgroundImage="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop"
-  />
 
-  <!-- Collection Section -->
-  <PropertyCarousel 
-    {properties}
-    title="Homes our guests love"
-    subtitle="Explore our curated collection of premium apartments in Ponta Delgada"
-  />
-
-  <!-- Why Book Direct Section -->
-  <section class="section-padding bg-gradient-to-br from-azure-deep/5 to-azure-accent/5">
-    <div class="container-max">
-      <div class="text-center mb-12 md:mb-16">
-        <h2 class="mb-4">Why Book Direct with Us?</h2>
-        <p class="text-lg md:text-xl text-azure-volcanic max-w-2xl mx-auto">
-          When you book directly with Ramalho Apartments, you're not just booking a place to stay. You're getting an authentic local experience backed by genuine hospitality.
-        </p>
-      </div>
-
-      <!-- Benefits Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {benefits.map(benefit => (
-          <div class="bg-white rounded-xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow">
-            <div class="text-4xl mb-4">{benefit.icon}</div>
-            <h4 class="mb-2">{benefit.title}</h4>
-            <p class="text-sm md:text-base text-azure-volcanic">
-              {benefit.description}
-            </p>
-          </div>
-        ))}
+  <!-- ── Hero ──────────────────────────────────────────── -->
+  <section class="hero">
+    <div
+      class="hero-bg"
+      style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop')"
+      aria-hidden="true"
+    />
+    <div class="hero-overlay" />
+    <div class="hero-content page-wrap">
+      <p style="color:rgba(255,255,255,0.8); font-size:0.85rem; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.75rem;">
+        Ponta Delgada · Azores
+      </p>
+      <h1 style="color:#fff; max-width:600px; text-shadow:0 2px 24px rgba(0,0,0,0.2);">
+        Your home in the Azores
+      </h1>
+      <p style="color:rgba(255,255,255,0.85); margin-top:0.875rem; font-size:1rem; max-width:420px; line-height:1.65;">
+        Handpicked apartments in Ponta Delgada. Book direct for the best rate and genuine local service.
+      </p>
+      <div style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-top:1.75rem;">
+        <a
+          href="https://wa.me/351918881000?text=Hi! I'd like to book an apartment."
+          target="_blank" rel="noopener noreferrer"
+          class="btn btn-whatsapp btn-lg"
+        >
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.18-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
+          </svg>
+          Book via WhatsApp
+        </a>
+        <a href="#properties" class="btn btn-outline" style="color:#fff; border-color:rgba(255,255,255,0.6);">
+          Browse properties
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="section-padding bg-azure-deep text-white">
-    <div class="container-max text-center max-w-3xl mx-auto">
-      <h2 class="text-white mb-6">Ready to Experience the Azores?</h2>
-      <p class="text-lg md:text-xl mb-8 text-white/90">
-        Start planning your perfect getaway. Our team is ready to help you find the ideal apartment for your stay.
+  <!-- ── Trust strip ────────────────────────────────────── -->
+  <section style="border-bottom: 1px solid var(--clr-border-light);">
+    <div class="page-wrap" style="padding-block: 2rem;">
+      <div class="value-strip">
+        <div class="value-item">
+          <span class="value-item-icon">⭐</span>
+          <span class="value-item-title">4.9 average rating</span>
+          <span class="value-item-desc">Across all properties and stays</span>
+        </div>
+        <div class="value-item">
+          <span class="value-item-icon">💰</span>
+          <span class="value-item-title">Best rate guaranteed</span>
+          <span class="value-item-desc">Save up to 20% vs. booking platforms</span>
+        </div>
+        <div class="value-item">
+          <span class="value-item-icon">🗺️</span>
+          <span class="value-item-title">Local insider tips</span>
+          <span class="value-item-desc">Personal recommendations from residents</span>
+        </div>
+        <div class="value-item">
+          <span class="value-item-icon">💬</span>
+          <span class="value-item-title">24/7 WhatsApp support</span>
+          <span class="value-item-desc">We respond within minutes</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Property carousel ──────────────────────────────── -->
+  <div id="properties">
+    <PropertyCarousel {properties} title="Homes our guests love" />
+  </div>
+
+  <!-- ── About strip ────────────────────────────────────── -->
+  <section style="background: var(--clr-bg-subtle);">
+    <div class="page-wrap section">
+      <div style="display:grid; gap:3rem; align-items:center;" class="about-grid">
+        <div>
+          <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--clr-text-2); margin-bottom:0.75rem;">About us</p>
+          <h2 style="max-width:440px; margin-bottom:1.25rem;">Genuine Azorean hospitality, no middlemen</h2>
+          <p style="max-width:460px; line-height:1.7; margin-bottom:1.75rem;">
+            We're lifelong residents of Ponta Delgada who believe the best stays come from real connections. Book directly with us and get the best rate, flexible check-in, and the kind of local knowledge no algorithm can match.
+          </p>
+          <div style="display:flex; flex-wrap:wrap; gap:0.75rem;">
+            <a href={`${base}/about`} class="btn btn-dark">Our story</a>
+            <a href={`${base}/guide`} class="btn btn-outline">Local guide</a>
+          </div>
+        </div>
+        <div style="overflow:hidden; border-radius: var(--radius-card);">
+          <img
+            src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&h=600&fit=crop"
+            alt="Ponta Delgada old town"
+            width="900" height="600"
+            loading="lazy"
+            style="width:100%; height:340px; object-fit:cover; display:block;"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA banner ─────────────────────────────────────── -->
+  <section style="background: #111; color:#fff;">
+    <div class="page-wrap" style="padding-block:4rem; text-align:center;">
+      <h2 style="color:#fff; max-width:500px; margin-inline:auto; margin-bottom:0.875rem;">
+        Ready to experience the Azores?
+      </h2>
+      <p style="color:rgba(255,255,255,0.7); max-width:400px; margin-inline:auto; margin-bottom:2rem; line-height:1.65;">
+        Contact us directly — we'll find the perfect apartment and answer every question.
       </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="https://wa.me/351918881000?text=Hi! I'd like to book an apartment at Ramalho Apartments." target="_blank" rel="noopener noreferrer" class="btn-secondary bg-white">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.180-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
+      <div style="display:flex; flex-wrap:wrap; gap:0.75rem; justify-content:center;">
+        <a
+          href="https://wa.me/351918881000?text=Hi! I'd like to book an apartment."
+          target="_blank" rel="noopener noreferrer"
+          class="btn btn-whatsapp btn-lg"
+        >
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.18-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
           </svg>
           Chat on WhatsApp
         </a>
-        <a href="mailto:hello@ramalho.pt" class="btn-outline text-white border-white hover:bg-white hover:text-azure-deep">
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-          </svg>
-          Email Us
+        <a href="mailto:hello@ramalho.pt" class="btn btn-outline" style="color:#fff; border-color:rgba(255,255,255,0.4);">
+          Send an email
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-azure-deep text-white py-12">
-    <div class="container-max">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-        <!-- Brand -->
-        <div>
-          <h4 class="text-white mb-4">Ramalho Apartments</h4>
-          <p class="text-white/80 text-sm">
-            Premium short-term rentals in Ponta Delgada, Azores. Your home away from home.
-          </p>
-        </div>
-
-        <!-- Quick Links -->
-        <div>
-          <h5 class="text-white mb-4">Properties</h5>
-          <ul class="space-y-2 text-sm">
-            <li><a href="/ramalho" class="text-white/80 hover:text-white">Classic City Stay</a></li>
-            <li><a href="/amorim" class="text-white/80 hover:text-white">Modern Urban Living</a></li>
-            <li><a href="/amorim-duplex" class="text-white/80 hover:text-white">Family Duplex</a></li>
-          </ul>
-        </div>
-
-        <!-- Info -->
-        <div>
-          <h5 class="text-white mb-4">Resources</h5>
-          <ul class="space-y-2 text-sm">
-            <li><a href="/guide" class="text-white/80 hover:text-white">Local Guide</a></li>
-            <li><a href="/faq" class="text-white/80 hover:text-white">FAQ</a></li>
-            <li><a href="/about" class="text-white/80 hover:text-white">About Us</a></li>
-          </ul>
-        </div>
-
-        <!-- Contact -->
-        <div>
-          <h5 class="text-white mb-4">Contact</h5>
-          <ul class="space-y-2 text-sm">
-            <li>
-              <a href="https://wa.me/351918881000" class="text-white/80 hover:text-white">WhatsApp</a>
-            </li>
-            <li>
-              <a href="mailto:hello@ramalho.pt" class="text-white/80 hover:text-white">hello@ramalho.pt</a>
-            </li>
-            <li>
-              <span class="text-white/80">+351 918 881 000</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Bottom Bar -->
-      <div class="border-t border-white/20 pt-8 text-center text-sm text-white/60">
-        <p>&copy; 2024 Ramalho Apartments. All rights reserved. • Ponta Delgada, Azores</p>
-      </div>
-    </div>
-  </footer>
 </Layout>
+
+<style>
+.about-grid {
+  grid-template-columns: 1fr;
+}
+@media (min-width: 1024px) {
+  .about-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>

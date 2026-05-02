@@ -1,40 +1,33 @@
 ---
-/**
- * Hero Section Component
- * Large banner with background image and gradient overlay
- */
 interface Props {
   title: string;
   subtitle?: string;
   backgroundImage?: string;
-  hasOverlay?: boolean;
+  height?: string;
 }
 
-const { 
-  title, 
-  subtitle, 
-  backgroundImage = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop",
-  hasOverlay = true
+const {
+  title,
+  subtitle,
+  backgroundImage = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop",
+  height = "68vh",
 } = Astro.props as Props;
 ---
 
-<section class="relative h-screen w-full overflow-hidden flex items-center justify-center">
-  <!-- Background Image -->
-  <div 
-    class="absolute inset-0 bg-cover bg-center"
+<section class="hero" style={`min-height: ${height};`}>
+  <div
+    class="hero-bg"
     style={`background-image: url('${backgroundImage}')`}
+    role="img"
+    aria-hidden="true"
   />
-  
-  <!-- Gradient Overlay -->
-  {hasOverlay && <div class="gradient-overlay" />}
-  
-  <!-- Content -->
-  <div class="relative z-10 container-max text-center text-white max-w-4xl mx-auto px-4">
-    <h1 class="text-white mb-6 animate-fade-in">
+  <div class="hero-overlay" />
+  <div class="hero-content page-wrap">
+    <h1 style="color:#fff; max-width: 640px; text-shadow: 0 2px 20px rgba(0,0,0,0.2);">
       {title}
     </h1>
     {subtitle && (
-      <p class="text-xl md:text-2xl text-white/90 font-light animate-fade-in">
+      <p style="color: rgba(255,255,255,0.85); margin-top:0.75rem; font-size:1rem; max-width:480px; line-height:1.6;">
         {subtitle}
       </p>
     )}

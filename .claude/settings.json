@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import sys; body=sys.stdin.read\\(\\); print\\(body[:3000] if body else 'empty'\\)\")",
+      "Bash(awk 'NR>=58 && NR<=75 {printf \"%3d: %s\\\\n\", NR, $0}' /workspaces/ramalho-apartments/src/layouts/PropertyLayout.astro)"
+    ]
+  }
+}

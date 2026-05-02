@@ -1,112 +1,115 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import HeroSection from '../components/HeroSection.astro';
 
-const title = "FAQ - Ramalho Apartments";
+const title = "FAQ – Ramalho Apartments";
 const description = "Frequently asked questions about booking, amenities, check-in, and your stay in Ponta Delgada.";
 
 const faqs = [
-  {
-    question: "How far is the airport from your apartments?",
-    answer: "João Paulo II Airport is approximately 2 kilometers from our apartments in Ponta Delgada. It's just a 5-10 minute drive by taxi or ride-share. We can arrange airport transfers upon request."
-  },
-  {
-    question: "What is your check-in and check-out policy?",
-    answer: "Standard check-in is at 3:00 PM and check-out is at 11:00 AM. We understand that travel schedules don't always align perfectly with these times. If you need an earlier check-in or later check-out, please let us know when booking, and we'll do our best to accommodate you based on availability. Late arrivals are always welcome."
-  },
-  {
-    question: "Is parking available?",
-    answer: "Yes, parking is available at all our apartments. Each property has designated parking spaces or nearby street parking options. Please let us know your vehicle details when booking so we can provide you with parking instructions."
-  },
-  {
-    question: "What amenities are included?",
-    answer: "All apartments include: WiFi, air conditioning, full kitchen, smart TV, washing machine, hairdryer, and daily essentials. Specific amenities vary by property—please check the individual property pages for detailed information."
-  },
-  {
-    question: "Can I cancel my booking?",
-    answer: "Yes, we offer flexible cancellation policies. Cancellations made 14 days or more before arrival receive a full refund. Cancellations made 7-13 days before arrival receive a 50% refund. Cancellations made less than 7 days before arrival are non-refundable. Contact us to discuss your specific situation."
-  },
-  {
-    question: "Do you offer longer-term rental discounts?",
-    answer: "Absolutely! We offer special rates for weekly and monthly stays. Please contact us directly for a custom quote if you're planning an extended visit."
-  },
-  {
-    question: "Is WiFi included?",
-    answer: "Yes, high-speed WiFi is included with all bookings at no additional cost. We understand that staying connected is important for many guests."
-  },
-  {
-    question: "Can I bring pets?",
-    answer: "We're generally pet-friendly, but please contact us before booking to discuss your specific pet and arrange appropriate accommodations. Some additional fees may apply."
-  },
-  {
-    question: "What should I do in case of an emergency?",
-    answer: "We provide 24/7 support via WhatsApp and phone. Emergency services in Portugal can be reached by calling 112. Localize location of nearest hospital has been provided on your check-in information sheet."
-  },
-  {
-    question: "How do I get local recommendations?",
-    answer: "When you book with us, you'll receive our comprehensive local guide with tips on restaurants, attractions, activities, and hidden gems. Additionally, our team is always happy to provide personalized recommendations via WhatsApp or email."
-  },
-  {
-    question: "Is there a minimum stay requirement?",
-    answer: "Minimum stay requirements vary by property: Classic City Stay (3 nights), Modern Urban Living (2 nights), and Family Duplex (2 nights). Contact us to discuss shorter stays or specific circumstances."
-  },
-  {
-    question: "How do I book?",
-    answer: "You can book directly by contacting us via WhatsApp, email, or phone. We recommend WhatsApp for quick communication. Simply mention your desired dates and property, and we'll check availability and guide you through the booking process."
-  }
+  { q: "How far is the airport?",            a: "João Paulo II Airport is 2 km from our apartments — about 5–10 minutes by taxi or ride-share. We can arrange airport transfers on request." },
+  { q: "What are the check-in / check-out times?", a: "Standard check-in is 3 PM and check-out is 11 AM. Need flexibility? Let us know when you book and we'll do our best. Late arrivals are always welcome." },
+  { q: "Is parking available?",              a: "Yes. Each property has designated parking or nearby street parking. Share your vehicle details when booking and we'll send instructions." },
+  { q: "What amenities are included?",       a: "All apartments include WiFi, air conditioning, a full kitchen, smart TV, washing machine, hairdryer, and daily essentials. Check each property page for specifics." },
+  { q: "What is the cancellation policy?",   a: "Full refund for cancellations 14+ days before arrival. 50% refund 7–13 days before. Non-refundable within 7 days. Contact us to discuss specific situations." },
+  { q: "Do you offer long-stay discounts?",  a: "Yes — weekly and monthly rates are available. Contact us directly for a custom quote." },
+  { q: "Is WiFi included?",                  a: "Yes, high-speed WiFi is included at no extra cost at all properties." },
+  { q: "Are pets allowed?",                  a: "Generally yes — contact us before booking to discuss your pet. Some additional fees may apply." },
+  { q: "What if there's an emergency?",      a: "We're available 24/7 via WhatsApp and phone. Emergency services in Portugal: call 112. Check-in info includes the nearest hospital location." },
+  { q: "How do I get local recommendations?", a: "Every booking includes our comprehensive local guide. Our team is also happy to give personalised tips via WhatsApp." },
+  { q: "Is there a minimum stay?",           a: "Classic City Stay: 3 nights. Modern Urban Living & Family Duplex: 2 nights. Contact us for shorter stays." },
+  { q: "How do I book?",                     a: "Contact us via WhatsApp, email, or phone. WhatsApp is fastest. Tell us your dates and preferred property and we'll confirm availability instantly." },
 ];
 ---
 
 <Layout {title} {description}>
-  <!-- Hero -->
-  <HeroSection 
-    title="Frequently Asked Questions"
-    subtitle="Everything you need to know about Ramalho Apartments"
-    backgroundImage="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1920&h=1080&fit=crop"
-  />
 
-  <!-- FAQ Section -->
-  <section class="section-padding bg-white">
-    <div class="container-max max-w-3xl">
-      <div class="space-y-4">
-        {faqs.map((faq, index) => (
-          <details class="group border border-azure-light rounded-lg overflow-hidden transition-all">
-            <summary class="flex cursor-pointer items-center justify-between bg-gradient-to-r from-azure-deep/5 to-azure-accent/5 px-6 py-4 font-semibold text-azure-deep hover:bg-gradient-to-r hover:from-azure-deep/10 hover:to-azure-accent/10 transition-colors">
-              <span>{faq.question}</span>
-              <span class="transition-transform duration-300 group-open:rotate-180">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                </svg>
-              </span>
-            </summary>
-            <div class="px-6 py-4 bg-white text-azure-volcanic leading-relaxed">
-              {faq.answer}
+  <!-- Page header -->
+  <section style="background: var(--clr-bg-subtle); border-bottom: 1px solid var(--clr-border-light);">
+    <div class="page-wrap" style="padding-block: 3rem 2.5rem;">
+      <h1 style="margin-bottom:0.5rem;">Frequently asked questions</h1>
+      <p style="font-size:1rem; max-width:480px;">
+        Everything you need to know about staying with us. Can't find what you're looking for?
+        <a href="https://wa.me/351918881000" target="_blank" rel="noopener noreferrer" style="color:var(--clr-text); font-weight:600; text-decoration:underline; text-underline-offset:3px;">
+          Message us on WhatsApp.
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Accordion -->
+  <section>
+    <div class="page-wrap" style="padding-block: 2.5rem; max-width: 720px;">
+      <div class="accordion" id="faq-accordion">
+        {faqs.map((faq, i) => (
+          <div class="accordion-item" id={`faq-item-${i}`}>
+            <button
+              class="accordion-btn"
+              aria-expanded="false"
+              aria-controls={`faq-body-${i}`}
+              id={`faq-btn-${i}`}
+            >
+              <span>{faq.q}</span>
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/>
+              </svg>
+            </button>
+            <div
+              class="accordion-body"
+              id={`faq-body-${i}`}
+              role="region"
+              aria-labelledby={`faq-btn-${i}`}
+            >
+              {faq.a}
             </div>
-          </details>
+          </div>
         ))}
-      </div>
-
-      <!-- Still Have Questions Section -->
-      <div class="mt-12 p-8 bg-gradient-to-br from-azure-deep/5 to-azure-accent/5 rounded-lg text-center">
-        <h3 class="mb-4">Still Have Questions?</h3>
-        <p class="text-azure-volcanic mb-6">
-          Can't find the answer you're looking for? Our team is here to help! Reach out to us anytime.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="https://wa.me/351918881000?text=Hi! I have a question about booking." target="_blank" rel="noopener noreferrer" class="btn-primary">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.180-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
-            </svg>
-            WhatsApp Us
-          </a>
-          <a href="mailto:hello@ramalho.pt" class="btn-secondary">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-            </svg>
-            Email Us
-          </a>
-        </div>
       </div>
     </div>
   </section>
+
+  <!-- Still have questions -->
+  <section style="background: var(--clr-bg-subtle); border-top: 1px solid var(--clr-border-light);">
+    <div class="page-wrap" style="padding-block: 3rem; text-align:center; max-width: 560px;">
+      <h2 style="margin-bottom:0.75rem; font-size:1.4rem;">Still have questions?</h2>
+      <p style="margin-bottom:1.75rem; line-height:1.7;">
+        Our team is happy to help. Reach out and we'll get back to you quickly.
+      </p>
+      <div style="display:flex; flex-wrap:wrap; gap:0.75rem; justify-content:center;">
+        <a
+          href="https://wa.me/351918881000?text=Hi! I have a question about your apartments."
+          target="_blank" rel="noopener noreferrer"
+          class="btn btn-whatsapp"
+        >
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.18-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
+          </svg>
+          WhatsApp us
+        </a>
+        <a href="mailto:hello@ramalho.pt" class="btn btn-outline">
+          Email us
+        </a>
+      </div>
+    </div>
+  </section>
+
 </Layout>
+
+<script>
+document.querySelectorAll('.accordion-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item   = btn.closest('.accordion-item') as HTMLElement;
+    const isOpen = item.classList.contains('open');
+
+    // Close all
+    document.querySelectorAll('.accordion-item.open').forEach(el => {
+      el.classList.remove('open');
+      (el.querySelector('.accordion-btn') as HTMLElement)?.setAttribute('aria-expanded', 'false');
+    });
+
+    // Toggle clicked
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+</script>

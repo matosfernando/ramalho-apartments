@@ -1,204 +1,221 @@
 ---
-/**
- * PropertyCarousel Component
- * Horizontal scrollable carousel displaying properties Wander.com style
- */
 interface Property {
   title: string;
   subtitle?: string;
-  description: string;
   image: string;
   href: string;
   price: string;
+  nights?: number;
   rating?: number;
-  reviews?: number;
+  isNew?: boolean;
+  bedrooms?: number;
+  beds?: number;
+  baths?: number;
 }
 
 interface Props {
   properties: Property[];
   title?: string;
-  subtitle?: string;
 }
 
-const { properties, title = "Homes our guests love", subtitle } = Astro.props as Props;
+const { properties, title = "Homes our guests love" } = Astro.props as Props;
 ---
 
-<section class="w-full py-16 md:py-20 bg-white">
-  <div class="px-4 md:px-8 lg:px-12">
-    <!-- Section Header -->
-    <div class="mb-8 md:mb-12">
-      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{title}</h2>
-      {subtitle && (
-        <p class="text-base md:text-lg text-gray-600">{subtitle}</p>
-      )}
+<section class="section" style="padding-top: 2.5rem;">
+  <div class="page-wrap">
+
+    <!-- Section header -->
+    <div class="carousel-header">
+      <h2 style="letter-spacing:-0.03em;">{title}</h2>
+      <div class="carousel-arrows" aria-label="Carousel controls">
+        <button class="carousel-prev btn btn-outline btn-sm" aria-label="Previous" style="padding:0.4rem 0.6rem; border-radius:50%;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <button class="carousel-next btn btn-outline btn-sm" aria-label="Next" style="padding:0.4rem 0.6rem; border-radius:50%;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
-    <!-- Carousel Container -->
-    <div class="relative group">
-      <!-- Carousel Wrapper -->
-      <div 
-        class="carousel-wrapper overflow-x-auto scroll-smooth snap-x snap-mandatory"
-        id="propertyCarousel"
-      >
-        <!-- Carousel Track -->
-        <div class="flex gap-4 md:gap-6 pb-4 md:pb-0">
-          {properties.map((property) => (
-            <a 
-              href={property.href}
-              class="carousel-item flex-shrink-0 w-full sm:w-1/2 lg:w-1/3 snap-start scroll-ml-4 md:scroll-ml-8 lg:scroll-ml-12 group/card"
+    <!-- Cards track -->
+    <div class="scroll-track cards-track" role="list">
+      {properties.map((p, i) => (
+        <article class="prop-card" role="listitem">
+          <!-- Image -->
+          <a href={p.href} class="prop-img prop-card-img" aria-label={`View ${p.title}`} tabindex="0">
+            <img
+              src={p.image}
+              alt={p.title}
+              loading={i < 3 ? "eager" : "lazy"}
+              width="480"
+              height="360"
+            />
+            <!-- Wishlist -->
+            <button
+              type="button"
+              class="wishlist-btn"
+              aria-label={`Save ${p.title} to wishlist`}
+              aria-pressed="false"
             >
-              <!-- Card Container -->
-              <div class="flex flex-col h-full">
-                <!-- Image Container -->
-                <div class="relative overflow-hidden rounded-2xl bg-gray-200 h-80 md:h-96 mb-4 flex-shrink-0">
-                  <img 
-                    src={property.image}
-                    alt={property.title}
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover/card:scale-105"
-                    loading="lazy"
-                  />
-                  
-                  <!-- Wishlist Button -->
-                  <button
-                    type="button"
-                    class="absolute top-3 right-3 z-10 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center hover:bg-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    aria-label="Save to wishlist"
-                  >
-                    <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                  </button>
+              <svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true">
+                <path
+                  d="M16 28C15 27 3 19 3 11.5a7.5 7.5 0 0115 0 7.5 7.5 0 0115 0C33 19 21 27 16 28z"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="2"
+                  class="heart-path"
+                />
+              </svg>
+            </button>
+            <!-- Dot indicators -->
+            <div class="card-dots" aria-hidden="true">
+              <span class="card-dot active"></span>
+              <span class="card-dot"></span>
+              <span class="card-dot"></span>
+            </div>
+          </a>
 
-                  <!-- Rating Badge (Optional) -->
-                  {property.rating && (
-                    <div class="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center gap-1">
-                      <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                      <span class="text-sm font-semibold text-gray-900">{property.rating.toFixed(1)}</span>
-                      {property.reviews && (
-                        <span class="text-xs text-gray-600">({property.reviews})</span>
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                <!-- Content -->
-                <div class="flex-1 flex flex-col">
-                  <!-- Location/Subtitle -->
-                  {property.subtitle && (
-                    <p class="text-sm text-gray-600 mb-1">{property.subtitle}</p>
-                  )}
-                  
-                  <!-- Title -->
-                  <h3 class="text-lg md:text-xl font-bold text-gray-900 mb-2 group-hover/card:text-blue-600 transition-colors">
-                    {property.title}
-                  </h3>
-                  
-                  <!-- Description -->
-                  <p class="text-sm md:text-base text-gray-600 mb-4 line-clamp-2 flex-1">
-                    {property.description}
-                  </p>
-
-                  <!-- Price -->
-                  <div class="pt-4 border-t border-gray-200">
-                    <p class="text-sm text-gray-600">
-                      <span class="text-lg md:text-xl font-bold text-gray-900">{property.price}</span>
-                      <span class="text-gray-600"> per night</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      <!-- Navigation Buttons (Desktop Only) -->
-      <button
-        class="carousel-nav-btn carousel-prev hidden lg:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-20 w-12 h-12 rounded-full bg-white border-2 border-gray-200 shadow-lg hover:shadow-xl hover:border-gray-400 transition-all items-center justify-center group-hover:opacity-100"
-        aria-label="Previous properties"
-      >
-        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
-
-      <button
-        class="carousel-nav-btn carousel-next hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-12 h-12 rounded-full bg-white border-2 border-gray-200 shadow-lg hover:shadow-xl hover:border-gray-400 transition-all items-center justify-center group-hover:opacity-100"
-        aria-label="Next properties"
-      >
-        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-
-      <!-- Mobile Scroll Indicator -->
-      <div class="lg:hidden mt-4 flex justify-center gap-1">
-        {properties.map((_, index) => (
-          <div 
-            key={index}
-            class="carousel-dot h-2 w-2 rounded-full bg-gray-300 transition-all"
-          />
-        ))}
-      </div>
+          <!-- Info -->
+          <a href={p.href} class="prop-card-info">
+            {p.subtitle && <p class="prop-location">{p.subtitle}</p>}
+            <p class="prop-name">{p.title}</p>
+            <p class="prop-meta">
+              <span class="prop-price">{p.price}</span>
+              {p.nights && <span class="prop-meta-dim"> for {p.nights} nights</span>}
+              {p.rating != null && (
+                <>
+                  <span class="prop-dot">·</span>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" style="color:#222;">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                  </svg>
+                  <span style="font-weight:500; color:var(--clr-text);">{p.isNew ? " New" : ` ${p.rating.toFixed(1)}`}</span>
+                </>
+              )}
+            </p>
+            {(p.bedrooms || p.beds || p.baths) && (
+              <p class="prop-amenities">
+                {[
+                  p.bedrooms && `${p.bedrooms} bedroom${p.bedrooms !== 1 ? "s" : ""}`,
+                  p.beds     && `${p.beds} bed${p.beds !== 1 ? "s" : ""}`,
+                  p.baths    && `${p.baths} bath${p.baths !== 1 ? "s" : ""}`,
+                ].filter(Boolean).join(" · ")}
+              </p>
+            )}
+          </a>
+        </article>
+      ))}
     </div>
+
   </div>
 </section>
 
+<style>
+.carousel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.carousel-arrows {
+  display: none;
+  gap: 0.4rem;
+}
+@media (min-width: 768px) { .carousel-arrows { display: flex; } }
+
+.cards-track {
+  display: flex;
+  gap: 1.25rem;
+  padding-bottom: 0.5rem;
+}
+@media (min-width: 768px) {
+  .cards-track { gap: 1.5rem; }
+}
+
+.prop-card {
+  flex-shrink: 0;
+  width: min(72vw, 280px);
+}
+@media (min-width: 768px)  { .prop-card { width: calc(50% - 0.75rem); } }
+@media (min-width: 1024px) { .prop-card { width: calc(33.333% - 1rem); } }
+@media (min-width: 1280px) { .prop-card { width: calc(25% - 1.125rem); } }
+
+.prop-card-img {
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  margin-bottom: 0.75rem;
+}
+.prop-card-img:focus-visible { outline: 2px solid var(--clr-text); outline-offset: 3px; border-radius: var(--radius-card); }
+
+/* Dots */
+.card-dots {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+}
+.card-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.55);
+}
+.card-dot.active { background: #fff; width: 20px; border-radius: 3px; }
+
+/* Info below image */
+.prop-card-info {
+  display: block;
+  text-decoration: none;
+  padding: 0 0.125rem;
+}
+.prop-location  { font-size: 0.78rem; color: var(--clr-text-2); margin-bottom: 0.2rem; }
+.prop-name      { font-size: 0.88rem; font-weight: 600; color: var(--clr-text); margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.prop-meta      { font-size: 0.82rem; color: var(--clr-text-2); display: flex; align-items: center; gap: 0.2rem; flex-wrap: wrap; margin-bottom: 0.15rem; }
+.prop-price     { font-weight: 600; color: var(--clr-text); }
+.prop-meta-dim  { color: var(--clr-text-2); }
+.prop-dot       { color: var(--clr-text-3); }
+.prop-amenities { font-size: 0.8rem; color: var(--clr-text-2); }
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const carousels = document.querySelectorAll('.carousel-wrapper');
-  
-  carousels.forEach((carousel) => {
-    const prevBtn = carousel.closest('.relative')?.querySelector('.carousel-prev');
-    const nextBtn = carousel.closest('.relative')?.querySelector('.carousel-next');
-
-    if (prevBtn) {
-      prevBtn.addEventListener('click', () => {
-        carousel.scrollBy({ left: -400, behavior: 'smooth' });
-      });
-    }
-
-    if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
-        carousel.scrollBy({ left: 400, behavior: 'smooth' });
-      });
-    }
-
-    // Update dots on scroll
-    carousel.addEventListener('scroll', () => {
-      const wrapper = carousel.closest('.relative');
-      if (!wrapper) return;
-      
-      const dots = wrapper.querySelectorAll('.carousel-dot');
-      const scrollPosition = carousel.scrollLeft;
-      const itemWidth = carousel.querySelector('.carousel-item')?.offsetWidth || 0;
-      const visibleItemIndex = Math.round(scrollPosition / itemWidth);
-      
-      dots.forEach((dot, index) => {
-        dot.classList.toggle('bg-gray-900', index === visibleItemIndex);
-        dot.classList.toggle('bg-gray-300', index !== visibleItemIndex);
-      });
+  // Wishlist toggle
+  document.querySelectorAll('.wishlist-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const pressed = btn.getAttribute('aria-pressed') === 'true';
+      btn.setAttribute('aria-pressed', String(!pressed));
+      btn.classList.toggle('saved', !pressed);
     });
+  });
+
+  // Carousel arrows (per-section)
+  document.querySelectorAll('.cards-track').forEach(track => {
+    const section = track.closest('section');
+    if (!section) return;
+    const prev = section.querySelector('.carousel-prev') as HTMLButtonElement | null;
+    const next = section.querySelector('.carousel-next') as HTMLButtonElement | null;
+
+    const scrollAmount = () => {
+      const card = track.querySelector('.prop-card') as HTMLElement | null;
+      return card ? card.offsetWidth + 24 : 300;
+    };
+
+    const update = () => {
+      if (prev) { prev.disabled = track.scrollLeft <= 1; prev.style.opacity = prev.disabled ? '0.35' : '1'; }
+      if (next) { next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 1; next.style.opacity = next.disabled ? '0.35' : '1'; }
+    };
+
+    prev?.addEventListener('click', () => track.scrollBy({ left: -scrollAmount() * 2, behavior: 'smooth' }));
+    next?.addEventListener('click', () => track.scrollBy({ left:  scrollAmount() * 2, behavior: 'smooth' }));
+    track.addEventListener('scroll', update, { passive: true });
+    update();
   });
 });
 </script>
-
-<style>
-.carousel-wrapper {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-}
-
-.carousel-wrapper::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
-}
-
-@media (max-width: 768px) {
-  .carousel-item {
-    scroll-snap-align: start;
-    scroll-padding-left: 1rem;
-  }
-}
-</style>

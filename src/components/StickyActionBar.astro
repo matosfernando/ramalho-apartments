@@ -1,43 +1,49 @@
 ---
-/**
- * StickyActionBar Component
- * A sticky bar that follows the user as they scroll
- * Contains WhatsApp booking button and email contact button
- */
 interface Props {
   whatsappPhone?: string;
   emailAddress?: string;
+  message?: string;
 }
 
-const { 
-  whatsappPhone = "+351918881000",
-  emailAddress = "hello@ramalho.pt"
+const {
+  whatsappPhone = "351918881000",
+  emailAddress  = "hello@ramalho.pt",
+  message       = "Hi! I'd like to book an apartment at Ramalho Apartments.",
 } = Astro.props as Props;
 
-const whatsappUrl = `https://wa.me/${whatsappPhone.replace(/\D/g, '')}?text=Hi! I'd like to book an apartment at Ramalho Apartments.`;
+const waUrl = `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(message)}`;
 ---
 
-<div class="sticky-action-bar-mobile safe-area-bottom">
-  <div class="container-max flex gap-2 justify-between py-3">
-    <a 
-      href={whatsappUrl}
+<div class="mobile-cta" role="complementary" aria-label="Booking actions">
+  <div style="display:flex; gap:0.625rem; max-width:var(--max-w); margin:0 auto;">
+    <!-- WhatsApp — primary action -->
+    <a
+      href={waUrl}
       target="_blank"
       rel="noopener noreferrer"
-      class="flex-1 btn-primary justify-center text-sm md:text-base"
+      class="btn btn-whatsapp"
+      style="flex:1; justify-content:center;"
+      aria-label="Book via WhatsApp"
     >
-      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.180-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
+      <!-- WhatsApp icon -->
+      <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.18-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
       </svg>
-      <span>Book via WhatsApp</span>
+      Book via WhatsApp
     </a>
-    <a 
+
+    <!-- Email — secondary action -->
+    <a
       href={`mailto:${emailAddress}`}
-      class="flex-1 btn-secondary justify-center text-sm md:text-base"
+      class="btn btn-outline"
+      style="flex:1; justify-content:center;"
+      aria-label="Contact via email"
     >
-      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+      <!-- Mail icon -->
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
       </svg>
-      <span>Email Us</span>
+      Email Us
     </a>
   </div>
 </div>

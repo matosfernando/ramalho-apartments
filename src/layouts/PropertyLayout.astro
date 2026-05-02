@@ -1,122 +1,181 @@
 ---
-/**
- * PropertyLayout Component
- * Shared layout for property pages with image gallery, amenities, and map
- */
 import Layout from './Layout.astro';
+
+interface Amenity { name: string; icon: string; }
 
 interface Props {
   title: string;
   description: string;
   heroImage: string;
   galleryImages?: string[];
-  amenities?: { name: string; icon: string }[];
+  amenities?: Amenity[];
   mapEmbedUrl?: string;
+  price?: string;
+  priceNote?: string;
+  propertyName?: string;
+  waMessage?: string;
 }
 
-const { title, description, heroImage, galleryImages = [], amenities = [], mapEmbedUrl } = Astro.props as Props;
+const {
+  title,
+  description,
+  heroImage,
+  galleryImages = [],
+  amenities = [],
+  mapEmbedUrl,
+  price,
+  priceNote,
+  propertyName,
+  waMessage,
+} = Astro.props as Props;
+
+const displayName = propertyName || title;
+const bookingMsg  = waMessage || ("Hi! I'd like to check availability for " + displayName + ".");
+const waUrl       = "https://wa.me/351918881000?text=" + encodeURIComponent(bookingMsg);
+const heroAlt     = displayName + " - main view";
+const galleryAlt  = (i: number) => displayName + " - photo " + i;
 ---
 
 <Layout {title} description={description}>
-  <!-- Hero -->
-  <section class="relative bg-slate-50">
-    <div class="container-max grid gap-10 py-16 lg:grid-cols-[1.4fr_0.9fr] items-center">
-      <div class="relative overflow-hidden rounded-[2rem] shadow-2xl h-[420px] md:h-[520px] lg:h-[600px]">
-        <img src={heroImage} alt={title} class="w-full h-full object-cover" />
-        <div class="gradient-overlay" />
-      </div>
 
-      <div class="space-y-8">
-        <div class="rounded-[2rem] bg-white border border-slate-200 p-8 shadow-xl">
-          <p class="text-sm uppercase tracking-[0.3em] text-slate-500 mb-5">Premium apartment</p>
-          <h1 class="text-4xl md:text-5xl tracking-tight text-slate-900 mb-6">{title}</h1>
-          <p class="text-base md:text-lg leading-8 text-slate-600">{description}</p>
-        </div>
+  <!-- Photo header -->
+  <section style="position:relative; background:#f7f7f7;">
+    <div class="page-wrap" style="padding-top: 1.5rem; padding-bottom: 0;">
+      <h1 style="font-size: clamp(1.4rem,3vw,1.9rem); margin-bottom:0.25rem;">{propertyName ?? title}</h1>
+      <p style="font-size:0.85rem; color:var(--clr-text-2); margin-bottom:1.25rem;">{description}</p>
+    </div>
 
-        <div class="grid gap-4 sm:grid-cols-2">
-          <div class="rounded-[1.5rem] bg-white border border-slate-200 p-6 shadow-lg">
-            <h2 class="text-lg font-semibold text-slate-900 mb-3">Book with confidence</h2>
-            <p class="text-sm text-slate-600 leading-7">Reach out directly for the best rates, flexible check-in, and personalized local recommendations.</p>
-          </div>
-          <div class="rounded-[1.5rem] bg-white border border-slate-200 p-6 shadow-lg">
-            <h2 class="text-lg font-semibold text-slate-900 mb-3">Location & access</h2>
-            <p class="text-sm text-slate-600 leading-7">Central Ponta Delgada location with easy access to restaurants, beaches, and city highlights.</p>
-          </div>
+    <!-- Gallery grid -->
+    <div class="page-wrap">
+      <div class="gallery-grid">
+        <div class="gallery-img">
+          <img src={heroImage} alt={`${propertyName ?? title} - main photo`} width="900" height="600" loading="eager" style="height:100%; object-fit:cover;" />
         </div>
+        {galleryImages.slice(0, 4).map((img, i) => (
+          <div class="gallery-img">
+            <img src={img} alt={`${propertyName ?? title} - photo ${i + 2}`} width="450" height="300" loading="lazy" />
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- Gallery and Amenities -->
-  <section class="section-padding bg-white">
-    <div class="container-max grid gap-10 lg:grid-cols-[1.5fr_0.9fr]">
-      {galleryImages.length > 0 && (
-        <div>
-          <div class="mb-8 flex items-center justify-between gap-4">
-            <h2 class="text-2xl font-semibold text-slate-900">Photo gallery</h2>
-            <p class="text-sm text-slate-500">Swipe or scroll to preview the space</p>
-          </div>
-          <div class="grid grid-cols-1 gap-4">
-            {galleryImages.map((image, index) => (
-              <img key={index} src={image} alt="Property image" class="w-full h-72 object-cover rounded-[1.5rem] shadow-lg" loading="lazy" />
-            ))}
-          </div>
-        </div>
-      )}
+  <!-- Detail layout -->
+  <div class="page-wrap" style="padding-top: 2.5rem; padding-bottom: 3rem;">
+    <div class="prop-detail-grid">
 
-      {amenities.length > 0 && (
-        <div class="sticky top-24 self-start rounded-[2rem] border border-slate-200 bg-slate-50 p-8 shadow-xl">
-          <h2 class="text-2xl font-semibold text-slate-900 mb-6">Amenities</h2>
-          <div class="grid gap-4 sm:grid-cols-2">
-            {amenities.map((amenity) => (
-              <div key={amenity.name} class="rounded-3xl bg-white p-4 border border-slate-200 shadow-sm">
-                <div class="flex items-center gap-4">
-                  <div class="flex h-12 w-12 items-center justify-center rounded-3xl bg-slate-100 text-2xl">{amenity.icon}</div>
-                  <p class="font-medium text-slate-900">{amenity.name}</p>
+      <!-- Left column -->
+      <div class="prop-detail-main">
+
+        <!-- About slot -->
+        <slot />
+
+        <hr class="divider" />
+
+        <!-- Amenities list -->
+        {amenities.length > 0 && (
+          <div>
+            <h2 style="font-size:1.2rem; margin-bottom:1rem;">What this place offers</h2>
+            <div class="amenities-list">
+              {amenities.map(a => (
+                <div class="amenity-chip">
+                  <span class="amenity-icon" aria-hidden="true">{a.icon}</span>
+                  <span>{a.name}</span>
                 </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {mapEmbedUrl && (
+          <div>
+            <hr class="divider" />
+            <div>
+              <h2 style="font-size:1.2rem; margin-bottom:1rem;">Where you'll be</h2>
+              <div class="map-wrap" style="height:340px;">
+                <iframe
+                  src={mapEmbedUrl}
+                  width="100%"
+                  height="100%"
+                  style="border:0; display:block;"
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  title="Property location map"
+                />
               </div>
-            ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Right column - booking sidebar -->
+      <aside class="prop-detail-sidebar">
+        <div class="booking-card" style="position: sticky; top: 5rem;">
+          {price && (
+            <p style="font-size:1.1rem; font-weight:700; color:var(--clr-text); margin-bottom:0.25rem;">
+              {price} <span style="font-size:0.85rem; font-weight:400; color:var(--clr-text-2);">/ night</span>
+            </p>
+          )}
+          {priceNote && (
+            <p style="font-size:0.8rem; color:var(--clr-text-2); margin-bottom:1.25rem;">{priceNote}</p>
+          )}
+
+          <div style="display:flex; flex-direction:column; gap:0.625rem; margin-bottom:1.25rem;">
+            <a href={waUrl} target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp btn-lg" style="justify-content:center;">
+              <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.18-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
+              </svg>
+              Book via WhatsApp
+            </a>
+            <a href="mailto:hello@ramalho.pt" class="btn btn-outline btn-lg" style="justify-content:center;">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              Send an email
+            </a>
+          </div>
+
+          <hr class="divider" style="margin-block:1rem;" />
+
+          <div style="display:flex; flex-direction:column; gap:0.5rem;">
+            <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.82rem; color:var(--clr-text-2);">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" style="flex-shrink:0; margin-top:1px;" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Best rate guaranteed - book direct
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:0.6rem; font-size:0.82rem; color:var(--clr-text-2);">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" style="flex-shrink:0; margin-top:1px;" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Flexible check-in &middot; 24/7 support
+            </div>
           </div>
         </div>
-      )}
+      </aside>
     </div>
-  </section>
+  </div>
 
-  {mapEmbedUrl && (
-    <section class="section-padding bg-slate-50">
-      <div class="container-max">
-        <div class="rounded-[2rem] overflow-hidden border border-slate-200 shadow-xl">
-          <iframe
-            src={mapEmbedUrl}
-            width="100%"
-            height="520"
-            style="border:0;"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          />
-        </div>
-      </div>
-    </section>
-  )}
-
-  <!-- CTA -->
-  <section class="section-padding bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white">
-    <div class="container-max flex flex-col gap-6 text-center">
-      <div class="max-w-3xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-semibold mb-4">Ready to book your stay?</h2>
-        <p class="text-base md:text-lg text-slate-300 leading-relaxed">Contact our team directly for availability, local tips, and instant booking support.</p>
-      </div>
-      <div class="flex flex-col gap-4 sm:flex-row sm:justify-center">
-        <a href="https://wa.me/351918881000?text=Hi! I'm interested in booking this property." target="_blank" rel="noopener noreferrer" class="btn-primary justify-center">
-          WhatsApp Us
-        </a>
-        <a href="mailto:hello@ramalho.pt" class="btn-secondary justify-center">
-          Email Us
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <slot />
 </Layout>
+
+<style>
+.prop-detail-grid {
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 1024px) {
+  .prop-detail-grid {
+    grid-template-columns: 1fr 360px;
+    align-items: start;
+  }
+}
+
+.amenities-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 2rem;
+}
+@media (min-width: 640px) { .amenities-list { grid-template-columns: repeat(3, 1fr); } }
+</style>

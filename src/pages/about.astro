@@ -1,148 +1,204 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import HeroSection from '../components/HeroSection.astro';
 
-const title = "About & Contact - Ramalho Apartments";
-const description = "Learn about the Ramalho Apartments story and get in touch with our team.";
+const title = "About – Ramalho Apartments";
+const description = "Learn about Ramalho Apartments and get in touch with our team in Ponta Delgada, Azores.";
 ---
 
 <Layout {title} {description}>
-  <!-- Hero -->
-  <HeroSection 
-    title="About Ramalho Apartments"
-    subtitle="A passion for hospitality and the Azores"
-    backgroundImage="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop"
-  />
 
-  <!-- Story Section -->
-  <section class="section-padding bg-white">
-    <div class="container-max">
-      <div class="max-w-3xl mx-auto">
-        <h2 class="mb-8">Our Story</h2>
-        
-        <div class="prose prose-lg text-azure-volcanic space-y-6 mb-12">
-          <p>
-            Ramalho Apartments was born from a simple idea: to share the beauty and warmth of Ponta Delgada and the Azores with travelers who seek authentic experiences over impersonal transactions.
-          </p>
+  <!-- Page header -->
+  <section style="background: var(--clr-bg-subtle); border-bottom: 1px solid var(--clr-border-light);">
+    <div class="page-wrap" style="padding-block: 3.5rem 3rem;">
+      <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--clr-text-2); margin-bottom:0.75rem;">About us</p>
+      <h1 style="max-width:560px; margin-bottom:1rem;">A passion for the Azores and genuine hospitality</h1>
+      <p style="font-size:1rem; max-width:540px; line-height:1.7;">
+        We're lifelong residents of Ponta Delgada who opened our homes to the world — so travelers could experience the real Azores, not just a listing.
+      </p>
+    </div>
+  </section>
 
-          <p>
-            As lifelong residents of Ponta Delgada, we saw countless visitors searching for connections to local culture, honest recommendations, and genuine hospitality. The available options often felt corporate and disconnected from the real Azores we love.
-          </p>
-
-          <p>
-            So we decided to do something different. We carefully selected three apartments in the heart of our beloved city, each with its own character but all with one thing in common: they're places where we'd be happy hosting friends and family.
-          </p>
-
-          <p>
-            Today, Ramalho Apartments isn't just a rental business. It's a gateway to genuine Azorean hospitality. When you stay with us, you're getting insider tips, local recommendations, and personal service from people who truly know and love this place.
-          </p>
-
-          <p>
-            We believe in booking direct. No algorithms, no booking platforms taking commissions, no impersonal customer service centers. Just us, your hosts, dedicated to making your stay unforgettable.
-          </p>
+  <!-- Story -->
+  <section>
+    <div class="page-wrap" style="padding-block: 3.5rem;">
+      <div class="story-grid">
+        <div>
+          <h2 style="font-size:1.3rem; margin-bottom:1.5rem;">Our story</h2>
+          <div class="story-body">
+            <p>Ramalho Apartments was born from a simple idea: to share the beauty and warmth of Ponta Delgada with travelers who seek authentic experiences over impersonal transactions.</p>
+            <p>As lifelong residents, we saw countless visitors searching for real connections to local culture, honest recommendations, and genuine hospitality — and finding only corporate, disconnected options.</p>
+            <p>So we carefully selected three apartments in the heart of the city, each with its own character but all sharing one thing: they're places where we'd be happy hosting friends and family.</p>
+            <p>Today, Ramalho Apartments is a gateway to genuine Azorean hospitality. When you stay with us, you get insider tips, local recommendations, and personal service from people who truly know and love this place.</p>
+          </div>
         </div>
-
-        <hr class="my-12 border-azure-light" />
-
-        <h2 class="mb-8">Our Values</h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-          <div class="text-center">
-            <div class="text-5xl mb-4">🏡</div>
-            <h4>Authentic Homes</h4>
-            <p class="text-sm text-azure-volcanic">
-              Real apartments for real people, not sterile hotel rooms.
-            </p>
-          </div>
-          <div class="text-center">
-            <div class="text-5xl mb-4">❤️</div>
-            <h4>Genuine Care</h4>
-            <p class="text-sm text-azure-volcanic">
-              Your comfort and satisfaction matter more than profit.
-            </p>
-          </div>
-          <div class="text-center">
-            <div class="text-5xl mb-4">🌍</div>
-            <h4>Local Love</h4>
-            <p class="text-sm text-azure-volcanic">
-              We share our community, not just a listing.
-            </p>
-          </div>
+        <div>
+          <img
+            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&h=700&fit=crop"
+            alt="Beautiful apartment interior in Ponta Delgada"
+            width="900" height="700" loading="lazy"
+            style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:var(--radius-card);"
+          />
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section class="section-padding bg-gradient-to-br from-azure-deep/5 to-azure-accent/5">
-    <div class="container-max">
-      <div class="text-center mb-12 md:mb-16">
-        <h2 class="mb-4">Get in Touch</h2>
-        <p class="text-lg text-azure-volcanic max-w-2xl mx-auto">
-          Have questions? Need recommendations? Want to book? We're here to help and would love to hear from you.
-        </p>
+  <!-- Values -->
+  <section style="border-top:1px solid var(--clr-border-light); border-bottom:1px solid var(--clr-border-light); background: var(--clr-bg-subtle);">
+    <div class="page-wrap" style="padding-block:3.5rem;">
+      <h2 style="font-size:1.3rem; margin-bottom:2rem;">What we stand for</h2>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-card-icon" aria-hidden="true">🏡</div>
+          <h3 style="font-size:1rem; margin-bottom:0.4rem;">Authentic homes</h3>
+          <p style="font-size:0.875rem; line-height:1.65;">Real apartments with character, not sterile hotel rooms.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-card-icon" aria-hidden="true">❤️</div>
+          <h3 style="font-size:1rem; margin-bottom:0.4rem;">Genuine care</h3>
+          <p style="font-size:0.875rem; line-height:1.65;">Your comfort and satisfaction matter more than profit.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-card-icon" aria-hidden="true">🌍</div>
+          <h3 style="font-size:1rem; margin-bottom:0.4rem;">Local love</h3>
+          <p style="font-size:0.875rem; line-height:1.65;">We share our community, not just a listing.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-card-icon" aria-hidden="true">💰</div>
+          <h3 style="font-size:1rem; margin-bottom:0.4rem;">Best rate direct</h3>
+          <p style="font-size:0.875rem; line-height:1.65;">No platform commissions. Book direct, save up to 20%.</p>
+        </div>
       </div>
+    </div>
+  </section>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+  <!-- Contact -->
+  <section>
+    <div class="page-wrap" style="padding-block:3.5rem;">
+      <h2 style="font-size:1.3rem; margin-bottom:0.5rem;">Get in touch</h2>
+      <p style="margin-bottom:2rem; max-width:440px; line-height:1.7;">
+        Questions, booking requests, or just want to say hello — we'd love to hear from you.
+      </p>
+
+      <div class="contact-grid">
         <!-- WhatsApp -->
-        <a href="https://wa.me/351918881000" target="_blank" rel="noopener noreferrer" class="bg-white rounded-lg p-8 text-center shadow-lg hover:shadow-xl transition-shadow card-hover group">
-          <div class="text-5xl mb-4">💬</div>
-          <h4 class="mb-2 group-hover:text-azure-accent">WhatsApp</h4>
-          <p class="text-sm text-azure-volcanic mb-4">Instant messaging for quick questions</p>
-          <p class="font-semibold text-azure-accent">+351 918 881 000</p>
+        <a href="https://wa.me/351918881000" target="_blank" rel="noopener noreferrer" class="contact-card">
+          <div class="contact-icon" style="background:#e7fced;">
+            <svg width="22" height="22" fill="#25D366" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.18-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
+            </svg>
+          </div>
+          <div>
+            <p style="font-size:0.875rem; font-weight:600; color:var(--clr-text); margin-bottom:0.2rem;">WhatsApp</p>
+            <p style="font-size:0.82rem;">Fastest for quick questions and bookings</p>
+            <p style="font-size:0.82rem; font-weight:500; color:var(--clr-text); margin-top:0.25rem;">+351 918 881 000</p>
+          </div>
         </a>
 
         <!-- Email -->
-        <a href="mailto:hello@ramalho.pt" class="bg-white rounded-lg p-8 text-center shadow-lg hover:shadow-xl transition-shadow card-hover group">
-          <div class="text-5xl mb-4">✉️</div>
-          <h4 class="mb-2 group-hover:text-azure-accent">Email</h4>
-          <p class="text-sm text-azure-volcanic mb-4">For detailed inquiries and bookings</p>
-          <p class="font-semibold text-azure-accent">hello@ramalho.pt</p>
+        <a href="mailto:hello@ramalho.pt" class="contact-card">
+          <div class="contact-icon" style="background:#eef0ff;">
+            <svg width="20" height="20" fill="none" stroke="#5860f0" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div>
+            <p style="font-size:0.875rem; font-weight:600; color:var(--clr-text); margin-bottom:0.2rem;">Email</p>
+            <p style="font-size:0.82rem;">For detailed enquiries and bookings</p>
+            <p style="font-size:0.82rem; font-weight:500; color:var(--clr-text); margin-top:0.25rem;">hello@ramalho.pt</p>
+          </div>
         </a>
 
         <!-- Phone -->
-        <a href="tel:+351918881000" class="bg-white rounded-lg p-8 text-center shadow-lg hover:shadow-xl transition-shadow card-hover group">
-          <div class="text-5xl mb-4">📞</div>
-          <h4 class="mb-2 group-hover:text-azure-accent">Phone</h4>
-          <p class="text-sm text-azure-volcanic mb-4">For direct conversation</p>
-          <p class="font-semibold text-azure-accent">+351 918 881 000</p>
+        <a href="tel:+351918881000" class="contact-card">
+          <div class="contact-icon" style="background:#fff4ec;">
+            <svg width="20" height="20" fill="none" stroke="#f97316" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            </svg>
+          </div>
+          <div>
+            <p style="font-size:0.875rem; font-weight:600; color:var(--clr-text); margin-bottom:0.2rem;">Phone</p>
+            <p style="font-size:0.82rem;">For direct conversations</p>
+            <p style="font-size:0.82rem; font-weight:500; color:var(--clr-text); margin-top:0.25rem;">+351 918 881 000</p>
+          </div>
         </a>
       </div>
 
-      <!-- Social Links -->
-      <div class="text-center mt-12">
-        <h3 class="mb-6">Follow Us</h3>
-        <div class="flex justify-center gap-6">
-          <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="text-azure-accent hover:text-azure-accent-dark transition-colors">
-            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.057-1.645.069-4.849.069-3.204 0-3.584-.012-4.849-.069-3.259-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 110-8 4 4 0 010 8zm4.965-10.322a1.44 1.44 0 110.001 2.881 1.44 1.44 0 01-.001-2.881z"/>
-            </svg>
-          </a>
-          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="text-azure-accent hover:text-azure-accent-dark transition-colors">
-            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-            </svg>
-          </a>
+      <!-- Map -->
+      <div style="margin-top:3rem;">
+        <h2 style="font-size:1.1rem; margin-bottom:1rem;">Find us in Ponta Delgada</h2>
+        <div class="map-wrap" style="height:340px;">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.216436308911!2d-25.663055!3d37.7412361!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xf2f3c8d8d8d8d8d%3A0x0!2sPonta%20Delgada!5e0!3m2!1sen!2spt!4v1234567890"
+            width="100%" height="100%"
+            style="border:0; display:block;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Ponta Delgada map"
+          />
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Location Map -->
-  <section class="section-padding bg-white">
-    <div class="container-max">
-      <h2 class="text-center mb-12">Visit Us in Ponta Delgada</h2>
-      <div class="rounded-lg overflow-hidden shadow-lg h-96">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.216436308911!2d-25.663055!3d37.7412361!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xf2f3c8d8d8d8d8d%3A0x0!2sPonta%20Delgada%20City%20Center!5e0!3m2!1sen!2spt!4v1234567890"
-          width="100%"
-          height="100%"
-          style="border:0;"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        />
-      </div>
-    </div>
-  </section>
 </Layout>
+
+<style>
+.story-grid {
+  display: grid;
+  gap: 3rem;
+  align-items: start;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 1024px) { .story-grid { grid-template-columns: 1fr 1fr; } }
+
+.story-body { display: flex; flex-direction: column; gap: 1.1rem; }
+.story-body p { font-size: 0.9rem; line-height: 1.75; color: var(--clr-text-2); margin: 0; }
+
+.values-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 1024px) { .values-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.value-card {
+  background: var(--clr-bg);
+  border: 1px solid var(--clr-border-light);
+  border-radius: var(--radius-card);
+  padding: 1.5rem;
+}
+.value-card-icon { font-size: 1.75rem; margin-bottom: 0.875rem; }
+
+.contact-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px)  { .contact-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .contact-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.contact-card {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.25rem;
+  border: 1px solid var(--clr-border-light);
+  border-radius: var(--radius-card);
+  background: var(--clr-bg);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  text-decoration: none;
+}
+.contact-card:hover { box-shadow: var(--shadow-card); border-color: var(--clr-border); }
+
+.contact-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+</style>

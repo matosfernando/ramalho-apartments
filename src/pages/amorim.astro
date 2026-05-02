@@ -1,70 +1,47 @@
 ---
 import PropertyLayout from '../layouts/PropertyLayout.astro';
 
-const title = "Modern Urban Living - Ramalho Apartments";
-const description = "Contemporary apartment featuring sleek design, full kitchen, and panoramic city views of Ponta Delgada.";
-
 const amenities = [
-  { name: "WiFi", icon: "📶" },
-  { name: "AC", icon: "❄️" },
-  { name: "Full Kitchen", icon: "🍽️" },
-  { name: "Smart TV", icon: "📺" },
-  { name: "Washing Machine", icon: "🧺" },
-  { name: "Hair Dryer", icon: "💇" },
-  { name: "Balcony", icon: "🌅" },
-  { name: "Coffee Machine", icon: "☕" }
+  { name: "High-speed WiFi",    icon: "📶" },
+  { name: "Air conditioning",   icon: "❄️" },
+  { name: "Full kitchen",       icon: "🍽️" },
+  { name: "Smart TV",           icon: "📺" },
+  { name: "Washing machine",    icon: "🧺" },
+  { name: "Hair dryer",         icon: "💇" },
+  { name: "Private balcony",    icon: "🌅" },
+  { name: "Coffee machine",     icon: "☕" },
 ];
 
 const galleryImages = [
-  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=400&fit=crop",
   "https://images.unsplash.com/photo-1540932239986-310128078ceb?w=600&h=400&fit=crop",
   "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop",
   "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop",
   "https://images.unsplash.com/photo-1578500494198-246f612d03b3?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop"
 ];
-
-const mapEmbedUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.216436308911!2d-25.663055!3d37.7412361!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xf2f3c8d8d8d8d8d%3A0x0!2sPonta%20Delgada!5e0!3m2!1sen!2spt!4v1234567890";
 ---
 
-<PropertyLayout 
-  {title} 
-  {description}
-  heroImage="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&h=600&fit=crop"
+<PropertyLayout
+  title="Modern Urban Living – Ramalho Apartments"
+  propertyName="Modern Urban Living"
+  description="Contemporary apartment with sleek design, full kitchen, private balcony, and panoramic city views."
+  heroImage="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&h=800&fit=crop"
   {galleryImages}
   {amenities}
-  {mapEmbedUrl}
+  price="€75"
+  priceNote="2-night minimum stay"
+  waMessage="Hi! I'd like to check availability for the Modern Urban Living apartment."
+  mapEmbedUrl="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.216436308911!2d-25.663055!3d37.7412361!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xf2f3c8d8d8d8d8d%3A0x0!2sPonta%20Delgada!5e0!3m2!1sen!2spt!4v1234567890"
 >
-  <!-- Additional Details Section -->
-  <section class="section-padding bg-gray-50">
-    <div class="container-max">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div>
-          <h3 class="mb-4">About This Apartment</h3>
-          <p class="text-azure-volcanic mb-4">
-            Experience modern living in our stylish urban apartment. With contemporary design, premium finishes, and an expansive balcony overlooking the city, this is where comfort meets sophistication.
-          </p>
-          <p class="text-azure-volcanic">
-            Perfect for discerning travelers who appreciate modern architecture, quality amenities, and the vibrant energy of Ponta Delgada's neighborhoods.
-          </p>
-        </div>
-        
-        <div>
-          <h3 class="mb-4">Rates & Availability</h3>
-          <div class="bg-white rounded-lg p-6 shadow-md">
-            <p class="mb-4">
-              <span class="text-azure-accent font-bold text-2xl">€75</span>
-              <span class="text-azure-volcanic">/night</span>
-            </p>
-            <p class="text-sm text-azure-volcanic mb-4">
-              Minimum stay: 2 nights
-            </p>
-            <a href="https://wa.me/351918881000?text=Hi! I'd like to check availability for the Modern Urban Living apartment." class="btn-primary w-full justify-center">
-              Check Availability
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <div>
+    <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--clr-text-2); margin-bottom:0.5rem;">Home · Ponta Delgada, Azores</p>
+    <p style="font-size:0.85rem; color:var(--clr-text-2); margin-bottom:1rem;">2 bedrooms · 2 beds · 1 bath</p>
+    <hr class="divider" />
+    <h2 style="font-size:1.1rem; margin-bottom:0.875rem;">About this place</h2>
+    <p style="font-size:0.875rem; line-height:1.75; margin-bottom:0.875rem;">
+      Experience modern living at its finest. This stylish apartment pairs contemporary design with premium finishes and a private balcony with sweeping city views — comfort meets sophistication.
+    </p>
+    <p style="font-size:0.875rem; line-height:1.75;">
+      Perfect for discerning travelers who appreciate quality, design, and the vibrant energy of Ponta Delgada's neighbourhoods.
+    </p>
+  </div>
 </PropertyLayout>

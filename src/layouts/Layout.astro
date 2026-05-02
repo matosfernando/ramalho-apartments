@@ -1,61 +1,225 @@
 ---
 import '../styles/global.css';
 import StickyActionBar from '../components/StickyActionBar.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   title?: string;
   description?: string;
 }
 
-const { title = "Ramalho Apartments | Premium Stays in Ponta Delgada, Azores", description = "Discover luxury short-term rentals in Ponta Delgada, Azores. Book direct for the best rates on our curated collection of apartments." } = Astro.props as Props;
+const {
+  title = "Ramalho Apartments | Premium Stays in Ponta Delgada, Azores",
+  description = "Discover luxury short-term rentals in Ponta Delgada, Azores. Book direct for the best rates on our curated collection of apartments."
+} = Astro.props as Props;
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#1a3a52" />
-    <title>{title}</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    
-    <!-- OpenGraph tags for social sharing -->
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    
-    <!-- Preconnect to Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  </head>
-  <body>
-    <div class="min-h-screen bg-white text-slate-900">
-      <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-xl">
-        <div class="container-max flex items-center justify-between gap-4 py-4">
-          <a href="/" class="text-lg font-semibold tracking-tight text-slate-900">
-            Ramalho Apartments
-          </a>
-          <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-            <a href="/" class="hover:text-slate-900 transition">Home</a>
-            <a href="/guide" class="hover:text-slate-900 transition">Guide</a>
-            <a href="/about" class="hover:text-slate-900 transition">About</a>
-            <a href="/faq" class="hover:text-slate-900 transition">FAQ</a>
-          </nav>
-        </div>
-      </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content={description} />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>{title}</title>
+  <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+  <meta property="og:title"       content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type"        content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+<body>
 
-      <main class="pb-32 md:pb-0">
-        <slot />
-      </main>
+  <!-- ── Header ─────────────────────────────────────────── -->
+  <header id="site-header" class="site-header">
+    <div class="page-wrap header-inner">
+      <!-- Logo -->
+      <a href={base} class="header-logo" aria-label="Ramalho Apartments home">
+        Ramalho<span class="logo-dot">.</span>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href={base}               class="nav-link">Home</a>
+        <a href={`${base}/guide`}    class="nav-link">Guide</a>
+        <a href={`${base}/about`}    class="nav-link">About</a>
+        <a href={`${base}/faq`}      class="nav-link">FAQ</a>
+      </nav>
+
+      <!-- Desktop CTA -->
+      <div class="header-actions">
+        <a href="https://wa.me/351918881000?text=Hi! I'd like to book an apartment."
+           target="_blank" rel="noopener noreferrer"
+           class="btn btn-dark btn-sm">
+          Book now
+        </a>
+      </div>
+
+      <!-- Mobile hamburger -->
+      <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    
-    <StickyActionBar />
-  </body>
+
+    <!-- Mobile nav drawer -->
+    <div id="mobile-nav" class="mobile-nav" aria-hidden="true">
+      <nav class="mobile-nav-links" aria-label="Mobile navigation">
+        <a href={base}               class="mobile-nav-link">Home</a>
+        <a href={`${base}/guide`}    class="mobile-nav-link">Guide</a>
+        <a href={`${base}/about`}    class="mobile-nav-link">About</a>
+        <a href={`${base}/faq`}      class="mobile-nav-link">FAQ</a>
+        <a href="https://wa.me/351918881000?text=Hi! I'd like to book an apartment."
+           target="_blank" rel="noopener noreferrer"
+           class="btn btn-dark" style="margin-top: 0.5rem; justify-content: center;">
+          Book now
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── Page content ────────────────────────────────────── -->
+  <main class="site-main" id="main-content">
+    <slot />
+  </main>
+
+  <!-- ── Footer ──────────────────────────────────────────── -->
+  <Footer />
+
+  <!-- ── Mobile sticky CTA ───────────────────────────────── -->
+  <StickyActionBar />
+
+</body>
 </html>
 
 <style is:global>
-  html {
-    scroll-behavior: smooth;
-  }
+/* ─── Header ──────────────────────────────────────────────── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--clr-border-light);
+  transition: box-shadow 0.2s ease;
+}
+.site-header.scrolled { box-shadow: 0 1px 16px rgba(0,0,0,0.06); }
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 64px;
+}
+
+.header-logo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--clr-text);
+  flex-shrink: 0;
+}
+.logo-dot { color: #E31C5F; }
+
+.header-nav {
+  display: none;
+  align-items: center;
+  gap: 1.75rem;
+}
+@media (min-width: 768px) { .header-nav { display: flex; } }
+
+.nav-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--clr-text-2);
+  transition: color 0.15s ease;
+}
+.nav-link:hover, .nav-link.active { color: var(--clr-text); }
+
+.header-actions { display: none; }
+@media (min-width: 768px) { .header-actions { display: flex; align-items: center; gap: 0.75rem; } }
+
+/* Hamburger */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+@media (min-width: 768px) { .hamburger { display: none; } }
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--clr-text);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* Mobile nav drawer */
+.mobile-nav {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  border-top: 1px solid transparent;
+}
+.mobile-nav.open {
+  max-height: 400px;
+  border-top-color: var(--clr-border-light);
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 1rem var(--px-page) 1.25rem;
+}
+.mobile-nav-link {
+  padding: 0.75rem 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--clr-text);
+  border-bottom: 1px solid var(--clr-border-light);
+}
+.mobile-nav-link:last-of-type { border-bottom: none; }
+
+/* Main content clears header + leaves room for mobile CTA */
+.site-main { min-height: 60vh; padding-bottom: 5rem; }
+@media (min-width: 768px) { .site-main { padding-bottom: 0; } }
 </style>
+
+<script>
+// Scroll shadow
+const header = document.getElementById('site-header');
+window.addEventListener('scroll', () => {
+  header?.classList.toggle('scrolled', window.scrollY > 8);
+}, { passive: true });
+
+// Hamburger toggle
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobile-nav');
+hamburger?.addEventListener('click', () => {
+  const open = mobileNav?.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', String(open));
+  mobileNav?.setAttribute('aria-hidden', String(!open));
+});
+
+// Active nav link
+const links = document.querySelectorAll('.nav-link, .mobile-nav-link');
+links.forEach(link => {
+  if ((link as HTMLAnchorElement).href === window.location.href) {
+    link.classList.add('active');
+  }
+});
+</script>
