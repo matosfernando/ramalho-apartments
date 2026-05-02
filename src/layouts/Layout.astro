@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+import StickyActionBar from '../components/StickyActionBar.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = "Ramalho Apartments | Premium Stays in Ponta Delgada, Azores", description = "Discover luxury short-term rentals in Ponta Delgada, Azores. Book direct for the best rates on our curated collection of apartments." } = Astro.props as Props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1a3a52" />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- OpenGraph tags for social sharing -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body>
+    <div class="min-h-screen bg-white text-slate-900">
+      <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-xl">
+        <div class="container-max flex items-center justify-between gap-4 py-4">
+          <a href="/" class="text-lg font-semibold tracking-tight text-slate-900">
+            Ramalho Apartments
+          </a>
+          <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+            <a href="/" class="hover:text-slate-900 transition">Home</a>
+            <a href="/guide" class="hover:text-slate-900 transition">Guide</a>
+            <a href="/about" class="hover:text-slate-900 transition">About</a>
+            <a href="/faq" class="hover:text-slate-900 transition">FAQ</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="pb-32 md:pb-0">
+        <slot />
+      </main>
+    </div>
+    
+    <StickyActionBar />
+  </body>
+</html>
+
+<style is:global>
+  html {
+    scroll-behavior: smooth;
+  }
+</style>

@@ -1,0 +1,188 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroSection from '../components/HeroSection.astro';
+
+const title = "Local Guide - Ramalho Apartments";
+const description = "Your insider's guide to Ponta Delgada and São Miguel. Discover the best spots, essentials, and local tips.";
+
+const topSpots = [
+  {
+    name: "Forte de São Brás",
+    description: "Historic fortress offering panoramic city views and fascinating Azorean military history.",
+    icon: "🏰"
+  },
+  {
+    name: "Jardim António Borges",
+    description: "Enchanting botanical garden with exotic plants and peaceful walking paths.",
+    icon: "🌺"
+  },
+  {
+    name: "Arcos da Cidade",
+    description: "Iconic gate marking the city's expansion, surrounded by charming cobblestone streets.",
+    icon: "🌉"
+  },
+  {
+    name: "Monte Palace Viewpoint",
+    description: "Spectacular vantage point overlooking Ponta Delgada and the surrounding coast.",
+    icon: "👁️"
+  },
+  {
+    name: "Lagoa de Santiago",
+    description: "Beautiful crater lake perfect for swimming and picnicking in the island's interior.",
+    icon: "🏊"
+  }
+];
+
+const essentials = [
+  { name: "Mercado da Graça", type: "Supermarket", icon: "🛒", address: "Rua da Graça" },
+  { name: "Continente", type: "Shopping Center", icon: "🏬", address: "Avenida Infante Dom Henrique" },
+  { name: "Farmácia Central", type: "Pharmacy", icon: "💊", address: "Rua da Avenida" },
+  { name: "Hospital do Divino Espírito Santo", type: "Hospital", icon: "🏥", address: "Avenida D. João III" },
+  { name: "CTT Correios", type: "Post Office", icon: "📮", address: "Avenida Infante Dom Henrique" },
+  { name: "Tourist Information", type: "Info Center", icon: "ℹ️", address: "Avenida Infante Dom Henrique" }
+];
+
+const logistics = [
+  {
+    title: "Getting Around",
+    items: [
+      "Rental cars available at the airport and in the city center",
+      "SpotAzores app for ride-sharing and taxis",
+      "Local buses connect the city to nearby attractions",
+      "Walking is excellent for exploring central Ponta Delgada"
+    ]
+  },
+  {
+    title: "Getting Here",
+    items: [
+      "João Paulo II Airport is 2 km from Ponta Delgada",
+      "TAP Air Portugal operates most flights",
+      "Rental car pickup available at airport",
+      "Taxi or ride-share to city center (~10 minutes)"
+    ]
+  },
+  {
+    title: "Car Rentals & Services",
+    items: [
+      "International car rental companies at airport",
+      "Local rental agencies offer competitive rates",
+      "SpotAzores app includes car rental services",
+      "Driver's license: EU or International required"
+    ]
+  }
+];
+---
+
+<Layout {title} {description}>
+  <!-- Hero -->
+  <HeroSection 
+    title="Local Guide to Ponta Delgada & São Miguel"
+    subtitle="Your insider's passport to the Azores"
+    backgroundImage="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop"
+  />
+
+  <!-- Top 5 Spots -->
+  <section class="section-padding bg-white">
+    <div class="container-max">
+      <div class="text-center mb-12 md:mb-16">
+        <h2 class="mb-4">Top 5 Must-See Spots</h2>
+        <p class="text-lg text-azure-volcanic max-w-2xl mx-auto">
+          Explore these iconic locations that capture the essence of Ponta Delgada and São Miguel.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {topSpots.map((spot, index) => (
+          <div class="bg-gradient-to-br from-azure-deep/5 to-azure-accent/5 rounded-xl p-6 md:p-8 border-l-4 border-azure-accent">
+            <div class="flex items-start gap-4">
+              <div class="text-5xl">{spot.icon}</div>
+              <div>
+                <h4 class="mb-2">{spot.name}</h4>
+                <p class="text-sm md:text-base text-azure-volcanic">{spot.description}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Ponta Delgada Essentials -->
+  <section class="section-padding bg-gray-50">
+    <div class="container-max">
+      <div class="text-center mb-12 md:mb-16">
+        <h2 class="mb-4">Ponta Delgada Essentials</h2>
+        <p class="text-lg text-azure-volcanic max-w-2xl mx-auto">
+          Everything you need to know about local services and amenities.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {essentials.map(essential => (
+          <div class="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="text-3xl">{essential.icon}</span>
+              <div>
+                <h5 class="text-azure-deep">{essential.name}</h5>
+                <p class="text-xs text-azure-volcanic">{essential.type}</p>
+              </div>
+            </div>
+            <p class="text-sm text-azure-volcanic">{essential.address}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Logistics -->
+  <section class="section-padding bg-white">
+    <div class="container-max">
+      <div class="text-center mb-12 md:mb-16">
+        <h2 class="mb-4">Logistics & Transportation</h2>
+        <p class="text-lg text-azure-volcanic max-w-2xl mx-auto">
+          How to get here and get around São Miguel.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {logistics.map(section => (
+          <div class="bg-gradient-to-br from-azure-deep/5 to-azure-accent/5 rounded-xl p-6 md:p-8">
+            <h3 class="mb-4">{section.title}</h3>
+            <ul class="space-y-3">
+              {section.items.map(item => (
+                <li class="flex items-start gap-3">
+                  <span class="text-azure-accent font-bold mt-1">✓</span>
+                  <span class="text-sm md:text-base text-azure-volcanic">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <!-- SpotAzores Highlight -->
+      <div class="bg-azure-deep text-white rounded-xl p-8 md:p-12 mt-12 text-center">
+        <h3 class="text-white mb-4">🚗 SpotAzores App</h3>
+        <p class="mb-6 text-white/90">
+          Download the SpotAzores app for real-time ride-sharing, car rentals, and local information. It's your one-stop solution for getting around the Azores!
+        </p>
+        <a href="#" target="_blank" class="btn-secondary bg-white">
+          Download App
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-padding bg-gradient-to-br from-azure-medium to-azure-deep text-white">
+    <div class="container-max text-center">
+      <h2 class="text-white mb-6">Questions about Your Visit?</h2>
+      <p class="text-lg mb-8 text-white/90">
+        Our team knows Ponta Delgada inside and out. We're happy to help plan your perfect Azores experience.
+      </p>
+      <a href="https://wa.me/351918881000?text=Hi! I have some questions about visiting Ponta Delgada." target="_blank" rel="noopener noreferrer" class="btn-primary">
+        Contact Us on WhatsApp
+      </a>
+    </div>
+  </section>
+</Layout>

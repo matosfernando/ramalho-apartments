@@ -1,0 +1,42 @@
+---
+/**
+ * Hero Section Component
+ * Large banner with background image and gradient overlay
+ */
+interface Props {
+  title: string;
+  subtitle?: string;
+  backgroundImage?: string;
+  hasOverlay?: boolean;
+}
+
+const { 
+  title, 
+  subtitle, 
+  backgroundImage = "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop",
+  hasOverlay = true
+} = Astro.props as Props;
+---
+
+<section class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+  <!-- Background Image -->
+  <div 
+    class="absolute inset-0 bg-cover bg-center"
+    style={`background-image: url('${backgroundImage}')`}
+  />
+  
+  <!-- Gradient Overlay -->
+  {hasOverlay && <div class="gradient-overlay" />}
+  
+  <!-- Content -->
+  <div class="relative z-10 container-max text-center text-white max-w-4xl mx-auto px-4">
+    <h1 class="text-white mb-6 animate-fade-in">
+      {title}
+    </h1>
+    {subtitle && (
+      <p class="text-xl md:text-2xl text-white/90 font-light animate-fade-in">
+        {subtitle}
+      </p>
+    )}
+  </div>
+</section>

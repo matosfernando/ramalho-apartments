@@ -1,0 +1,195 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import PropertyCarousel from '../components/PropertyCarousel.astro';
+
+const title = "Ramalho Apartments | Premium Short-Term Rentals in Ponta Delgada, Azores";
+const description = "Discover our curated collection of luxury apartments in Ponta Delgada, Azores. Book directly for exclusive rates and personal service.";
+
+const properties = [
+  {
+    title: "Classic City Stay",
+    subtitle: "Home in Ponta Delgada, Azores",
+    description: "Charming apartment in the heart of Ponta Delgada with modern amenities and historic charm. Perfect for exploring the city center.",
+    image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
+    href: "/ramalho",
+    price: "€60",
+    rating: 4.9,
+    reviews: 48
+  },
+  {
+    title: "Modern Urban Living",
+    subtitle: "Home in Ponta Delgada, Azores",
+    description: "Contemporary apartment featuring sleek design, full kitchen, and panoramic city views. Ideal for modern travelers.",
+    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
+    href: "/amorim",
+    price: "€75",
+    rating: 5.0,
+    reviews: 32
+  },
+  {
+    title: "Family Duplex",
+    subtitle: "Home in Ponta Delgada, Azores",
+    description: "Spacious two-level apartment perfect for families and groups with multiple bedrooms and living areas. Great for reunions.",
+    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop",
+    href: "/amorim-duplex",
+    price: "€95",
+    rating: 4.8,
+    reviews: 25
+  }
+];
+
+const benefits = [
+  {
+    title: "Direct Booking Advantage",
+    description: "Book directly with us and save up to 20% compared to booking platforms.",
+    icon: "💰"
+  },
+  {
+    title: "Personal Service",
+    description: "Experience genuine hospitality from our local team who knows Ponta Delgada inside and out.",
+    icon: "🤝"
+  },
+  {
+    title: "Local Expertise",
+    description: "Access our insider guide to the best restaurants, activities, and hidden gems in the Azores.",
+    icon: "🗺️"
+  },
+  {
+    title: "Flexible Check-in",
+    description: "Late arrivals and early departures are welcome. We work around your schedule.",
+    icon: "⏰"
+  },
+  {
+    title: "Premium Locations",
+    description: "All properties are strategically located in Ponta Delgada's most desirable neighborhoods.",
+    icon: "📍"
+  },
+  {
+    title: "24/7 Support",
+    description: "Need help? Contact us anytime via WhatsApp, email, or phone for instant assistance.",
+    icon: "📞"
+  }
+];
+---
+
+<Layout {title} {description}>
+  <!-- Hero Section -->
+  <HeroSection 
+    title="Welcome to Ramalho Apartments"
+    subtitle="Discover your perfect Azores escape in Ponta Delgada"
+    backgroundImage="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop"
+  />
+
+  <!-- Collection Section -->
+  <PropertyCarousel 
+    {properties}
+    title="Homes our guests love"
+    subtitle="Explore our curated collection of premium apartments in Ponta Delgada"
+  />
+
+  <!-- Why Book Direct Section -->
+  <section class="section-padding bg-gradient-to-br from-azure-deep/5 to-azure-accent/5">
+    <div class="container-max">
+      <div class="text-center mb-12 md:mb-16">
+        <h2 class="mb-4">Why Book Direct with Us?</h2>
+        <p class="text-lg md:text-xl text-azure-volcanic max-w-2xl mx-auto">
+          When you book directly with Ramalho Apartments, you're not just booking a place to stay. You're getting an authentic local experience backed by genuine hospitality.
+        </p>
+      </div>
+
+      <!-- Benefits Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {benefits.map(benefit => (
+          <div class="bg-white rounded-xl p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow">
+            <div class="text-4xl mb-4">{benefit.icon}</div>
+            <h4 class="mb-2">{benefit.title}</h4>
+            <p class="text-sm md:text-base text-azure-volcanic">
+              {benefit.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section-padding bg-azure-deep text-white">
+    <div class="container-max text-center max-w-3xl mx-auto">
+      <h2 class="text-white mb-6">Ready to Experience the Azores?</h2>
+      <p class="text-lg md:text-xl mb-8 text-white/90">
+        Start planning your perfect getaway. Our team is ready to help you find the ideal apartment for your stay.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="https://wa.me/351918881000?text=Hi! I'd like to book an apartment at Ramalho Apartments." target="_blank" rel="noopener noreferrer" class="btn-secondary bg-white">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.180-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
+          </svg>
+          Chat on WhatsApp
+        </a>
+        <a href="mailto:hello@ramalho.pt" class="btn-outline text-white border-white hover:bg-white hover:text-azure-deep">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+          Email Us
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-azure-deep text-white py-12">
+    <div class="container-max">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <!-- Brand -->
+        <div>
+          <h4 class="text-white mb-4">Ramalho Apartments</h4>
+          <p class="text-white/80 text-sm">
+            Premium short-term rentals in Ponta Delgada, Azores. Your home away from home.
+          </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h5 class="text-white mb-4">Properties</h5>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/ramalho" class="text-white/80 hover:text-white">Classic City Stay</a></li>
+            <li><a href="/amorim" class="text-white/80 hover:text-white">Modern Urban Living</a></li>
+            <li><a href="/amorim-duplex" class="text-white/80 hover:text-white">Family Duplex</a></li>
+          </ul>
+        </div>
+
+        <!-- Info -->
+        <div>
+          <h5 class="text-white mb-4">Resources</h5>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/guide" class="text-white/80 hover:text-white">Local Guide</a></li>
+            <li><a href="/faq" class="text-white/80 hover:text-white">FAQ</a></li>
+            <li><a href="/about" class="text-white/80 hover:text-white">About Us</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <h5 class="text-white mb-4">Contact</h5>
+          <ul class="space-y-2 text-sm">
+            <li>
+              <a href="https://wa.me/351918881000" class="text-white/80 hover:text-white">WhatsApp</a>
+            </li>
+            <li>
+              <a href="mailto:hello@ramalho.pt" class="text-white/80 hover:text-white">hello@ramalho.pt</a>
+            </li>
+            <li>
+              <span class="text-white/80">+351 918 881 000</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="border-t border-white/20 pt-8 text-center text-sm text-white/60">
+        <p>&copy; 2024 Ramalho Apartments. All rights reserved. • Ponta Delgada, Azores</p>
+      </div>
+    </div>
+  </footer>
+</Layout>
