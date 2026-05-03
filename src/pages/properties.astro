@@ -1,0 +1,304 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title       = "Our Properties – Ramalho Apartments";
+const description = "Browse our three curated apartments in Ponta Delgada, Azores. Book direct for the best rate guaranteed.";
+
+const properties = [
+  {
+    name:        "Classic City Stay",
+    slug:        "ramalho",
+    tagline:     "Home · Ponta Delgada, Azores",
+    specs:       "1 bedroom · 1 bed · 1 bath",
+    description: "Charming apartment in the heart of Ponta Delgada — modern amenities with historic character. Within walking distance of the best restaurants, cafés, and historic landmarks.",
+    price:       "€60",
+    priceNote:   "3-night minimum stay",
+    heroImage:   "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=900&h=600&fit=crop",
+    highlights:  ["High-speed WiFi", "Air conditioning", "Full kitchen", "Smart TV"],
+    badge:       "Most popular",
+  },
+  {
+    name:        "Modern Urban Living",
+    slug:        "amorim",
+    tagline:     "Home · Ponta Delgada, Azores",
+    specs:       "2 bedrooms · 2 beds · 1 bath",
+    description: "Contemporary apartment with sleek design, full kitchen, and a private balcony with panoramic city views. Perfect for discerning travellers who appreciate quality and design.",
+    price:       "€75",
+    priceNote:   "2-night minimum stay",
+    heroImage:   "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900&h=600&fit=crop",
+    highlights:  ["Private balcony", "Air conditioning", "Full kitchen", "Smart TV"],
+    badge:       null,
+  },
+  {
+    name:        "Family Duplex",
+    slug:        "amorim-duplex",
+    tagline:     "Home · Ponta Delgada, Azores",
+    specs:       "3 bedrooms · 4 beds · 2 baths",
+    description: "Spacious two-level apartment for families and groups — three bedrooms, two bathrooms, and generous shared living areas ideal for multi-generational travel or friend groups.",
+    price:       "€95",
+    priceNote:   "2-night minimum · group discounts available",
+    heroImage:   "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&h=600&fit=crop",
+    highlights:  ["3 bedrooms", "2 bathrooms", "Large living room", "Outdoor space"],
+    badge:       "Best for groups",
+  },
+];
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout {title} {description}>
+
+  <!-- Page header -->
+  <section style="background: var(--clr-bg-subtle); border-bottom: 1px solid var(--clr-border-light);">
+    <div class="page-wrap" style="padding-block: 3.5rem 3rem;">
+      <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--clr-text-2); margin-bottom:0.75rem;">Our properties</p>
+      <h1 style="max-width:560px; margin-bottom:1rem;">Three curated apartments in Ponta Delgada</h1>
+      <p style="font-size:1rem; max-width:540px; line-height:1.7;">
+        Every apartment is hand-picked, thoughtfully furnished, and hosted with genuine care. Book direct for the best rate guaranteed.
+      </p>
+    </div>
+  </section>
+
+  <!-- Property listings -->
+  <section>
+    <div class="page-wrap" style="padding-block: 3.5rem;">
+      <div class="property-list">
+        {properties.map(p => (
+          <article class="property-card">
+            <!-- Image -->
+            <a href={`${base}/${p.slug}`} class="property-img-wrap" tabindex="-1" aria-hidden="true">
+              <img
+                src={p.heroImage}
+                alt={p.name + " – Ramalho Apartments"}
+                width="900" height="600"
+                loading="lazy"
+                class="property-img"
+              />
+              {p.badge && (
+                <span class="property-badge">{p.badge}</span>
+              )}
+            </a>
+
+            <!-- Details -->
+            <div class="property-details">
+              <div class="property-details-inner">
+                <div>
+                  <p class="property-tagline">{p.tagline}</p>
+                  <h2 class="property-name">
+                    <a href={`${base}/${p.slug}`} class="property-name-link">{p.name}</a>
+                  </h2>
+                  <p class="property-specs">{p.specs}</p>
+                  <p class="property-desc">{p.description}</p>
+
+                  <!-- Highlights -->
+                  <ul class="property-highlights" aria-label="Key amenities">
+                    {p.highlights.map(h => (
+                      <li class="property-highlight-chip">{h}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <!-- Price + CTAs -->
+                <div class="property-cta">
+                  <div class="property-price-block">
+                    <span class="property-price">{p.price}</span>
+                    <span class="property-price-unit"> / night</span>
+                    <p class="property-price-note">{p.priceNote}</p>
+                  </div>
+                  <div class="property-cta-buttons">
+                    <a href={`${base}/${p.slug}`} class="btn btn-dark">
+                      View property
+                    </a>
+                    <a
+                      href={`https://wa.me/351911031847?text=${encodeURIComponent("Hi! I'd like to check availability for the " + p.name + ".")}`}
+                      target="_blank" rel="noopener noreferrer"
+                      class="btn btn-whatsapp"
+                    >
+                      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.18-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
+                      </svg>
+                      Book via WhatsApp
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom CTA -->
+  <section style="border-top: 1px solid var(--clr-border-light); background: var(--clr-bg-subtle);">
+    <div class="page-wrap" style="padding-block: 3rem; text-align: center;">
+      <h2 style="font-size:1.3rem; margin-bottom:0.75rem;">Not sure which apartment is right for you?</h2>
+      <p style="font-size:0.9rem; color:var(--clr-text-2); max-width:420px; margin-inline:auto; line-height:1.7; margin-bottom:1.75rem;">
+        Message us on WhatsApp and we'll help you find the perfect fit for your group, dates, and budget.
+      </p>
+      <a
+        href="https://wa.me/351911031847?text=Hi! I'd like some help choosing the right apartment."
+        target="_blank" rel="noopener noreferrer"
+        class="btn btn-whatsapp btn-lg"
+      >
+        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.18-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
+        </svg>
+        Chat on WhatsApp
+      </a>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+/* ── Property list ───────────────────────────────────────── */
+.property-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* ── Property card ───────────────────────────────────────── */
+.property-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  border: 1px solid var(--clr-border-light);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--clr-bg);
+  transition: box-shadow 0.2s ease;
+}
+.property-card:hover { box-shadow: var(--shadow-card); }
+
+@media (min-width: 768px) {
+  .property-card { grid-template-columns: 380px 1fr; }
+}
+@media (min-width: 1024px) {
+  .property-card { grid-template-columns: 440px 1fr; }
+}
+
+/* ── Image ───────────────────────────────────────────────── */
+.property-img-wrap {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+}
+@media (min-width: 768px) { .property-img-wrap { aspect-ratio: unset; } }
+
+.property-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.property-card:hover .property-img { transform: scale(1.03); }
+
+.property-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: var(--clr-text);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  border-radius: 20px;
+}
+
+/* ── Details ─────────────────────────────────────────────── */
+.property-details {
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+}
+
+.property-details-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  height: 100%;
+}
+
+.property-tagline {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--clr-text-2);
+  margin-bottom: 0.4rem;
+}
+
+.property-name { font-size: 1.25rem; margin-bottom: 0.3rem; }
+.property-name-link {
+  color: var(--clr-text);
+  text-decoration: none;
+}
+.property-name-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.property-specs {
+  font-size: 0.82rem;
+  color: var(--clr-text-2);
+  margin-bottom: 0.875rem;
+}
+
+.property-desc {
+  font-size: 0.875rem;
+  line-height: 1.75;
+  color: var(--clr-text-2);
+  margin-bottom: 1.25rem;
+}
+
+/* ── Highlights ──────────────────────────────────────────── */
+.property-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.property-highlight-chip {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--clr-text-2);
+  background: var(--clr-bg-subtle);
+  border: 1px solid var(--clr-border-light);
+  border-radius: 20px;
+  padding: 0.25rem 0.75rem;
+}
+
+/* ── CTA block ───────────────────────────────────────────── */
+.property-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--clr-border-light);
+}
+
+@media (min-width: 480px) {
+  .property-cta {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.property-price-block { line-height: 1.2; }
+.property-price       { font-size: 1.25rem; font-weight: 700; color: var(--clr-text); }
+.property-price-unit  { font-size: 0.85rem; color: var(--clr-text-2); font-weight: 400; }
+.property-price-note  { font-size: 0.78rem; color: var(--clr-text-2); margin-top: 0.2rem; }
+
+.property-cta-buttons {
+  display: flex;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+</style>
