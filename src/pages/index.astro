@@ -1,9 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
 import PropertyCarousel from '../components/PropertyCarousel.astro';
 import ramalhoHero from '../assets/properties/ramalho/IMG_5767.jpeg';
 import amorimHero from '../assets/properties/amorim/Screenshot 2026-05-03 145515.png';
 import duplexHero from '../assets/properties/duplex/Screenshot 2026-05-03 145842.png';
+import heroImage from '../assets/images/header 2026-05-03_200655.jpg';
+import aboutImage from '../assets/images/Presentation1.png';
 
 const title = "Ramalho Apartments | Premium Short-Term Rentals in Ponta Delgada, Azores";
 const description = "Discover our curated collection of apartments in Ponta Delgada, Azores. Book directly for the best rates and personal service.";
@@ -13,7 +16,7 @@ const properties = [
     title:        "Ramalho Three Bedroom Apartment",
     image:        ramalhoHero,
     href:         "/ramalho",
-    price:        "€60",
+    price:        "€80",
     rating:       9.3,
     ratingScale:  10,
     ratingSource: "Booking.com",
@@ -26,7 +29,6 @@ const properties = [
     title:       "Amorim Two Bedroom Apartment",
     image:       amorimHero,
     href:        "/amorim",
-    price:       "€75",
     openingDate: "October 2026",
     bedrooms:    2,
     beds:        2,
@@ -36,7 +38,6 @@ const properties = [
     title:       "Amorim Two Bedroom Duplex",
     image:       duplexHero,
     href:        "/amorim-duplex",
-    price:       "€95",
     openingDate: "October 2026",
     bedrooms:    2,
     beds:        2,
@@ -49,9 +50,14 @@ const properties = [
 
   <!-- ── Hero ──────────────────────────────────────────── -->
   <section class="hero">
-    <div
+    <Image
+      src={heroImage}
+      alt=""
       class="hero-bg"
-      style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&h=1080&fit=crop')"
+      widths={[768, 1280, 1920]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
       aria-hidden="true"
     />
     <div class="hero-overlay" />
@@ -89,7 +95,7 @@ const properties = [
       <div class="value-strip">
         <div class="value-item">
           <span class="value-item-icon">⭐</span>
-          <span class="value-item-title">4.9 average rating</span>
+          <span class="value-item-title">9.3 average rating</span>
           <span class="value-item-desc">Across all properties and stays</span>
         </div>
         <div class="value-item">
@@ -124,7 +130,7 @@ const properties = [
           <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--clr-text-2); margin-bottom:0.75rem;">About us</p>
           <h2 style="max-width:440px; margin-bottom:1.25rem;">Genuine Azorean hospitality, no middlemen</h2>
           <p style="max-width:460px; line-height:1.7; margin-bottom:1.75rem;">
-            We're lifelong residents of Ponta Delgada who believe the best stays come from real connections. Book directly with us and get the best rate, flexible check-in, and the kind of local knowledge no algorithm can match.
+            We are longtime residents of Ponta Delgada who personally own and operate every property listed here. We believe the best stays come from real connections. Book directly with us and get the best rate, flexible check-in, and the kind of local knowledge no algorithm can match.
           </p>
           <div style="display:flex; flex-wrap:wrap; gap:0.75rem;">
             <a href="/about" class="btn btn-dark">Our story</a>
@@ -132,10 +138,11 @@ const properties = [
           </div>
         </div>
         <div style="overflow:hidden; border-radius: var(--radius-card);">
-          <img
-            src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&h=600&fit=crop"
-            alt="Ponta Delgada old town"
-            width="900" height="600"
+          <Image
+            src={aboutImage}
+            alt="Our apartments in Ponta Delgada"
+            widths={[600, 900]}
+            sizes="(min-width: 1024px) 50vw, 100vw"
             loading="lazy"
             style="width:100%; height:340px; object-fit:cover; display:block;"
           />

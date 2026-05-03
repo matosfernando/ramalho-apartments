@@ -15,36 +15,37 @@ const properties = [
     slug:        "ramalho",
     tagline:     "Rua Rodrigo Rodrigues nº4 · Ponta Delgada, Azores",
     specs:       "3 bedrooms · 3 beds · 2 baths · up to 6 guests",
-    description: "Spacious three-bedroom apartment in the heart of Ponta Delgada, sleeping up to 6 guests. Steps from the city's best restaurants, cafés, and historic landmarks.",
-    price:       "€60",
+    description: "Spacious three-bedroom apartment, sleeping up to 6 guests. Just a short drive or walk to the city's best restaurants, cafés, and historic landmarks.",
+    price:       "€80",
     priceNote:   "2-night minimum stay",
     heroImage:   ramalhoHero as ImageMetadata | string,
     highlights:  ["High-speed WiFi", "Full kitchen", "Smart TV", "3 bedrooms"],
     badge:       "Most popular",
+    openingSoon: false,
   },
   {
     name:        "Amorim Two Bedroom Apartment",
     slug:        "amorim",
     tagline:     "Rua do Amorim 15 · Ponta Delgada, Azores",
     specs:       "2 bedrooms · 2 beds · 1 bath · up to 6 guests",
-    description: "Contemporary two-bedroom apartment with sleek interiors, a private balcony, and space for up to 6 guests. A relaxed, stylish base minutes from the city centre.",
-    price:       "€75",
-    priceNote:   "2-night minimum stay",
+    description: "Contemporary two-bedroom apartment with sleek interiors, a private patio and space for up to 6 guests. A relaxed, stylish base minutes from the city centre.",
     heroImage:   amorimHero as ImageMetadata | string,
-    highlights:  ["Private balcony", "Air conditioning", "Full kitchen", "Smart TV"],
+    highlights:  ["Private patio", "Air conditioning", "Full kitchen", "Smart TV"],
     badge:       null,
+    openingSoon: true,
+    openingDate: "October 2026",
   },
   {
     name:        "Amorim Two Bedroom Duplex",
     slug:        "amorim-duplex",
     tagline:     "Rua do Amorim 15 · Ponta Delgada, Azores",
     specs:       "2 bedrooms · 2 beds · 2 baths · up to 6 guests",
-    description: "Split-level two-bedroom duplex with two bathrooms and generous shared living areas — ideal for groups or families of up to 6 wanting extra space and privacy.",
-    price:       "€95",
-    priceNote:   "2-night minimum stay",
+    description: "Split-level two-bedroom duplex with two bathrooms, generous shared living areas and private terrace and balcony. Ideal for groups or families of up to 6 wanting extra space and privacy.",
     heroImage:   duplexHero as ImageMetadata | string,
-    highlights:  ["2 bedrooms", "2 bathrooms", "Large living room", "Outdoor space"],
+    highlights:  ["Air conditioning", "2 bathrooms", "Large living room", "Outdoor space"],
     badge:       "Best for groups",
+    openingSoon: true,
+    openingDate: "October 2026",
   },
 ];
 
@@ -114,26 +115,53 @@ const properties = [
 
                 <!-- Price + CTAs -->
                 <div class="property-cta">
-                  <div class="property-price-block">
-                    <span class="property-price">{p.price}</span>
-                    <span class="property-price-unit"> / night</span>
-                    <p class="property-price-note">{p.priceNote}</p>
-                  </div>
-                  <div class="property-cta-buttons">
-                    <a href={`/${p.slug}`} class="btn btn-dark">
-                      View property
-                    </a>
-                    <a
-                      href={`https://wa.me/351911031847?text=${encodeURIComponent("Hi! I'd like to check availability for the " + p.name + ".")}`}
-                      target="_blank" rel="noopener noreferrer"
-                      class="btn btn-whatsapp"
-                    >
-                      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.18-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
-                      </svg>
-                      Book via WhatsApp
-                    </a>
-                  </div>
+                  {p.openingSoon ? (
+                    <div class="opening-soon-cta">
+                      <div class="opening-soon-label">
+                        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        Opening {p.openingDate}
+                      </div>
+                      <div class="property-cta-buttons">
+                        <a href={`/${p.slug}`} class="btn btn-outline">
+                          View property
+                        </a>
+                        <a
+                          href={`mailto:ramalhoapartments@gmail.com?subject=${encodeURIComponent("Notify me – " + p.name)}&body=${encodeURIComponent("Hi,\n\nPlease notify me when " + p.name + " opens for bookings.\n\nName:\nEmail:\n\nThanks!")}`}
+                          class="btn btn-notify"
+                        >
+                          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                          </svg>
+                          Get notified
+                        </a>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div class="property-price-block">
+                        <span class="property-price-from">From </span><span class="property-price">{p.price}</span>
+                        <span class="property-price-unit"> / night</span>
+                        <p class="property-price-note">{p.priceNote}</p>
+                      </div>
+                      <div class="property-cta-buttons">
+                        <a href={`/${p.slug}`} class="btn btn-dark">
+                          View property
+                        </a>
+                        <a
+                          href={`https://wa.me/351911031847?text=${encodeURIComponent("Hi! I'd like to check availability for the " + p.name + ".")}`}
+                          target="_blank" rel="noopener noreferrer"
+                          class="btn btn-whatsapp"
+                        >
+                          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.176l-.312.156-.323-.066A9.233 9.233 0 002.73 9.645c-.017.24.06.486.245.683 1.193 1.37 2.845 2.887 4.918 3.921.48.223 1.011.419 1.574.585l.324.082-.088.324c-.247.923-.697 1.785-1.292 2.498-.297.387.104.893.562.893.224 0 .441-.089.618-.25 1.27-1.241 2.255-2.956 2.605-4.764l.067-.319.315.1c2.017.602 3.918 2.003 5.37 3.976.203.256.506.398.831.398.265 0 .518-.098.72-.298l.263-.258c.136-.132.23-.311.271-.502.115-.614.054-1.267-.18-1.922-.403-.994-1.258-1.837-2.22-2.381-1.06-.534-2.146-.75-3.218-.75h-.006z"/>
+                          </svg>
+                          Book via WhatsApp
+                        </a>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -306,9 +334,66 @@ const properties = [
 }
 
 .property-price-block { line-height: 1.2; }
+.property-price-from  { font-size: 0.85rem; color: var(--clr-text-2); font-weight: 400; }
 .property-price       { font-size: 1.25rem; font-weight: 700; color: var(--clr-text); }
 .property-price-unit  { font-size: 0.85rem; color: var(--clr-text-2); font-weight: 400; }
 .property-price-note  { font-size: 0.78rem; color: var(--clr-text-2); margin-top: 0.2rem; }
+
+/* Opening soon CTA */
+.opening-soon-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 480px) {
+  .opening-soon-cta {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.opening-soon-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--clr-text-2);
+  background: var(--clr-bg-subtle);
+  border: 1px solid var(--clr-border-light);
+  border-radius: 20px;
+  padding: 0.35rem 0.85rem;
+  white-space: nowrap;
+}
+
+/* Get notified button */
+.btn-notify {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: var(--radius-btn, 8px);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+  background: #1a1a2e;
+  color: #fff;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+}
+.btn-notify:hover {
+  background: #16213e;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.22);
+}
+.btn-notify:focus-visible {
+  outline: 2px solid var(--clr-text);
+  outline-offset: 2px;
+}
 
 .property-cta-buttons {
   display: flex;

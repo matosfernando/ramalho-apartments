@@ -104,48 +104,60 @@ const { properties, title = "Homes our guests love" } = Astro.props as Props;
               <p class="prop-name">{p.title}</p>
             </a>
 
-            <p class="prop-meta">
-              {/* Price */}
-              {p.price && (
-                <>
-                  <span class="prop-price">From {p.price}</span>
-                  <span class="prop-meta-dim">&thinsp;/ night</span>
-                </>
-              )}
-
-              {/* Separator */}
-              {p.price && (p.rating != null || p.openingDate) && (
-                <span class="prop-dot">&nbsp;·&nbsp;</span>
-              )}
-
-              {/* Booking.com 10-point score */}
-              {p.rating != null && p.ratingScale === 10 ? (
-                <a
-                  href={p.ratingUrl ?? '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="rating-ext-link"
-                  aria-label={`${p.rating.toFixed(1)} out of 10 on ${p.ratingSource} – opens in new tab`}
-                >
-                  <span class="score-badge">{p.rating.toFixed(1)}</span>
-                  <span class="rating-src">&thinsp;· {p.ratingSource}</span>
-                </a>
-
-              /* Standard 5-point star rating */
-              ) : p.rating != null ? (
-                <>
-                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                  </svg>
-                  <span class="rating-val">{p.rating.toFixed(1)}</span>
-                  {p.ratingSource && <span class="rating-src">&thinsp;· {p.ratingSource}</span>}
-                </>
-
-              /* Opening date placeholder */
-              ) : p.openingDate ? (
+            {p.openingDate ? (
+              <div class="prop-notify-row">
                 <span class="opening-label">Opening {p.openingDate}</span>
-              ) : null}
-            </p>
+                <a
+                  href={`mailto:ramalhoapartments@gmail.com?subject=${encodeURIComponent("Notify me – " + p.title)}&body=${encodeURIComponent("Hi,\n\nPlease notify me when " + p.title + " opens for bookings.\n\nName:\nEmail:\n\nThanks!")}`}
+                  class="prop-notify-btn"
+                  aria-label={`Get notified when ${p.title} opens`}
+                >
+                  <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                  </svg>
+                  Get notified
+                </a>
+              </div>
+            ) : (
+              <p class="prop-meta">
+                {/* Price */}
+                {p.price && (
+                  <>
+                    <span class="prop-price">From {p.price}</span>
+                    <span class="prop-meta-dim">&thinsp;/ night</span>
+                  </>
+                )}
+
+                {/* Separator */}
+                {p.price && p.rating != null && (
+                  <span class="prop-dot">&nbsp;·&nbsp;</span>
+                )}
+
+                {/* Booking.com 10-point score */}
+                {p.rating != null && p.ratingScale === 10 ? (
+                  <a
+                    href={p.ratingUrl ?? '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="rating-ext-link"
+                    aria-label={`${p.rating.toFixed(1)} out of 10 on ${p.ratingSource} – opens in new tab`}
+                  >
+                    <span class="score-badge">{p.rating.toFixed(1)}</span>
+                    <span class="rating-src">&thinsp;· {p.ratingSource}</span>
+                  </a>
+
+                /* Standard 5-point star rating */
+                ) : p.rating != null ? (
+                  <>
+                    <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                    <span class="rating-val">{p.rating.toFixed(1)}</span>
+                    {p.ratingSource && <span class="rating-src">&thinsp;· {p.ratingSource}</span>}
+                  </>
+                ) : null}
+              </p>
+            )}
 
             {(p.bedrooms || p.beds || p.baths) && (
               <p class="prop-amenities">
@@ -257,6 +269,40 @@ const { properties, title = "Homes our guests love" } = Astro.props as Props;
 
 /* Opening date label */
 .opening-label { font-size: 0.78rem; color: var(--clr-text-2); font-style: italic; }
+
+/* Notify row */
+.prop-notify-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.15rem;
+}
+
+.prop-notify-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 20px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+  background: #1a1a2e;
+  color: #fff;
+  border: none;
+  white-space: nowrap;
+}
+.prop-notify-btn:hover {
+  background: #16213e;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+.prop-notify-btn:focus-visible {
+  outline: 2px solid var(--clr-text);
+  outline-offset: 2px;
+}
 </style>
 
 <script>

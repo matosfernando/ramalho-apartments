@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import storyImage from '../assets/images/pexels-ihor-lypnytskyi-117692765-17162633.jpg';
 
 const title = "About – Ramalho Apartments";
 const description = "Learn about Ramalho Apartments and get in touch with our team in Ponta Delgada, Azores.";
@@ -26,17 +28,19 @@ const description = "Learn about Ramalho Apartments and get in touch with our te
           <h2 style="font-size:1.3rem; margin-bottom:1.5rem;">Our story</h2>
           <div class="story-body">
             <p>Ramalho Apartments was born from a simple idea: to share the beauty and warmth of Ponta Delgada with travelers who seek authentic experiences over impersonal transactions.</p>
-            <p>As lifelong residents, we saw countless visitors searching for real connections to local culture, honest recommendations, and genuine hospitality — and finding only corporate, disconnected options.</p>
-            <p>So we carefully selected three apartments in the heart of the city, each with its own character but all sharing one thing: they're places where we'd be happy hosting friends and family.</p>
-            <p>Today, Ramalho Apartments is a gateway to genuine Azorean hospitality. When you stay with us, you get insider tips, local recommendations, and personal service from people who truly know and love this place.</p>
+            <p>As longtime residents and hands-on hosts, we saw countless visitors searching for real connections to local culture, honest recommendations, and genuine hospitality — and finding only corporate, disconnected options.</p>
+            <p>So we carefully chose to operate three properties in the heart of the city, each with its own character but all sharing one thing: they're places where we'd be happy hosting friends and family.</p>
+            <p>Today, Ramalho Apartments is a gateway to genuine Azorean hospitality. Every property is owned and managed by us directly — no middlemen, no surprises. When you stay with us, you get insider tips, local recommendations, and personal service from people who truly know and love this place.</p>
           </div>
         </div>
         <div>
-          <img
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&h=700&fit=crop"
-            alt="Beautiful apartment interior in Ponta Delgada"
-            width="900" height="700" loading="lazy"
-            style="width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:var(--radius-card);"
+          <Image
+            src={storyImage}
+            alt="Ponta Delgada cityscape and our apartments"
+            widths={[600, 900]}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            loading="lazy"
+            style="width:100%; height:auto; display:block; border-radius:var(--radius-card);"
           />
         </div>
       </div>
