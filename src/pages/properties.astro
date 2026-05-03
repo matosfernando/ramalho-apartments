@@ -1,49 +1,53 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import ramalhoHero from '../assets/properties/ramalho/IMG_5767.jpeg';
+import amorimHero from '../assets/properties/amorim/Screenshot 2026-05-03 145515.png';
+import duplexHero from '../assets/properties/duplex/Screenshot 2026-05-03 145842.png';
 
 const title       = "Our Properties – Ramalho Apartments";
 const description = "Browse our three curated apartments in Ponta Delgada, Azores. Book direct for the best rate guaranteed.";
 
 const properties = [
   {
-    name:        "Classic City Stay",
+    name:        "Ramalho Three Bedroom Apartment",
     slug:        "ramalho",
-    tagline:     "Home · Ponta Delgada, Azores",
-    specs:       "1 bedroom · 1 bed · 1 bath",
-    description: "Charming apartment in the heart of Ponta Delgada — modern amenities with historic character. Within walking distance of the best restaurants, cafés, and historic landmarks.",
+    tagline:     "Rua Rodrigo Rodrigues nº4 · Ponta Delgada, Azores",
+    specs:       "3 bedrooms · 3 beds · 2 baths · up to 6 guests",
+    description: "Spacious three-bedroom apartment in the heart of Ponta Delgada, sleeping up to 6 guests. Steps from the city's best restaurants, cafés, and historic landmarks.",
     price:       "€60",
-    priceNote:   "3-night minimum stay",
-    heroImage:   "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=900&h=600&fit=crop",
-    highlights:  ["High-speed WiFi", "Air conditioning", "Full kitchen", "Smart TV"],
+    priceNote:   "2-night minimum stay",
+    heroImage:   ramalhoHero as ImageMetadata | string,
+    highlights:  ["High-speed WiFi", "Full kitchen", "Smart TV", "3 bedrooms"],
     badge:       "Most popular",
   },
   {
-    name:        "Modern Urban Living",
+    name:        "Amorim Two Bedroom Apartment",
     slug:        "amorim",
-    tagline:     "Home · Ponta Delgada, Azores",
-    specs:       "2 bedrooms · 2 beds · 1 bath",
-    description: "Contemporary apartment with sleek design, full kitchen, and a private balcony with panoramic city views. Perfect for discerning travellers who appreciate quality and design.",
+    tagline:     "Rua do Amorim 15 · Ponta Delgada, Azores",
+    specs:       "2 bedrooms · 2 beds · 1 bath · up to 6 guests",
+    description: "Contemporary two-bedroom apartment with sleek interiors, a private balcony, and space for up to 6 guests. A relaxed, stylish base minutes from the city centre.",
     price:       "€75",
     priceNote:   "2-night minimum stay",
-    heroImage:   "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900&h=600&fit=crop",
+    heroImage:   amorimHero as ImageMetadata | string,
     highlights:  ["Private balcony", "Air conditioning", "Full kitchen", "Smart TV"],
     badge:       null,
   },
   {
-    name:        "Family Duplex",
+    name:        "Amorim Two Bedroom Duplex",
     slug:        "amorim-duplex",
-    tagline:     "Home · Ponta Delgada, Azores",
-    specs:       "3 bedrooms · 4 beds · 2 baths",
-    description: "Spacious two-level apartment for families and groups — three bedrooms, two bathrooms, and generous shared living areas ideal for multi-generational travel or friend groups.",
+    tagline:     "Rua do Amorim 15 · Ponta Delgada, Azores",
+    specs:       "2 bedrooms · 2 beds · 2 baths · up to 6 guests",
+    description: "Split-level two-bedroom duplex with two bathrooms and generous shared living areas — ideal for groups or families of up to 6 wanting extra space and privacy.",
     price:       "€95",
-    priceNote:   "2-night minimum · group discounts available",
-    heroImage:   "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&h=600&fit=crop",
-    highlights:  ["3 bedrooms", "2 bathrooms", "Large living room", "Outdoor space"],
+    priceNote:   "2-night minimum stay",
+    heroImage:   duplexHero as ImageMetadata | string,
+    highlights:  ["2 bedrooms", "2 bathrooms", "Large living room", "Outdoor space"],
     badge:       "Best for groups",
   },
 ];
 
-const base = import.meta.env.BASE_URL;
 ---
 
 <Layout {title} {description}>
@@ -66,14 +70,24 @@ const base = import.meta.env.BASE_URL;
         {properties.map(p => (
           <article class="property-card">
             <!-- Image -->
-            <a href={`${base}/${p.slug}`} class="property-img-wrap" tabindex="-1" aria-hidden="true">
-              <img
-                src={p.heroImage}
-                alt={p.name + " – Ramalho Apartments"}
-                width="900" height="600"
-                loading="lazy"
-                class="property-img"
-              />
+            <a href={`/${p.slug}`} class="property-img-wrap" tabindex="-1" aria-hidden="true">
+              {typeof p.heroImage === 'object' ? (
+                <Image
+                  src={p.heroImage as ImageMetadata}
+                  alt={p.name + " – Ramalho Apartments"}
+                  width={900} height={600}
+                  loading="lazy"
+                  class="property-img"
+                />
+              ) : (
+                <img
+                  src={p.heroImage}
+                  alt={p.name + " – Ramalho Apartments"}
+                  width="900" height="600"
+                  loading="lazy"
+                  class="property-img"
+                />
+              )}
               {p.badge && (
                 <span class="property-badge">{p.badge}</span>
               )}
@@ -85,7 +99,7 @@ const base = import.meta.env.BASE_URL;
                 <div>
                   <p class="property-tagline">{p.tagline}</p>
                   <h2 class="property-name">
-                    <a href={`${base}/${p.slug}`} class="property-name-link">{p.name}</a>
+                    <a href={`/${p.slug}`} class="property-name-link">{p.name}</a>
                   </h2>
                   <p class="property-specs">{p.specs}</p>
                   <p class="property-desc">{p.description}</p>
@@ -106,7 +120,7 @@ const base = import.meta.env.BASE_URL;
                     <p class="property-price-note">{p.priceNote}</p>
                   </div>
                   <div class="property-cta-buttons">
-                    <a href={`${base}/${p.slug}`} class="btn btn-dark">
+                    <a href={`/${p.slug}`} class="btn btn-dark">
                       View property
                     </a>
                     <a

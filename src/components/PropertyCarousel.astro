@@ -1,16 +1,20 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface Property {
-  title: string;
-  subtitle?: string;
-  image: string;
-  href: string;
-  price: string;
-  nights?: number;
-  rating?: number;
-  isNew?: boolean;
-  bedrooms?: number;
-  beds?: number;
-  baths?: number;
+  title:        string;
+  image:        ImageMetadata | string;
+  href:         string;
+  price?:       string;
+  rating?:      number;
+  ratingSource?: string;
+  ratingUrl?:   string;
+  ratingScale?: number;   // 10 = Booking.com scale, else star scale
+  openingDate?: string;   // "October 2026" — replaces rating row when set
+  bedrooms?:    number;
+  beds?:        number;
+  baths?:       number;
 }
 
 interface Props {
@@ -45,15 +49,26 @@ const { properties, title = "Homes our guests love" } = Astro.props as Props;
     <div class="scroll-track cards-track" role="list">
       {properties.map((p, i) => (
         <article class="prop-card" role="listitem">
+
           <!-- Image -->
           <a href={p.href} class="prop-img prop-card-img" aria-label={`View ${p.title}`} tabindex="0">
-            <img
-              src={p.image}
-              alt={p.title}
-              loading={i < 3 ? "eager" : "lazy"}
-              width="480"
-              height="360"
-            />
+            {typeof p.image === 'object' ? (
+              <Image
+                src={p.image as ImageMetadata}
+                alt={p.title}
+                loading={i < 3 ? "eager" : "lazy"}
+                width={480}
+                height={360}
+              />
+            ) : (
+              <img
+                src={p.image}
+                alt={p.title}
+                loading={i < 3 ? "eager" : "lazy"}
+                width="480"
+                height="360"
+              />
+            )}
             <!-- Wishlist -->
             <button
               type="button"
@@ -77,25 +92,61 @@ const { properties, title = "Homes our guests love" } = Astro.props as Props;
               <span class="card-dot"></span>
               <span class="card-dot"></span>
             </div>
+            <!-- Coming-soon badge -->
+            {p.openingDate && (
+              <span class="coming-soon-badge">Opening {p.openingDate}</span>
+            )}
           </a>
 
-          <!-- Info -->
-          <a href={p.href} class="prop-card-info">
-            {p.subtitle && <p class="prop-location">{p.subtitle}</p>}
-            <p class="prop-name">{p.title}</p>
+          <!-- Info — div so the rating <a> is a valid standalone link -->
+          <div class="prop-card-info">
+            <a href={p.href} class="prop-name-link">
+              <p class="prop-name">{p.title}</p>
+            </a>
+
             <p class="prop-meta">
-              <span class="prop-price">{p.price}</span>
-              {p.nights && <span class="prop-meta-dim"> for {p.nights} nights</span>}
-              {p.rating != null && (
+              {/* Price */}
+              {p.price && (
                 <>
-                  <span class="prop-dot">·</span>
-                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" style="color:#222;">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                  </svg>
-                  <span style="font-weight:500; color:var(--clr-text);">{p.isNew ? " New" : ` ${p.rating.toFixed(1)}`}</span>
+                  <span class="prop-price">From {p.price}</span>
+                  <span class="prop-meta-dim">&thinsp;/ night</span>
                 </>
               )}
+
+              {/* Separator */}
+              {p.price && (p.rating != null || p.openingDate) && (
+                <span class="prop-dot">&nbsp;·&nbsp;</span>
+              )}
+
+              {/* Booking.com 10-point score */}
+              {p.rating != null && p.ratingScale === 10 ? (
+                <a
+                  href={p.ratingUrl ?? '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="rating-ext-link"
+                  aria-label={`${p.rating.toFixed(1)} out of 10 on ${p.ratingSource} – opens in new tab`}
+                >
+                  <span class="score-badge">{p.rating.toFixed(1)}</span>
+                  <span class="rating-src">&thinsp;· {p.ratingSource}</span>
+                </a>
+
+              /* Standard 5-point star rating */
+              ) : p.rating != null ? (
+                <>
+                  <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                  </svg>
+                  <span class="rating-val">{p.rating.toFixed(1)}</span>
+                  {p.ratingSource && <span class="rating-src">&thinsp;· {p.ratingSource}</span>}
+                </>
+
+              /* Opening date placeholder */
+              ) : p.openingDate ? (
+                <span class="opening-label">Opening {p.openingDate}</span>
+              ) : null}
             </p>
+
             {(p.bedrooms || p.beds || p.baths) && (
               <p class="prop-amenities">
                 {[
@@ -105,7 +156,8 @@ const { properties, title = "Homes our guests love" } = Astro.props as Props;
                 ].filter(Boolean).join(" · ")}
               </p>
             )}
-          </a>
+          </div>
+
         </article>
       ))}
     </div>
@@ -121,20 +173,11 @@ const { properties, title = "Homes our guests love" } = Astro.props as Props;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
-.carousel-arrows {
-  display: none;
-  gap: 0.4rem;
-}
+.carousel-arrows { display: none; gap: 0.4rem; }
 @media (min-width: 768px) { .carousel-arrows { display: flex; } }
 
-.cards-track {
-  display: flex;
-  gap: 1.25rem;
-  padding-bottom: 0.5rem;
-}
-@media (min-width: 768px) {
-  .cards-track { gap: 1.5rem; }
-}
+.cards-track { display: flex; gap: 1.25rem; padding-bottom: 0.5rem; }
+@media (min-width: 768px) { .cards-track { gap: 1.5rem; } }
 
 .prop-card {
   flex-shrink: 0;
@@ -144,15 +187,17 @@ const { properties, title = "Homes our guests love" } = Astro.props as Props;
 @media (min-width: 1024px) { .prop-card { width: calc(33.333% - 1rem); } }
 @media (min-width: 1280px) { .prop-card { width: calc(25% - 1.125rem); } }
 
+/* Image link */
 .prop-card-img {
   display: block;
   text-decoration: none;
   cursor: pointer;
   margin-bottom: 0.75rem;
+  position: relative;
 }
 .prop-card-img:focus-visible { outline: 2px solid var(--clr-text); outline-offset: 3px; border-radius: var(--radius-card); }
 
-/* Dots */
+/* Dot indicators */
 .card-dots {
   position: absolute;
   bottom: 0.75rem;
@@ -161,26 +206,57 @@ const { properties, title = "Homes our guests love" } = Astro.props as Props;
   display: flex;
   gap: 4px;
 }
-.card-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.55);
-}
+.card-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.55); }
 .card-dot.active { background: #fff; width: 20px; border-radius: 3px; }
 
-/* Info below image */
-.prop-card-info {
-  display: block;
-  text-decoration: none;
-  padding: 0 0.125rem;
+/* Coming-soon badge */
+.coming-soon-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: rgba(17,17,17,0.82);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  pointer-events: none;
 }
-.prop-location  { font-size: 0.78rem; color: var(--clr-text-2); margin-bottom: 0.2rem; }
-.prop-name      { font-size: 0.88rem; font-weight: 600; color: var(--clr-text); margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.prop-meta      { font-size: 0.82rem; color: var(--clr-text-2); display: flex; align-items: center; gap: 0.2rem; flex-wrap: wrap; margin-bottom: 0.15rem; }
+
+/* Info section */
+.prop-card-info { padding: 0 0.125rem; }
+
+.prop-name-link { display: block; text-decoration: none; color: inherit; margin-bottom: 0.2rem; }
+.prop-name-link:hover .prop-name { text-decoration: underline; text-underline-offset: 2px; }
+.prop-name { font-size: 0.88rem; font-weight: 600; color: var(--clr-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Meta row */
+.prop-meta      { font-size: 0.82rem; color: var(--clr-text-2); display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 0.15rem; }
 .prop-price     { font-weight: 600; color: var(--clr-text); }
 .prop-meta-dim  { color: var(--clr-text-2); }
-.prop-dot       { color: var(--clr-text-3); }
+.prop-dot       { color: var(--clr-text-2); }
 .prop-amenities { font-size: 0.8rem; color: var(--clr-text-2); }
+
+/* Star rating */
+.star-icon { width: 12px; height: 12px; color: var(--clr-text); flex-shrink: 0; }
+.rating-val { font-weight: 500; color: var(--clr-text); }
+.rating-src { color: var(--clr-text-2); }
+
+/* External rating link (Booking.com etc.) */
+.rating-ext-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--clr-text-2);
+}
+.rating-ext-link:hover .rating-src { text-decoration: underline; text-underline-offset: 2px; }
+.score-badge { font-weight: 700; color: var(--clr-text); font-size: 0.82rem; }
+
+/* Opening date label */
+.opening-label { font-size: 0.78rem; color: var(--clr-text-2); font-style: italic; }
 </style>
 
 <script>

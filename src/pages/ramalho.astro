@@ -1,47 +1,60 @@
 ---
 import PropertyLayout from '../layouts/PropertyLayout.astro';
+import img5767 from '../assets/properties/ramalho/IMG_5767.jpeg';
+import img5757 from '../assets/properties/ramalho/IMG_5757.jpeg';
+import img5759 from '../assets/properties/ramalho/IMG_5759.jpeg';
+import img5762 from '../assets/properties/ramalho/IMG_5762.jpeg';
+import img5764 from '../assets/properties/ramalho/IMG_5764.jpeg';
+import img5783 from '../assets/properties/ramalho/IMG_5783.jpeg';
+import img5790 from '../assets/properties/ramalho/IMG_5790.jpeg';
+import img5791 from '../assets/properties/ramalho/IMG_5791.jpeg';
+import img5800 from '../assets/properties/ramalho/IMG_5800.jpeg';
+import img5809 from '../assets/properties/ramalho/IMG_5809.jpeg';
+import img5810 from '../assets/properties/ramalho/IMG_5810.jpeg';
+import img3023 from '../assets/properties/ramalho/IMG_3023 (1).JPG';
+import img3059 from '../assets/properties/ramalho/IMG_3059 (1).JPG';
+import img20190524 from '../assets/properties/ramalho/20190524_180411.jpg';
 
 const amenities = [
-  { name: "High-speed WiFi",      icon: "📶" },
-  { name: "Air conditioning",     icon: "❄️" },
-  { name: "Full kitchen",         icon: "🍽️" },
-  { name: "Smart TV",             icon: "📺" },
-  { name: "Washing machine",      icon: "🧺" },
-  { name: "Hair dryer",           icon: "💇" },
-  { name: "Microwave",            icon: "📦" },
-  { name: "Coffee machine",       icon: "☕" },
+  { name: "High-speed WiFi",  icon: "📶" },
+  { name: "Full kitchen",     icon: "🍽️" },
+  { name: "Smart TV",         icon: "📺" },
+  { name: "Washing machine",  icon: "🧺" },
+  { name: "Hair dryer",       icon: "💇" },
+  { name: "Microwave",        icon: "📦" },
+  { name: "Coffee machine",   icon: "☕" },
+  { name: "3 bedrooms",       icon: "🛌" },
 ];
 
 const galleryImages = [
-  "https://images.unsplash.com/photo-1540932239986-310128078ceb?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop",
+  img5757, img5759, img5762, img5764, img5783,
+  img5790, img5791, img5800, img5809, img5810,
+  img3023, img3059, img20190524,
 ];
 ---
 
 <PropertyLayout
-  title="Classic City Stay – Ramalho Apartments"
-  propertyName="Classic City Stay"
-  description="Charming apartment in the heart of Ponta Delgada — modern amenities with historic character."
-  heroImage="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200&h=800&fit=crop"
+  title="Ramalho Three Bedroom Apartment – Ramalho Apartments"
+  propertyName="Ramalho Three Bedroom Apartment"
+  description="Spacious three-bedroom apartment in the heart of Ponta Delgada — comfortably sleeping up to 6 guests."
+  heroImage={img5767}
   {galleryImages}
   {amenities}
   price="€60"
-  priceNote="3-night minimum stay"
-  waMessage="Hi! I'd like to check availability for the Classic City Stay."
-  mapEmbedUrl="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.216436308911!2d-25.663055!3d37.7412361!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xf2f3c8d8d8d8d8d%3A0x0!2sPonta%20Delgada!5e0!3m2!1sen!2spt!4v1234567890"
+  priceNote="2-night minimum stay"
+  waMessage="Hi! I'd like to check availability for the Ramalho Three Bedroom Apartment."
+  mapEmbedUrl="https://maps.google.com/maps?q=Rua+Rodrigo+Rodrigues+4%2C+Ponta+Delgada%2C+Azores&output=embed&z=17"
 >
   <div>
     <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--clr-text-2); margin-bottom:0.5rem;">Home · Ponta Delgada, Azores</p>
-    <p style="font-size:0.85rem; color:var(--clr-text-2); margin-bottom:1rem;">1 bedroom · 1 bed · 1 bath</p>
+    <p style="font-size:0.85rem; color:var(--clr-text-2); margin-bottom:1rem;">3 bedrooms · 3 beds · 2 baths · up to 6 guests</p>
     <hr class="divider" />
     <h2 style="font-size:1.1rem; margin-bottom:0.875rem;">About this place</h2>
     <p style="font-size:0.875rem; line-height:1.75; margin-bottom:0.875rem;">
-      The Classic City Stay is the perfect base for exploring Ponta Delgada. Sitting in the heart of the city centre, you're within walking distance of the best restaurants, cafés, and historic landmarks.
+      Located at <strong>Rua Rodrigo Rodrigues nº4</strong>, this spacious three-bedroom apartment offers a generous home-from-home experience right in the heart of Ponta Delgada, comfortably sleeping up to 6 guests. Ideal for families, groups of friends, or anyone who values extra space to spread out.
     </p>
     <p style="font-size:0.875rem; line-height:1.75;">
-      Period architecture meets modern comforts — the charm of the Azores with every contemporary convenience you need for a great stay.
+      Period architecture meets thoughtful modern touches — you're just steps from the city's best restaurants, cafés, and historic landmarks, with everything you need for a comfortable stay right at hand.
     </p>
   </div>
 </PropertyLayout>

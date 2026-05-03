@@ -126,19 +126,85 @@ const description = "Learn about Ramalho Apartments and get in touch with our te
 
       <!-- Map -->
       <div style="margin-top:3rem;">
-        <h2 style="font-size:1.1rem; margin-bottom:1rem;">Find us in Ponta Delgada</h2>
+        <h2 style="font-size:1.1rem; margin-bottom:0.375rem;">Find us in Ponta Delgada</h2>
+        <p style="font-size:0.82rem; color:var(--clr-text-2); margin-bottom:1rem;">Select a property to see its location.</p>
+
+        <!-- Location tab switcher -->
+        <div class="map-tabs" role="tablist" aria-label="Property locations">
+          <button class="map-tab map-tab--active" role="tab" aria-selected="true"  data-map="ramalho" data-info="info-ramalho">Ramalho Apartment</button>
+          <button class="map-tab"                 role="tab" aria-selected="false" data-map="amorim"  data-info="info-amorim" >Amorim Properties</button>
+        </div>
+
+        <!-- Google Maps iframe — src swapped by JS -->
         <div class="map-wrap" style="height:340px;">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.216436308911!2d-25.663055!3d37.7412361!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xf2f3c8d8d8d8d8d%3A0x0!2sPonta%20Delgada!5e0!3m2!1sen!2spt!4v1234567890"
+            id="about-map-iframe"
+            src="https://maps.google.com/maps?q=Rua+Rodrigo+Rodrigues+4%2C+Ponta+Delgada%2C+Azores&output=embed&z=17"
             width="100%" height="100%"
             style="border:0; display:block;"
             allowfullscreen=""
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            title="Ponta Delgada map"
-          />
+            title="Property location map"
+          ></iframe>
+        </div>
+
+        <!-- Info bar: Ramalho -->
+        <div id="info-ramalho" class="map-info-panel">
+          <div class="map-info-row">
+            <div>
+              <p class="map-info-name">Ramalho Three Bedroom Apartment</p>
+              <p class="map-info-addr">Rua Rodrigo Rodrigues nº4, Ponta Delgada</p>
+            </div>
+            <a href="/ramalho" class="btn btn-dark btn-sm">View property</a>
+          </div>
+        </div>
+
+        <!-- Info bar: Amorim (both properties) -->
+        <div id="info-amorim" class="map-info-panel" style="display:none;">
+          <div class="map-info-row">
+            <div>
+              <p class="map-info-name">Amorim Two Bedroom Apartment &amp; Duplex</p>
+              <p class="map-info-addr">Rua do Amorim 15, Ponta Delgada</p>
+            </div>
+            <div style="display:flex; gap:0.5rem; flex-shrink:0;">
+              <a href="/amorim"        class="btn btn-dark btn-sm">Apartment</a>
+              <a href="/amorim-duplex" class="btn btn-outline btn-sm">Duplex</a>
+            </div>
+          </div>
         </div>
       </div>
+
+      <script is:inline>
+        (function () {
+          var maps = {
+            ramalho: 'https://maps.google.com/maps?q=Rua+Rodrigo+Rodrigues+4%2C+Ponta+Delgada%2C+Azores&output=embed&z=17',
+            amorim:  'https://maps.google.com/maps?q=Rua+do+Amorim+15%2C+Ponta+Delgada%2C+Azores&output=embed&z=17'
+          };
+          var tabs   = document.querySelectorAll('.map-tab');
+          var iframe = document.getElementById('about-map-iframe');
+
+          tabs.forEach(function (tab) {
+            tab.addEventListener('click', function () {
+              var key  = this.dataset.map;
+              var info = this.dataset.info;
+
+              tabs.forEach(function (t) {
+                t.classList.remove('map-tab--active');
+                t.setAttribute('aria-selected', 'false');
+              });
+              this.classList.add('map-tab--active');
+              this.setAttribute('aria-selected', 'true');
+
+              iframe.src = maps[key];
+
+              document.getElementById('info-ramalho').style.display = 'none';
+              document.getElementById('info-amorim').style.display  = 'none';
+              document.getElementById(info).style.display = 'block';
+            });
+          });
+        })();
+      </script>
     </div>
   </section>
 
@@ -200,5 +266,59 @@ const description = "Learn about Ramalho Apartments and get in touch with our te
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+/* ── Map tab switcher ──────────────────────────────────── */
+.map-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+}
+
+.map-tab {
+  padding: 0.45rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid var(--clr-border-light);
+  border-radius: 20px;
+  background: var(--clr-bg);
+  color: var(--clr-text-2);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.map-tab:hover:not(.map-tab--active) {
+  border-color: var(--clr-border);
+  color: var(--clr-text);
+}
+.map-tab--active {
+  background: var(--clr-text);
+  color: #fff;
+  border-color: var(--clr-text);
+}
+
+/* ── Map info bar ──────────────────────────────────────── */
+.map-info-panel {
+  margin-top: 0.875rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--clr-border-light);
+  border-radius: var(--radius-card);
+  background: var(--clr-bg-subtle);
+}
+.map-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.map-info-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--clr-text);
+  margin-bottom: 0.2rem;
+}
+.map-info-addr {
+  font-size: 0.82rem;
+  color: var(--clr-text-2);
 }
 </style>

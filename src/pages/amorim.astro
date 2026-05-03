@@ -1,47 +1,46 @@
 ---
 import PropertyLayout from '../layouts/PropertyLayout.astro';
+import amorimHero from '../assets/properties/amorim/Screenshot 2026-05-03 145515.png';
+import amorim2 from '../assets/properties/amorim/Screenshot 2026-05-03 145557.png';
+import amorim3 from '../assets/properties/amorim/Screenshot 2026-05-03 145621.png';
+import amorim4 from '../assets/properties/amorim/Screenshot 2026-05-03 145655.png';
 
 const amenities = [
-  { name: "High-speed WiFi",    icon: "📶" },
-  { name: "Air conditioning",   icon: "❄️" },
-  { name: "Full kitchen",       icon: "🍽️" },
-  { name: "Smart TV",           icon: "📺" },
-  { name: "Washing machine",    icon: "🧺" },
-  { name: "Hair dryer",         icon: "💇" },
-  { name: "Private balcony",    icon: "🌅" },
-  { name: "Coffee machine",     icon: "☕" },
+  { name: "High-speed WiFi",  icon: "📶" },
+  { name: "Air conditioning", icon: "❄️" },
+  { name: "Full kitchen",     icon: "🍽️" },
+  { name: "Smart TV",         icon: "📺" },
+  { name: "Washing machine",  icon: "🧺" },
+  { name: "Hair dryer",       icon: "💇" },
+  { name: "Private balcony",  icon: "🌅" },
+  { name: "Coffee machine",   icon: "☕" },
 ];
 
-const galleryImages = [
-  "https://images.unsplash.com/photo-1540932239986-310128078ceb?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1578500494198-246f612d03b3?w=600&h=400&fit=crop",
-];
+const galleryImages = [amorim2, amorim3, amorim4];
 ---
 
 <PropertyLayout
-  title="Modern Urban Living – Ramalho Apartments"
-  propertyName="Modern Urban Living"
-  description="Contemporary apartment with sleek design, full kitchen, private balcony, and panoramic city views."
-  heroImage="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&h=800&fit=crop"
+  title="Amorim Two Bedroom Apartment – Ramalho Apartments"
+  propertyName="Amorim Two Bedroom Apartment"
+  description="Contemporary two-bedroom apartment on Rua do Amorim — stylish interiors, private balcony, and space for up to 6 guests."
+  heroImage={amorimHero}
   {galleryImages}
   {amenities}
   price="€75"
   priceNote="2-night minimum stay"
-  waMessage="Hi! I'd like to check availability for the Modern Urban Living apartment."
-  mapEmbedUrl="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.216436308911!2d-25.663055!3d37.7412361!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xf2f3c8d8d8d8d8d%3A0x0!2sPonta%20Delgada!5e0!3m2!1sen!2spt!4v1234567890"
+  waMessage="Hi! I'd like to check availability for the Amorim Two Bedroom Apartment."
+  mapEmbedUrl="https://maps.google.com/maps?q=Rua+do+Amorim+15%2C+Ponta+Delgada%2C+Azores&output=embed&z=17"
 >
   <div>
     <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--clr-text-2); margin-bottom:0.5rem;">Home · Ponta Delgada, Azores</p>
-    <p style="font-size:0.85rem; color:var(--clr-text-2); margin-bottom:1rem;">2 bedrooms · 2 beds · 1 bath</p>
+    <p style="font-size:0.85rem; color:var(--clr-text-2); margin-bottom:1rem;">2 bedrooms · 2 beds · 1 bath · up to 6 guests</p>
     <hr class="divider" />
     <h2 style="font-size:1.1rem; margin-bottom:0.875rem;">About this place</h2>
     <p style="font-size:0.875rem; line-height:1.75; margin-bottom:0.875rem;">
-      Experience modern living at its finest. This stylish apartment pairs contemporary design with premium finishes and a private balcony with sweeping city views — comfort meets sophistication.
+      Located at <strong>Rua do Amorim 15, Ponta Delgada</strong>, this bright and contemporary two-bedroom apartment is a relaxed, stylish base for up to 6 guests. Sleek interiors, a well-equipped full kitchen, and a private balcony make it easy to feel right at home between days exploring the Azores.
     </p>
     <p style="font-size:0.875rem; line-height:1.75;">
-      Perfect for discerning travelers who appreciate quality, design, and the vibrant energy of Ponta Delgada's neighbourhoods.
+      Perfectly positioned in a quiet residential street just minutes from the city centre — the ideal choice for friends or families looking for comfort with a genuine local feel.
     </p>
   </div>
 </PropertyLayout>

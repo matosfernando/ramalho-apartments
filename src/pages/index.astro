@@ -1,48 +1,46 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PropertyCarousel from '../components/PropertyCarousel.astro';
-
-const base = import.meta.env.BASE_URL;
+import ramalhoHero from '../assets/properties/ramalho/IMG_5767.jpeg';
+import amorimHero from '../assets/properties/amorim/Screenshot 2026-05-03 145515.png';
+import duplexHero from '../assets/properties/duplex/Screenshot 2026-05-03 145842.png';
 
 const title = "Ramalho Apartments | Premium Short-Term Rentals in Ponta Delgada, Azores";
 const description = "Discover our curated collection of apartments in Ponta Delgada, Azores. Book directly for the best rates and personal service.";
 
 const properties = [
   {
-    title: "Classic City Stay",
-    subtitle: "Home in Ponta Delgada, Azores",
-    image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&h=600&fit=crop",
-    href: `${base}/ramalho`,
-    price: "€180",
-    nights: 3,
-    rating: 4.9,
-    bedrooms: 1,
-    beds: 1,
-    baths: 1,
+    title:        "Ramalho Three Bedroom Apartment",
+    image:        ramalhoHero,
+    href:         "/ramalho",
+    price:        "€60",
+    rating:       9.3,
+    ratingScale:  10,
+    ratingSource: "Booking.com",
+    ratingUrl:    "https://www.booking.com/hotel/pt/ramalho-apartments-t3-cidade-ponta-delgada.html",
+    bedrooms:     3,
+    beds:         3,
+    baths:        2,
   },
   {
-    title: "Modern Urban Living",
-    subtitle: "Home in Ponta Delgada, Azores",
-    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&h=600&fit=crop",
-    href: `${base}/amorim`,
-    price: "€150",
-    nights: 2,
-    rating: 5.0,
-    bedrooms: 2,
-    beds: 2,
-    baths: 1,
+    title:       "Amorim Two Bedroom Apartment",
+    image:       amorimHero,
+    href:        "/amorim",
+    price:       "€75",
+    openingDate: "October 2026",
+    bedrooms:    2,
+    beds:        2,
+    baths:       1,
   },
   {
-    title: "Family Duplex",
-    subtitle: "Home in Ponta Delgada, Azores",
-    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=600&fit=crop",
-    href: `${base}/amorim-duplex`,
-    price: "€190",
-    nights: 2,
-    rating: 4.8,
-    bedrooms: 3,
-    beds: 4,
-    baths: 2,
+    title:       "Amorim Two Bedroom Duplex",
+    image:       duplexHero,
+    href:        "/amorim-duplex",
+    price:       "€95",
+    openingDate: "October 2026",
+    bedrooms:    2,
+    beds:        2,
+    baths:       2,
   },
 ];
 ---
@@ -129,8 +127,8 @@ const properties = [
             We're lifelong residents of Ponta Delgada who believe the best stays come from real connections. Book directly with us and get the best rate, flexible check-in, and the kind of local knowledge no algorithm can match.
           </p>
           <div style="display:flex; flex-wrap:wrap; gap:0.75rem;">
-            <a href={`${base}/about`} class="btn btn-dark">Our story</a>
-            <a href={`${base}/guide`} class="btn btn-outline">Local guide</a>
+            <a href="/about" class="btn btn-dark">Our story</a>
+            <a href="/guide" class="btn btn-outline">Local guide</a>
           </div>
         </div>
         <div style="overflow:hidden; border-radius: var(--radius-card);">
