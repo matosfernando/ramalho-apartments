@@ -1,5 +1,6 @@
 ---
 import PropertyLayout from '../layouts/PropertyLayout.astro';
+import { propertyData } from '../i18n/properties';
 import img5767 from '../assets/properties/ramalho/IMG_5767.jpeg';
 import img5757 from '../assets/properties/ramalho/IMG_5757.jpeg';
 import img5759 from '../assets/properties/ramalho/IMG_5759.jpeg';
@@ -15,16 +16,8 @@ import img3023 from '../assets/properties/ramalho/IMG_3023 (1).JPG';
 import img3059 from '../assets/properties/ramalho/IMG_3059 (1).JPG';
 import img20190524 from '../assets/properties/ramalho/20190524_180411.jpg';
 
-const amenities = [
-  { name: "High-speed WiFi",  icon: "📶" },
-  { name: "Full kitchen",     icon: "🍽️" },
-  { name: "Smart TV",         icon: "📺" },
-  { name: "Washing machine",  icon: "🧺" },
-  { name: "Hair dryer",       icon: "💇" },
-  { name: "Microwave",        icon: "📦" },
-  { name: "Coffee machine",   icon: "☕" },
-  { name: "3 bedrooms",       icon: "🛌" },
-];
+const locale = 'en';
+const p = propertyData[locale].ramalho;
 
 const galleryImages = [
   img5757, img5759, img5762, img5764, img5783,
@@ -34,27 +27,27 @@ const galleryImages = [
 ---
 
 <PropertyLayout
-  title="Ramalho Three Bedroom Apartment – Ramalho Apartments"
-  propertyName="Ramalho Three Bedroom Apartment"
-  description="Spacious three-bedroom apartment in the heart of Ponta Delgada — comfortably sleeping up to 6 guests."
+  title={p.title}
+  propertyName={p.propertyName}
+  description={p.description}
   heroImage={img5767}
   {galleryImages}
-  {amenities}
-  price="€80"
-  priceNote="2-night minimum stay"
-  waMessage="Hi! I'd like to check availability for the Ramalho Three Bedroom Apartment."
+  amenities={[...p.amenities]}
+  price={p.price}
+  priceNote={p.priceNote}
+  waMessage={p.waMessage}
+  notifyWaMessage={p.notifyWaMessage}
+  notifyEmailSubject={p.notifyEmailSubject}
+  notifyEmailBody={p.notifyEmailBody}
   mapEmbedUrl="https://maps.google.com/maps?q=Rua+Rodrigo+Rodrigues+4%2C+Ponta+Delgada%2C+Azores&output=embed&z=17"
+  {locale}
 >
   <div>
-    <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--clr-text-2); margin-bottom:0.5rem;">Home · Ponta Delgada, Azores</p>
-    <p style="font-size:0.85rem; color:var(--clr-text-2); margin-bottom:1rem;">3 bedrooms · 3 beds · 2 baths · up to 6 guests</p>
+    <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--clr-text-2); margin-bottom:0.5rem;">{p.tagline}</p>
+    <p style="font-size:0.85rem; color:var(--clr-text-2); margin-bottom:1rem;" set:html={p.specs}></p>
     <hr class="divider" />
     <h2 style="font-size:1.1rem; margin-bottom:0.875rem;">About this place</h2>
-    <p style="font-size:0.875rem; line-height:1.75; margin-bottom:0.875rem;">
-      Located at <strong>Rua Rodrigo Rodrigues nº4</strong>, this spacious three-bedroom apartment offers a generous home-from-home experience right in the heart of Ponta Delgada, comfortably sleeping up to 6 guests. Ideal for families, groups of friends, or anyone who values extra space to spread out.
-    </p>
-    <p style="font-size:0.875rem; line-height:1.75;">
-      Contemporary architecture meets thoughtful modern touches — you're just minutes from the city's best restaurants, cafés, and historic landmarks, with everything you need for a comfortable stay right at hand.
-    </p>
+    <p style="font-size:0.875rem; line-height:1.75; margin-bottom:0.875rem;" set:html={p.about_p1}></p>
+    <p style="font-size:0.875rem; line-height:1.75;" set:html={p.about_p2}></p>
   </div>
 </PropertyLayout>

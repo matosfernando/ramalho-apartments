@@ -1,10 +1,10 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
 import { Image } from 'astro:assets';
-import { useTranslations } from '../i18n/utils';
-import storyImage from '../assets/images/pexels-ihor-lypnytskyi-117692765-17162633.jpg';
+import { useTranslations } from '../../i18n/utils';
+import storyImage from '../../assets/images/pexels-ihor-lypnytskyi-117692765-17162633.jpg';
 
-const locale = 'en';
+const locale = 'pt';
 const t = useTranslations(locale);
 
 const title = t('about.title');
@@ -137,13 +137,11 @@ const description = t('about.description');
         <h2 style="font-size:1.1rem; margin-bottom:0.375rem;">{t('about.map_h2')}</h2>
         <p style="font-size:0.82rem; color:var(--clr-text-2); margin-bottom:1rem;">{t('about.map_subtext')}</p>
 
-        <!-- Location tab switcher -->
-        <div class="map-tabs" role="tablist" aria-label="Property locations">
+        <div class="map-tabs" role="tablist" aria-label="Localizações das propriedades">
           <button class="map-tab map-tab--active" role="tab" aria-selected="true"  data-map="ramalho" data-info="info-ramalho">{t('about.map_tab_ramalho')}</button>
           <button class="map-tab"                 role="tab" aria-selected="false" data-map="amorim"  data-info="info-amorim" >{t('about.map_tab_amorim')}</button>
         </div>
 
-        <!-- Google Maps iframe — src swapped by JS -->
         <div class="map-wrap" style="height:340px;">
           <iframe
             id="about-map-iframe"
@@ -153,22 +151,20 @@ const description = t('about.description');
             allowfullscreen=""
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            title="Property location map"
+            title="Mapa de localização da propriedade"
           ></iframe>
         </div>
 
-        <!-- Info bar: Ramalho -->
         <div id="info-ramalho" class="map-info-panel">
           <div class="map-info-row">
             <div>
               <p class="map-info-name">{t('about.map_ramalho_name')}</p>
               <p class="map-info-addr">Rua Rodrigo Rodrigues nº4, Ponta Delgada</p>
             </div>
-            <a href="/ramalho" class="btn btn-dark btn-sm">{t('about.map_view_property')}</a>
+            <a href="/pt/ramalho" class="btn btn-dark btn-sm">{t('about.map_view_property')}</a>
           </div>
         </div>
 
-        <!-- Info bar: Amorim (both properties) -->
         <div id="info-amorim" class="map-info-panel" style="display:none;">
           <div class="map-info-row">
             <div>
@@ -176,8 +172,8 @@ const description = t('about.description');
               <p class="map-info-addr">Rua do Amorim 15, Ponta Delgada</p>
             </div>
             <div style="display:flex; gap:0.5rem; flex-shrink:0;">
-              <a href="/amorim"        class="btn btn-dark btn-sm">{t('about.map_apartment_btn')}</a>
-              <a href="/amorim-duplex" class="btn btn-dark btn-sm">{t('about.map_duplex_btn')}</a>
+              <a href="/pt/amorim"        class="btn btn-dark btn-sm">{t('about.map_apartment_btn')}</a>
+              <a href="/pt/amorim-duplex" class="btn btn-dark btn-sm">{t('about.map_duplex_btn')}</a>
             </div>
           </div>
         </div>
@@ -196,16 +192,13 @@ const description = t('about.description');
             tab.addEventListener('click', function () {
               var key  = this.dataset.map;
               var info = this.dataset.info;
-
               tabs.forEach(function (t) {
                 t.classList.remove('map-tab--active');
                 t.setAttribute('aria-selected', 'false');
               });
               this.classList.add('map-tab--active');
               this.setAttribute('aria-selected', 'true');
-
               iframe.src = maps[key];
-
               document.getElementById('info-ramalho').style.display = 'none';
               document.getElementById('info-amorim').style.display  = 'none';
               document.getElementById(info).style.display = 'block';
@@ -219,114 +212,26 @@ const description = t('about.description');
 </Layout>
 
 <style>
-.story-grid {
-  display: grid;
-  gap: 3rem;
-  align-items: start;
-  grid-template-columns: 1fr;
-}
+.story-grid { display: grid; gap: 3rem; align-items: start; grid-template-columns: 1fr; }
 @media (min-width: 1024px) { .story-grid { grid-template-columns: 1fr 1fr; } }
-
 .story-body { display: flex; flex-direction: column; gap: 1.1rem; }
 .story-body p { font-size: 0.9rem; line-height: 1.75; color: var(--clr-text-2); margin: 0; }
-
-.values-grid {
-  display: grid;
-  gap: 1.25rem;
-  grid-template-columns: repeat(2, 1fr);
-}
+.values-grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(2, 1fr); }
 @media (min-width: 1024px) { .values-grid { grid-template-columns: repeat(4, 1fr); } }
-
-.value-card {
-  background: var(--clr-bg);
-  border: 1px solid var(--clr-border-light);
-  border-radius: var(--radius-card);
-  padding: 1.5rem;
-}
+.value-card { background: var(--clr-bg); border: 1px solid var(--clr-border-light); border-radius: var(--radius-card); padding: 1.5rem; }
 .value-card-icon { font-size: 1.75rem; margin-bottom: 0.875rem; }
-
-.contact-grid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
-}
+.contact-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
 @media (min-width: 640px)  { .contact-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .contact-grid { grid-template-columns: repeat(3, 1fr); } }
-
-.contact-card {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  padding: 1.25rem;
-  border: 1px solid var(--clr-border-light);
-  border-radius: var(--radius-card);
-  background: var(--clr-bg);
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
-  text-decoration: none;
-}
+.contact-card { display: flex; gap: 1rem; align-items: flex-start; padding: 1.25rem; border: 1px solid var(--clr-border-light); border-radius: var(--radius-card); background: var(--clr-bg); transition: box-shadow 0.2s ease, border-color 0.2s ease; text-decoration: none; }
 .contact-card:hover { box-shadow: var(--shadow-card); border-color: var(--clr-border); }
-
-.contact-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-/* ── Map tab switcher ──────────────────────────────────── */
-.map-tabs {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.875rem;
-}
-
-.map-tab {
-  padding: 0.45rem 1.1rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  border: 1px solid var(--clr-border-light);
-  border-radius: 20px;
-  background: var(--clr-bg);
-  color: var(--clr-text-2);
-  cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
-.map-tab:hover:not(.map-tab--active) {
-  border-color: var(--clr-border);
-  color: var(--clr-text);
-}
-.map-tab--active {
-  background: var(--clr-text);
-  color: #fff;
-  border-color: var(--clr-text);
-}
-
-/* ── Map info bar ──────────────────────────────────────── */
-.map-info-panel {
-  margin-top: 0.875rem;
-  padding: 1rem 1.25rem;
-  border: 1px solid var(--clr-border-light);
-  border-radius: var(--radius-card);
-  background: var(--clr-bg-subtle);
-}
-.map-info-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-.map-info-name {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--clr-text);
-  margin-bottom: 0.2rem;
-}
-.map-info-addr {
-  font-size: 0.82rem;
-  color: var(--clr-text-2);
-}
+.contact-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.map-tabs { display: flex; gap: 0.5rem; margin-bottom: 0.875rem; }
+.map-tab { padding: 0.45rem 1.1rem; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--clr-border-light); border-radius: 20px; background: var(--clr-bg); color: var(--clr-text-2); cursor: pointer; transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease; }
+.map-tab:hover:not(.map-tab--active) { border-color: var(--clr-border); color: var(--clr-text); }
+.map-tab--active { background: var(--clr-text); color: #fff; border-color: var(--clr-text); }
+.map-info-panel { margin-top: 0.875rem; padding: 1rem 1.25rem; border: 1px solid var(--clr-border-light); border-radius: var(--radius-card); background: var(--clr-bg-subtle); }
+.map-info-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.map-info-name { font-size: 0.875rem; font-weight: 600; color: var(--clr-text); margin-bottom: 0.2rem; }
+.map-info-addr { font-size: 0.82rem; color: var(--clr-text-2); }
 </style>

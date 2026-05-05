@@ -1,12 +1,14 @@
 ---
-import PropertyLayout from '../layouts/PropertyLayout.astro';
-import { propertyData } from '../i18n/properties';
-import amorimHero from '../assets/properties/amorim/Screenshot 2026-05-03 145515.png';
-import amorim2 from '../assets/properties/amorim/Screenshot 2026-05-03 145557.png';
-import amorim3 from '../assets/properties/amorim/Screenshot 2026-05-03 145621.png';
-import amorim4 from '../assets/properties/amorim/Screenshot 2026-05-03 145655.png';
+import PropertyLayout from '../../layouts/PropertyLayout.astro';
+import { propertyData } from '../../i18n/properties';
+import amorimHero from '../../assets/properties/amorim/Screenshot 2026-05-03 145515.png';
+import amorim2 from '../../assets/properties/amorim/Screenshot 2026-05-03 145557.png';
+import amorim3 from '../../assets/properties/amorim/Screenshot 2026-05-03 145621.png';
+import amorim4 from '../../assets/properties/amorim/Screenshot 2026-05-03 145655.png';
+import { useTranslations } from '../../i18n/utils';
 
-const locale = 'en';
+const locale = 'pt';
+const t = useTranslations(locale);
 const p = propertyData[locale].amorim;
 const galleryImages = [amorim2, amorim3, amorim4];
 ---
@@ -19,7 +21,7 @@ const galleryImages = [amorim2, amorim3, amorim4];
   {galleryImages}
   amenities={[...p.amenities]}
   openingSoon={true}
-  openingDate="October 2026"
+  openingDate="Outubro 2026"
   waMessage={p.waMessage}
   notifyWaMessage={p.notifyWaMessage}
   notifyEmailSubject={p.notifyEmailSubject}
@@ -31,7 +33,7 @@ const galleryImages = [amorim2, amorim3, amorim4];
     <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--clr-text-2); margin-bottom:0.5rem;">{p.tagline}</p>
     <p style="font-size:0.85rem; color:var(--clr-text-2); margin-bottom:1rem;" set:html={p.specs}></p>
     <hr class="divider" />
-    <h2 style="font-size:1.1rem; margin-bottom:0.875rem;">About this place</h2>
+    <h2 style="font-size:1.1rem; margin-bottom:0.875rem;">{t('property.about_title')}</h2>
     <p style="font-size:0.875rem; line-height:1.75; margin-bottom:0.875rem;" set:html={p.about_p1}></p>
     <p style="font-size:0.875rem; line-height:1.75;" set:html={p.about_p2}></p>
   </div>

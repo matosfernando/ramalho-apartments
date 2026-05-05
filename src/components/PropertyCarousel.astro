@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import { useTranslations } from '../i18n/utils';
 
 interface Property {
   title:        string;
@@ -20,9 +21,12 @@ interface Property {
 interface Props {
   properties: Property[];
   title?: string;
+  locale?: string;
 }
 
-const { properties, title = "Homes our guests love" } = Astro.props as Props;
+const { properties, locale = 'en' } = Astro.props as Props;
+const t = useTranslations(locale);
+const title = Astro.props.title ?? t('carousel.title');
 ---
 
 <section class="section" style="padding-top: 2.5rem;">
@@ -94,7 +98,7 @@ const { properties, title = "Homes our guests love" } = Astro.props as Props;
             </div>
             <!-- Coming-soon badge -->
             {p.openingDate && (
-              <span class="coming-soon-badge">Opening {p.openingDate}</span>
+              <span class="coming-soon-badge">{t('carousel.opening')} {p.openingDate}</span>
             )}
           </a>
 
@@ -106,16 +110,16 @@ const { properties, title = "Homes our guests love" } = Astro.props as Props;
 
             {p.openingDate ? (
               <div class="prop-notify-row">
-                <span class="opening-label">Opening {p.openingDate}</span>
+                <span class="opening-label">{t('carousel.opening')} {p.openingDate}</span>
                 <a
                   href={`mailto:ramalhoapartments@gmail.com?subject=${encodeURIComponent("Notify me – " + p.title)}&body=${encodeURIComponent("Hi,\n\nPlease notify me when " + p.title + " opens for bookings.\n\nName:\nEmail:\n\nThanks!")}`}
-                  class="prop-notify-btn"
+                  class="btn btn-outline prop-notify-btn"
                   aria-label={`Get notified when ${p.title} opens`}
                 >
-                  <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                   </svg>
-                  Get notified
+                  {t('carousel.get_notified')}
                 </a>
               </div>
             ) : (
@@ -123,8 +127,8 @@ const { properties, title = "Homes our guests love" } = Astro.props as Props;
                 {/* Price */}
                 {p.price && (
                   <>
-                    <span class="prop-price">From {p.price}</span>
-                    <span class="prop-meta-dim">&thinsp;/ night</span>
+                    <span class="prop-price">{t('carousel.from')} {p.price}</span>
+                    <span class="prop-meta-dim">&thinsp;{t('carousel.per_night')}</span>
                   </>
                 )}
 
@@ -280,28 +284,8 @@ const { properties, title = "Homes our guests love" } = Astro.props as Props;
 }
 
 .prop-notify-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.75rem;
+  padding: 0.35rem 0.85rem;
   font-size: 0.78rem;
-  font-weight: 600;
-  border-radius: 20px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.15s ease, box-shadow 0.15s ease;
-  background: #1a1a2e;
-  color: #fff;
-  border: none;
-  white-space: nowrap;
-}
-.prop-notify-btn:hover {
-  background: #16213e;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-}
-.prop-notify-btn:focus-visible {
-  outline: 2px solid var(--clr-text);
-  outline-offset: 2px;
 }
 </style>
 

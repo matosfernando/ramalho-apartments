@@ -10,7 +10,27 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://matosfernando.github.io',
   output: 'static',
-  integrations: [mdx(), sitemap()],
+
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'pt'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
+
+  integrations: [
+    mdx(),
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: {
+          en: 'en-GB',
+          pt: 'pt-PT',
+        },
+      },
+    }),
+  ],
 
   fonts: [
       {

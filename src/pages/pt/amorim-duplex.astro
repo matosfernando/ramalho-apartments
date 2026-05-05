@@ -1,16 +1,18 @@
 ---
-import PropertyLayout from '../layouts/PropertyLayout.astro';
-import { propertyData } from '../i18n/properties';
-import duplexHero from '../assets/properties/duplex/Screenshot 2026-05-03 145842.png';
-import duplex2 from '../assets/properties/duplex/Screenshot 2026-05-03 145744.png';
-import duplex3 from '../assets/properties/duplex/Screenshot 2026-05-03 145812.png';
-import duplex4 from '../assets/properties/duplex/Screenshot 2026-05-03 145912.png';
-import duplex5 from '../assets/properties/duplex/Screenshot 2026-05-03 145936.png';
-import duplex6 from '../assets/properties/duplex/Screenshot 2026-05-03 150002.png';
-import duplex7 from '../assets/properties/duplex/Screenshot 2026-05-03 150025.png';
-import duplex8 from '../assets/properties/duplex/Screenshot 2026-05-03 150055.png';
+import PropertyLayout from '../../layouts/PropertyLayout.astro';
+import { propertyData } from '../../i18n/properties';
+import duplexHero from '../../assets/properties/duplex/Screenshot 2026-05-03 145842.png';
+import duplex2 from '../../assets/properties/duplex/Screenshot 2026-05-03 145744.png';
+import duplex3 from '../../assets/properties/duplex/Screenshot 2026-05-03 145812.png';
+import duplex4 from '../../assets/properties/duplex/Screenshot 2026-05-03 145912.png';
+import duplex5 from '../../assets/properties/duplex/Screenshot 2026-05-03 145936.png';
+import duplex6 from '../../assets/properties/duplex/Screenshot 2026-05-03 150002.png';
+import duplex7 from '../../assets/properties/duplex/Screenshot 2026-05-03 150025.png';
+import duplex8 from '../../assets/properties/duplex/Screenshot 2026-05-03 150055.png';
+import { useTranslations } from '../../i18n/utils';
 
-const locale = 'en';
+const locale = 'pt';
+const t = useTranslations(locale);
 const p = propertyData[locale].duplex;
 const galleryImages = [duplex2, duplex3, duplex4, duplex5, duplex6, duplex7, duplex8];
 ---
@@ -23,7 +25,7 @@ const galleryImages = [duplex2, duplex3, duplex4, duplex5, duplex6, duplex7, dup
   {galleryImages}
   amenities={[...p.amenities]}
   openingSoon={true}
-  openingDate="October 2026"
+  openingDate="Outubro 2026"
   waMessage={p.waMessage}
   notifyWaMessage={p.notifyWaMessage}
   notifyEmailSubject={p.notifyEmailSubject}
@@ -35,7 +37,7 @@ const galleryImages = [duplex2, duplex3, duplex4, duplex5, duplex6, duplex7, dup
     <p style="font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--clr-text-2); margin-bottom:0.5rem;">{p.tagline}</p>
     <p style="font-size:0.85rem; color:var(--clr-text-2); margin-bottom:1rem;" set:html={p.specs}></p>
     <hr class="divider" />
-    <h2 style="font-size:1.1rem; margin-bottom:0.875rem;">About this place</h2>
+    <h2 style="font-size:1.1rem; margin-bottom:0.875rem;">{t('property.about_title')}</h2>
     <p style="font-size:0.875rem; line-height:1.75; margin-bottom:0.875rem;" set:html={p.about_p1}></p>
     <p style="font-size:0.875rem; line-height:1.75;" set:html={p.about_p2}></p>
   </div>

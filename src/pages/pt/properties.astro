@@ -1,18 +1,18 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import { useTranslations } from '../i18n/utils';
-import { propertyData } from '../i18n/properties';
-import ramalhoHero from '../assets/properties/ramalho/IMG_5767.jpeg';
-import amorimHero from '../assets/properties/amorim/Screenshot 2026-05-03 145515.png';
-import duplexHero from '../assets/properties/duplex/Screenshot 2026-05-03 145842.png';
+import { useTranslations } from '../../i18n/utils';
+import { propertyData } from '../../i18n/properties';
+import ramalhoHero from '../../assets/properties/ramalho/IMG_5767.jpeg';
+import amorimHero from '../../assets/properties/amorim/Screenshot 2026-05-03 145515.png';
+import duplexHero from '../../assets/properties/duplex/Screenshot 2026-05-03 145842.png';
 
-const locale = 'en';
+const locale = 'pt';
 const t = useTranslations(locale);
 const pd = propertyData[locale];
 
-const title       = "Our Properties – Ramalho Apartments";
+const title       = "As Nossas Propriedades – Ramalho Apartments";
 const description = t('site.default_description');
 
 const properties = [
@@ -27,17 +27,16 @@ const properties = [
     slug:        "amorim",
     heroImage:   amorimHero as ImageMetadata | string,
     openingSoon: true,
-    openingDate: "October 2026",
+    openingDate: "Outubro 2026",
   },
   {
     ...pd.duplex,
     slug:        "amorim-duplex",
     heroImage:   duplexHero as ImageMetadata | string,
     openingSoon: true,
-    openingDate: "October 2026",
+    openingDate: "Outubro 2026",
   },
 ];
-
 ---
 
 <Layout {title} {description} {locale}>
@@ -59,8 +58,7 @@ const properties = [
       <div class="property-list">
         {properties.map(p => (
           <article class="property-card">
-            <!-- Image -->
-            <a href={`/${p.slug}`} class="property-img-wrap" tabindex="-1" aria-hidden="true">
+            <a href={`/pt/${p.slug}`} class="property-img-wrap" tabindex="-1" aria-hidden="true">
               {typeof p.heroImage === 'object' ? (
                 <Image
                   src={p.heroImage as ImageMetadata}
@@ -83,26 +81,22 @@ const properties = [
               )}
             </a>
 
-            <!-- Details -->
             <div class="property-details">
               <div class="property-details-inner">
                 <div>
                   <p class="property-tagline">{p.tagline}</p>
                   <h2 class="property-name">
-                    <a href={`/${p.slug}`} class="property-name-link">{p.propertyName}</a>
+                    <a href={`/pt/${p.slug}`} class="property-name-link">{p.propertyName}</a>
                   </h2>
                   <p class="property-specs">{p.specs}</p>
                   <p class="property-desc">{p.description}</p>
-
-                  <!-- Highlights -->
-                  <ul class="property-highlights" aria-label="Key amenities">
+                  <ul class="property-highlights" aria-label="Comodidades principais">
                     {p.highlights.map(h => (
                       <li class="property-highlight-chip">{h}</li>
                     ))}
                   </ul>
                 </div>
 
-                <!-- Price + CTAs -->
                 <div class="property-cta">
                   {p.openingSoon ? (
                     <div class="opening-soon-cta">
@@ -113,7 +107,7 @@ const properties = [
                         {t('properties.opening')} {'openingDate' in p ? p.openingDate : ''}
                       </div>
                       <div class="property-cta-buttons">
-                        <a href={`/${p.slug}`} class="btn btn-dark">
+                        <a href={`/pt/${p.slug}`} class="btn btn-dark">
                           {t('properties.view')}
                         </a>
                         <a
@@ -137,7 +131,7 @@ const properties = [
                         </div>
                       )}
                       <div class="property-cta-buttons">
-                        <a href={`/${p.slug}`} class="btn btn-dark">
+                        <a href={`/pt/${p.slug}`} class="btn btn-dark">
                           {t('properties.view')}
                         </a>
                         <a
@@ -185,184 +179,35 @@ const properties = [
 </Layout>
 
 <style>
-/* ── Property list ───────────────────────────────────────── */
-.property-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-}
-
-/* ── Property card ───────────────────────────────────────── */
-.property-card {
-  display: grid;
-  grid-template-columns: 1fr;
-  border: 1px solid var(--clr-border-light);
-  border-radius: var(--radius-card);
-  overflow: hidden;
-  background: var(--clr-bg);
-  transition: box-shadow 0.2s ease;
-}
+.property-list { display: flex; flex-direction: column; gap: 2.5rem; }
+.property-card { display: grid; grid-template-columns: 1fr; border: 1px solid var(--clr-border-light); border-radius: var(--radius-card); overflow: hidden; background: var(--clr-bg); transition: box-shadow 0.2s ease; }
 .property-card:hover { box-shadow: var(--shadow-card); }
-
-@media (min-width: 768px) {
-  .property-card { grid-template-columns: 380px 1fr; }
-}
-@media (min-width: 1024px) {
-  .property-card { grid-template-columns: 440px 1fr; }
-}
-
-/* ── Image ───────────────────────────────────────────────── */
-.property-img-wrap {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  aspect-ratio: 3 / 2;
-}
+@media (min-width: 768px)  { .property-card { grid-template-columns: 380px 1fr; } }
+@media (min-width: 1024px) { .property-card { grid-template-columns: 440px 1fr; } }
+.property-img-wrap { position: relative; display: block; overflow: hidden; aspect-ratio: 3 / 2; }
 @media (min-width: 768px) { .property-img-wrap { aspect-ratio: unset; } }
-
-.property-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.4s ease;
-}
+.property-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
 .property-card:hover .property-img { transform: scale(1.03); }
-
-.property-badge {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  background: var(--clr-text);
-  color: #fff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  padding: 0.3rem 0.65rem;
-  border-radius: 20px;
-}
-
-/* ── Details ─────────────────────────────────────────────── */
-.property-details {
-  display: flex;
-  flex-direction: column;
-  padding: 1.75rem;
-}
-
-.property-details-inner {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1.5rem;
-  height: 100%;
-}
-
-.property-tagline {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--clr-text-2);
-  margin-bottom: 0.4rem;
-}
-
+.property-badge { position: absolute; top: 1rem; left: 1rem; background: var(--clr-text); color: #fff; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 0.3rem 0.65rem; border-radius: 20px; }
+.property-details { display: flex; flex-direction: column; padding: 1.75rem; }
+.property-details-inner { display: flex; flex-direction: column; justify-content: space-between; gap: 1.5rem; height: 100%; }
+.property-tagline { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--clr-text-2); margin-bottom: 0.4rem; }
 .property-name { font-size: 1.25rem; margin-bottom: 0.3rem; }
-.property-name-link {
-  color: var(--clr-text);
-  text-decoration: none;
-}
+.property-name-link { color: var(--clr-text); text-decoration: none; }
 .property-name-link:hover { text-decoration: underline; text-underline-offset: 3px; }
-
-.property-specs {
-  font-size: 0.82rem;
-  color: var(--clr-text-2);
-  margin-bottom: 0.875rem;
-}
-
-.property-desc {
-  font-size: 0.875rem;
-  line-height: 1.75;
-  color: var(--clr-text-2);
-  margin-bottom: 1.25rem;
-}
-
-/* ── Highlights ──────────────────────────────────────────── */
-.property-highlights {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.property-highlight-chip {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--clr-text-2);
-  background: var(--clr-bg-subtle);
-  border: 1px solid var(--clr-border-light);
-  border-radius: 20px;
-  padding: 0.25rem 0.75rem;
-}
-
-/* ── CTA block ───────────────────────────────────────────── */
-.property-cta {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--clr-border-light);
-}
-
-@media (min-width: 480px) {
-  .property-cta {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
+.property-specs { font-size: 0.82rem; color: var(--clr-text-2); margin-bottom: 0.875rem; }
+.property-desc { font-size: 0.875rem; line-height: 1.75; color: var(--clr-text-2); margin-bottom: 1.25rem; }
+.property-highlights { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; margin: 0; }
+.property-highlight-chip { font-size: 0.78rem; font-weight: 500; color: var(--clr-text-2); background: var(--clr-bg-subtle); border: 1px solid var(--clr-border-light); border-radius: 20px; padding: 0.25rem 0.75rem; }
+.property-cta { display: flex; flex-direction: column; gap: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--clr-border-light); }
+@media (min-width: 480px) { .property-cta { flex-direction: row; align-items: center; justify-content: space-between; } }
 .property-price-block { line-height: 1.2; }
 .property-price-from  { font-size: 0.85rem; color: var(--clr-text-2); font-weight: 400; }
 .property-price       { font-size: 1.25rem; font-weight: 700; color: var(--clr-text); }
 .property-price-unit  { font-size: 0.85rem; color: var(--clr-text-2); font-weight: 400; }
 .property-price-note  { font-size: 0.78rem; color: var(--clr-text-2); margin-top: 0.2rem; }
-
-/* Opening soon CTA */
-.opening-soon-cta {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-}
-
-@media (min-width: 480px) {
-  .opening-soon-cta {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-}
-
-.opening-soon-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--clr-text-2);
-  background: var(--clr-bg-subtle);
-  border: 1px solid var(--clr-border-light);
-  border-radius: 20px;
-  padding: 0.35rem 0.85rem;
-  white-space: nowrap;
-}
-
-.property-cta-buttons {
-  display: flex;
-  gap: 0.625rem;
-  flex-wrap: wrap;
-}
+.opening-soon-cta { display: flex; flex-direction: column; gap: 1rem; width: 100%; }
+@media (min-width: 480px) { .opening-soon-cta { flex-direction: row; align-items: center; justify-content: space-between; } }
+.opening-soon-label { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; font-weight: 600; color: var(--clr-text-2); background: var(--clr-bg-subtle); border: 1px solid var(--clr-border-light); border-radius: 20px; padding: 0.35rem 0.85rem; white-space: nowrap; }
+.property-cta-buttons { display: flex; gap: 0.625rem; flex-wrap: wrap; }
 </style>

@@ -1,5 +1,14 @@
 ---
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  locale?: string;
+}
+
+const { locale = 'en' } = Astro.props as Props;
+const t = useTranslations(locale);
 const year = new Date().getFullYear();
+const base = locale === 'pt' ? '/pt' : '';
 ---
 
 <footer class="site-footer">
@@ -12,7 +21,7 @@ const year = new Date().getFullYear();
           Ramalho<span style="color:#E31C5F;">.</span><span style="font-weight:400; letter-spacing:0;">Apartments</span>
         </p>
         <p style="font-size:0.85rem; max-width:260px; line-height:1.6;">
-          Premium short-term rentals in Ponta Delgada, Azores. Your home away from home.
+          {t('footer.tagline')}
         </p>
         <div style="display:flex; gap:0.6rem; margin-top:1.25rem;">
           <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
@@ -26,25 +35,23 @@ const year = new Date().getFullYear();
 
       <!-- Properties -->
       <div>
-        <p class="footer-heading">Properties</p>
-        <a href="/ramalho"       class="footer-link">Ramalho Three Bedroom</a>
-        <a href="/amorim"        class="footer-link">Amorim Two Bedroom</a>
-        <a href="/amorim-duplex" class="footer-link">Amorim Two Bedroom Duplex</a>
+        <p class="footer-heading">{t('footer.properties')}</p>
+        <a href={`${base}/ramalho`}       class="footer-link">{t('footer.ramalho_link')}</a>
+        <a href={`${base}/amorim`}        class="footer-link">{t('footer.amorim_link')}</a>
+        <a href={`${base}/amorim-duplex`} class="footer-link">{t('footer.duplex_link')}</a>
       </div>
 
       <!-- Explore -->
       <div>
-        <p class="footer-heading">Explore</p>
-        <a href="/guide" class="footer-link">Local Guide</a>
-        <a href="/faq"   class="footer-link">FAQ</a>
-        <a href="/about" class="footer-link">About Us</a>
+        <p class="footer-heading">{t('footer.explore')}</p>
+        <a href={`${base}/about`} class="footer-link">{t('footer.about_link')}</a>
       </div>
 
       <!-- Contact -->
       <div>
-        <p class="footer-heading">Contact</p>
+        <p class="footer-heading">{t('footer.contact')}</p>
         <a href="https://wa.me/351911031847" target="_blank" rel="noopener noreferrer" class="footer-link">WhatsApp</a>
-        <a href="mailto:ramalhoapartments@gmail.com"                                               class="footer-link">ramalhoapartments@gmail.com</a>
+        <a href="mailto:ramalhoapartments@gmail.com" class="footer-link">ramalhoapartments@gmail.com</a>
         <span class="footer-link" style="cursor:default;">+351 911 031 847</span>
         <span class="footer-link" style="cursor:default;">Ponta Delgada, Azores</span>
       </div>
@@ -52,7 +59,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="footer-bottom">
-      <span>&copy; {year} Ramalho Apartments. All rights reserved.</span>
+      <span>&copy; {year} Ramalho Apartments. {t('footer.copyright')}</span>
       <span>Ponta Delgada, Azores, Portugal</span>
     </div>
   </div>

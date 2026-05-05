@@ -2,31 +2,51 @@
 import '../styles/global.css';
 import StickyActionBar from '../components/StickyActionBar.astro';
 import Footer from '../components/Footer.astro';
+import { useTranslations, getLocaleUrl, getAlternateLocale } from '../i18n/utils';
 
 interface Props {
   title?: string;
   description?: string;
+  locale?: string;
 }
 
 const {
-  title = "Ramalho Apartments | Premium Stays in Ponta Delgada, Azores",
-  description = "Discover luxury short-term rentals in Ponta Delgada, Azores. Book direct for the best rates on our curated collection of apartments."
+  locale = 'en',
+  title,
+  description,
 } = Astro.props as Props;
 
+const t = useTranslations(locale);
+const altLocale = getAlternateLocale(locale as 'en' | 'pt');
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const currentPath = Astro.url.pathname;
+const altPath = getLocaleUrl(currentPath, altLocale);
+const canonicalUrl = `${siteUrl}${currentPath}`;
+const alternateUrl = `${siteUrl}${altPath}`;
+
+const resolvedTitle = title ?? t('site.default_title');
+const resolvedDesc  = description ?? t('site.default_description');
+
+const navBase = locale === 'pt' ? '/pt' : '';
+const waBookNow = `https://wa.me/351911031847?text=${encodeURIComponent(t('hero.wa_message'))}`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
 <head>
   <meta charset="UTF-8" />
-  <meta name="description" content={description} />
+  <meta name="description" content={resolvedDesc} />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#ffffff" />
-  <title>{title}</title>
+  <title>{resolvedTitle}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta property="og:title"       content={title} />
-  <meta property="og:description" content={description} />
+  <meta property="og:title"       content={resolvedTitle} />
+  <meta property="og:description" content={resolvedDesc} />
   <meta property="og:type"        content="website" />
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="alternate" hreflang="en"      href={locale === 'en' ? canonicalUrl : alternateUrl} />
+  <link rel="alternate" hreflang="pt"      href={locale === 'pt' ? canonicalUrl : alternateUrl} />
+  <link rel="alternate" hreflang="x-default" href={locale === 'en' ? canonicalUrl : alternateUrl.replace('/pt', '') || '/'} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 </head>
@@ -36,25 +56,26 @@ const {
   <header id="site-header" class="site-header">
     <div class="page-wrap header-inner">
       <!-- Logo -->
-      <a href="/" class="header-logo" aria-label="Ramalho Apartments home">
+      <a href={navBase || '/'} class="header-logo" aria-label={t('nav.logo_aria')}>
         Ramalho<span class="logo-dot">.</span><span class="logo-apartments">Apartments</span>
       </a>
 
       <!-- Desktop nav -->
-      <nav class="header-nav" aria-label="Main navigation">
-        <a href="/"             class="nav-link">Home</a>
-        <a href="/properties"   class="nav-link">Properties</a>
-        <a href="/guide"        class="nav-link">Guide</a>
-        <a href="/about"        class="nav-link">About</a>
-        <a href="/faq"          class="nav-link">FAQ</a>
+      <nav class="header-nav" aria-label={t('nav.aria_label')}>
+        <a href={navBase || '/'}             class="nav-link">{t('nav.home')}</a>
+        <a href={`${navBase}/properties`}    class="nav-link">{t('nav.properties')}</a>
+        <a href={`${navBase}/about`}         class="nav-link">{t('nav.about')}</a>
       </nav>
 
-      <!-- Desktop CTA -->
+      <!-- Desktop CTA + language switcher -->
       <div class="header-actions">
-        <a href="https://wa.me/351911031847?text=Hi! I'd like to book an apartment."
+        <a href={altPath} class="lang-switcher" lang={altLocale} aria-label={altLocale === 'pt' ? 'Ver em Português' : 'View in English'}>
+          {altLocale === 'pt' ? 'PT' : 'EN'}
+        </a>
+        <a href={waBookNow}
            target="_blank" rel="noopener noreferrer"
            class="btn btn-dark btn-sm">
-          Book now
+          {t('nav.book_now')}
         </a>
       </div>
 
@@ -66,16 +87,17 @@ const {
 
     <!-- Mobile nav drawer -->
     <div id="mobile-nav" class="mobile-nav" aria-hidden="true">
-      <nav class="mobile-nav-links" aria-label="Mobile navigation">
-        <a href="/"             class="mobile-nav-link">Home</a>
-        <a href="/properties"   class="mobile-nav-link">Properties</a>
-        <a href="/guide"        class="mobile-nav-link">Guide</a>
-        <a href="/about"        class="mobile-nav-link">About</a>
-        <a href="/faq"          class="mobile-nav-link">FAQ</a>
-        <a href="https://wa.me/351911031847?text=Hi! I'd like to book an apartment."
+      <nav class="mobile-nav-links" aria-label={t('nav.aria_label')}>
+        <a href={navBase || '/'}             class="mobile-nav-link">{t('nav.home')}</a>
+        <a href={`${navBase}/properties`}    class="mobile-nav-link">{t('nav.properties')}</a>
+        <a href={`${navBase}/about`}         class="mobile-nav-link">{t('nav.about')}</a>
+        <a href={altPath} class="mobile-nav-link lang-switcher-mobile" lang={altLocale}>
+          {altLocale === 'pt' ? '🇵🇹 Português' : '🇬🇧 English'}
+        </a>
+        <a href={waBookNow}
            target="_blank" rel="noopener noreferrer"
            class="btn btn-dark" style="margin-top: 0.5rem; justify-content: center;">
-          Book now
+          {t('nav.book_now')}
         </a>
       </nav>
     </div>
@@ -87,10 +109,10 @@ const {
   </main>
 
   <!-- ── Footer ──────────────────────────────────────────── -->
-  <Footer />
+  <Footer {locale} />
 
   <!-- ── Mobile sticky CTA ───────────────────────────────── -->
-  <StickyActionBar />
+  <StickyActionBar {locale} />
 
 </body>
 </html>
@@ -145,6 +167,36 @@ const {
 .header-actions { display: none; }
 @media (min-width: 768px) { .header-actions { display: flex; align-items: center; gap: 0.75rem; } }
 
+/* Language switcher */
+.lang-switcher {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--clr-text-2);
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--clr-border-light);
+  border-radius: 20px;
+  transition: color 0.15s, border-color 0.15s;
+  text-decoration: none;
+}
+.lang-switcher:hover {
+  color: var(--clr-text);
+  border-color: var(--clr-border);
+}
+
+.lang-switcher-mobile {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--clr-text-2);
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--clr-border-light);
+  text-decoration: none;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
 /* Hamburger */
 .hamburger {
   display: flex;
@@ -177,7 +229,7 @@ const {
   border-top: 1px solid transparent;
 }
 .mobile-nav.open {
-  max-height: 400px;
+  max-height: 500px;
   border-top-color: var(--clr-border-light);
 }
 
