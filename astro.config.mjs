@@ -9,6 +9,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://matosfernando.github.io',
+  base: '/ramalho-apartments',
   output: 'static',
 
   i18n: {
