@@ -13,13 +13,12 @@ export function useTranslations(locale: string) {
   };
 }
 
-export function getLocaleUrl(currentPath: string, targetLocale: string, base = ''): string {
-  const withoutBase = base ? currentPath.replace(new RegExp(`^${base}`), '') || '/' : currentPath;
-  const stripped = withoutBase.replace(/^\/pt/, '') || '/';
+export function getLocaleUrl(currentPath: string, targetLocale: string): string {
+  const stripped = currentPath.replace(/^\/pt/, '') || '/';
   if (targetLocale === 'pt') {
-    return `${base}/pt${stripped === '/' ? '' : stripped}`;
+    return `/pt${stripped === '/' ? '' : stripped}`;
   }
-  return `${base}${stripped}` || '/';
+  return stripped || '/';
 }
 
 export function getCurrentLocale(pathname: string): Locale {

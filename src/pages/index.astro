@@ -11,7 +11,6 @@ import aboutImage from '../assets/images/Presentation1.png';
 
 const locale = 'en';
 const t = useTranslations(locale);
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const title = t('site.default_title');
 const description = t('site.default_description');
@@ -20,7 +19,7 @@ const properties = [
   {
     title:        "Ramalho Three Bedroom Apartment",
     image:        ramalhoHero,
-    href:         `${base}/ramalho`,
+    href:         "/ramalho",
     price:        "€80",
     rating:       9.3,
     ratingScale:  10,
@@ -33,7 +32,7 @@ const properties = [
   {
     title:       "Amorim Two Bedroom Apartment",
     image:       amorimHero,
-    href:        `${base}/amorim`,
+    href:        "/amorim",
     openingDate: "October 2026",
     bedrooms:    2,
     beds:        2,
@@ -42,7 +41,7 @@ const properties = [
   {
     title:       "Amorim Two Bedroom Duplex",
     image:       duplexHero,
-    href:        `${base}/amorim-duplex`,
+    href:        "/amorim-duplex",
     openingDate: "October 2026",
     bedrooms:    2,
     beds:        2,
@@ -138,7 +137,7 @@ const properties = [
             {t('about_strip.body')}
           </p>
           <div style="display:flex; flex-wrap:wrap; gap:0.75rem;">
-            <a href={`${base}/about`} class="btn btn-dark">{t('about_strip.cta_story')}</a>
+            <a href="/about" class="btn btn-dark">{t('about_strip.cta_story')}</a>
           </div>
         </div>
         <div style="overflow:hidden; border-radius: var(--radius-card);">

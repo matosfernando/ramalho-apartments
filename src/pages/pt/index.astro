@@ -11,7 +11,6 @@ import aboutImage from '../../assets/images/Presentation1.png';
 
 const locale = 'pt';
 const t = useTranslations(locale);
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const title = t('site.default_title');
 const description = t('site.default_description');
@@ -20,7 +19,7 @@ const properties = [
   {
     title:        "Apartamento Ramalho T3",
     image:        ramalhoHero,
-    href:         `${base}/pt/ramalho`,
+    href:         "/pt/ramalho",
     price:        "€80",
     rating:       9.3,
     ratingScale:  10,
@@ -33,7 +32,7 @@ const properties = [
   {
     title:       "Apartamento Amorim T2",
     image:       amorimHero,
-    href:        `${base}/pt/amorim`,
+    href:        "/pt/amorim",
     openingDate: "Outubro 2026",
     bedrooms:    2,
     beds:        2,
@@ -42,7 +41,7 @@ const properties = [
   {
     title:       "Duplex Amorim T2",
     image:       duplexHero,
-    href:        `${base}/pt/amorim-duplex`,
+    href:        "/pt/amorim-duplex",
     openingDate: "Outubro 2026",
     bedrooms:    2,
     beds:        2,
@@ -138,7 +137,7 @@ const properties = [
             {t('about_strip.body')}
           </p>
           <div style="display:flex; flex-wrap:wrap; gap:0.75rem;">
-            <a href={`${base}/pt/about`} class="btn btn-dark">{t('about_strip.cta_story')}</a>
+            <a href="/pt/about" class="btn btn-dark">{t('about_strip.cta_story')}</a>
           </div>
         </div>
         <div style="overflow:hidden; border-radius: var(--radius-card);">

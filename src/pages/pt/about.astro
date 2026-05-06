@@ -6,7 +6,6 @@ import storyImage from '../../assets/images/pexels-ihor-lypnytskyi-117692765-171
 
 const locale = 'pt';
 const t = useTranslations(locale);
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const title = t('about.title');
 const description = t('about.description');
@@ -162,7 +161,7 @@ const description = t('about.description');
               <p class="map-info-name">{t('about.map_ramalho_name')}</p>
               <p class="map-info-addr">Rua Rodrigo Rodrigues nº4, Ponta Delgada</p>
             </div>
-            <a href={`${base}/pt/ramalho`} class="btn btn-dark btn-sm">{t('about.map_view_property')}</a>
+            <a href="/pt/ramalho" class="btn btn-dark btn-sm">{t('about.map_view_property')}</a>
           </div>
         </div>
 
@@ -173,8 +172,8 @@ const description = t('about.description');
               <p class="map-info-addr">Rua do Amorim 15, Ponta Delgada</p>
             </div>
             <div style="display:flex; gap:0.5rem; flex-shrink:0;">
-              <a href={`${base}/pt/amorim`}        class="btn btn-dark btn-sm">{t('about.map_apartment_btn')}</a>
-              <a href={`${base}/pt/amorim-duplex`} class="btn btn-dark btn-sm">{t('about.map_duplex_btn')}</a>
+              <a href="/pt/amorim"        class="btn btn-dark btn-sm">{t('about.map_apartment_btn')}</a>
+              <a href="/pt/amorim-duplex" class="btn btn-dark btn-sm">{t('about.map_duplex_btn')}</a>
             </div>
           </div>
         </div>
