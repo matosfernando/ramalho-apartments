@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import SEO from '../components/SEO.astro';
+import { Font } from 'astro:assets';
 import StickyActionBar from '../components/StickyActionBar.astro';
 import Footer from '../components/Footer.astro';
 import { useTranslations, getAlternateLocale } from '../i18n/utils';
@@ -106,9 +107,8 @@ const graph = [
     ogImageAlt={resolvedOgAlt}
     schema={graph}
   />
-  <!-- Removed in the font phase, together with the Google Fonts @import in global.css. -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Self-hosted Inter. Preloaded because body text cannot paint without it. -->
+  <Font cssVariable="--font-inter" preload />
 </head>
 <body>
 
