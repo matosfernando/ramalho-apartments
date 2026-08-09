@@ -3,6 +3,10 @@ import Layout from './Layout.astro';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { useTranslations } from '../i18n/utils';
+import { normalisePath, type Locale } from '../seo/routes';
+import { apartmentNode, offerNode, apartmentId } from '../seo/schema';
+import type { PropertySlug } from '../seo/property-facts';
+import { SITE_URL } from '../seo/business';
 
 interface Amenity { name: string; icon: string; }
 
@@ -30,6 +34,8 @@ interface Props {
   openingSoon?: boolean;
   openingDate?: string;
   locale?: string;
+  /** Which unit this is, for structured data. */
+  slug: PropertySlug;
 }
 
 const {
@@ -51,6 +57,7 @@ const {
   openingSoon = false,
   openingDate,
   locale = 'en',
+  slug,
 } = Astro.props as Props;
 
 const t = useTranslations(locale);
@@ -64,9 +71,36 @@ const notifyBody  = notifyEmailBody ?? `Hi,\n\nPlease notify me when ${displayNa
 
 const allImages: ImageSrc[] = [heroImage, ...galleryImages];
 const isLocal = (src: ImageSrc): src is ImageMetadata => typeof src === 'object';
+
+// ── Structured data for this unit ───────────────────────────────
+const propertyPath = normalisePath(Astro.url.pathname);
+const schemaImages = allImages
+  .slice(0, 6)
+  .map((img) => (isLocal(img) ? `${SITE_URL}${img.src}` : img))
+  .filter((url) => url.startsWith('http'));
+
+const propertySchema = [
+  apartmentNode({
+    slug,
+    locale: locale as Locale,
+    name: displayName,
+    description,
+    path: propertyPath,
+    images: schemaImages,
+    amenities,
+  }),
+  offerNode(slug),
+];
 ---
 
-<Layout title={metaTitle ?? title} description={metaDescription ?? description} {locale}>
+<Layout
+  title={metaTitle ?? title}
+  description={metaDescription ?? description}
+  {locale}
+  schema={propertySchema}
+  breadcrumbName={displayName}
+  schemaAbout={apartmentId(slug)}
+>
 
   <!-- Photo header -->
   <section style="position:relative; background:#f7f7f7;">

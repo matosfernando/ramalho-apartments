@@ -4,7 +4,8 @@ import SEO from '../components/SEO.astro';
 import StickyActionBar from '../components/StickyActionBar.astro';
 import Footer from '../components/Footer.astro';
 import { useTranslations, getAlternateLocale } from '../i18n/utils';
-import { switcherPath, type Locale } from '../seo/routes';
+import { switcherPath, findRoute, normalisePath, ROUTES, type Locale, type RouteKey } from '../seo/routes';
+import { baseGraph, type Crumb } from '../seo/schema';
 
 interface Props {
   title?: string;
@@ -12,7 +13,12 @@ interface Props {
   locale?: string;
   ogImage?: string;
   ogImageAlt?: string;
+  /** Extra JSON-LD nodes (e.g. Apartment + Offer) merged into the page graph. */
   schema?: Record<string, unknown>[];
+  /** Label for the final breadcrumb crumb. Defaults to the route's nav label. */
+  breadcrumbName?: string;
+  /** @id of the thing this page is primarily about. */
+  schemaAbout?: string;
 }
 
 const {
@@ -21,7 +27,9 @@ const {
   description,
   ogImage,
   ogImageAlt,
-  schema,
+  schema = [],
+  breadcrumbName,
+  schemaAbout,
 } = Astro.props as Props;
 
 const t = useTranslations(locale);
@@ -37,6 +45,47 @@ const htmlLang = locale === 'pt' ? 'pt-PT' : 'en';
 const resolvedTitle = title ?? t('site.default_title');
 const resolvedDesc  = description ?? t('site.default_description');
 const waBookNow = `https://wa.me/351911031847?text=${encodeURIComponent(t('hero.wa_message'))}`;
+
+// ── Structured data ─────────────────────────────────────────────
+// Every page carries the business, the website and a description of itself.
+// Pages below the homepage also carry a breadcrumb trail.
+const path = normalisePath(Astro.url.pathname);
+const route = findRoute(path);
+const routeKey = (route?.key ?? null) as RouteKey | null;
+const localePrefix = locale === 'pt' ? 'pt' : 'en';
+const routePath = (key: RouteKey) => ROUTES[key][localePrefix] ?? ROUTES[key].en;
+
+const crumbLabels: Record<RouteKey, string> = {
+  home: t('nav.home'),
+  properties: t('nav.properties'),
+  about: t('nav.about'),
+  ramalho: t('footer.ramalho_link'),
+  amorim: t('footer.amorim_link'),
+  duplex: t('footer.duplex_link'),
+  faq: 'FAQ',
+  guide: 'Local guide',
+};
+
+const crumbs: Crumb[] = [{ name: t('nav.home'), path: routePath('home') }];
+if (routeKey && routeKey !== 'home') {
+  // Property pages sit under the properties listing.
+  if (routeKey === 'ramalho' || routeKey === 'amorim' || routeKey === 'duplex') {
+    crumbs.push({ name: t('nav.properties'), path: routePath('properties') });
+  }
+  crumbs.push({ name: breadcrumbName ?? crumbLabels[routeKey] });
+}
+
+const graph = [
+  ...baseGraph({
+    path,
+    locale: localePrefix,
+    routeKey,
+    title: resolvedTitle,
+    crumbs,
+    about: schemaAbout,
+  }),
+  ...schema,
+];
 ---
 
 <!doctype html>
@@ -48,7 +97,7 @@ const waBookNow = `https://wa.me/351911031847?text=${encodeURIComponent(t('hero.
     description={resolvedDesc}
     {ogImage}
     {ogImageAlt}
-    {schema}
+    schema={graph}
   />
   <!-- Removed in the font phase, together with the Google Fonts @import in global.css. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
