@@ -92,8 +92,12 @@ const graph =
 {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
 {ogImageUrl && ogImageAlt && <meta name="twitter:image:alt" content={ogImageAlt} />}
 
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+{/* .ico first, then the SVG: browsers that understand SVG take it, the rest fall
+    back. Both are the same "R." mark now — favicon.ico used to be the Astro
+    framework's logo, and Chrome prefers the .ico, so that is what tabs showed. */}
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 
 {graph && <script type="application/ld+json" set:html={graph} />}
