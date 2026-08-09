@@ -1,13 +1,14 @@
-# Ramalho Apartments — https://ramalhoapartments.com
-# Short-term rental apartments in Ponta Delgada, São Miguel, Azores, Portugal.
+# Ramalho Apartments - https://ramalhoapartments.com
+# Short-term rental apartments in Ponta Delgada, Sao Miguel, Azores, Portugal.
+#
+# ASCII only, deliberately. This file is served as text/plain with no charset,
+# so any non-ASCII byte is decoded as Latin-1 by browsers and shows as mojibake.
 
-# ── Search engines ──────────────────────────────────────────────
 User-agent: *
 Allow: /
 
-# ── AI assistants ───────────────────────────────────────────────
-# Explicitly allowed. AI assistants are a real discovery channel for
-# accommodation, and we would rather be found and cited than hidden.
+# AI assistants are allowed: they are a real discovery channel for
+# accommodation, and being cited is worth more here than being hidden.
 User-agent: GPTBot
 Allow: /
 
