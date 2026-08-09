@@ -3,6 +3,10 @@ import Layout from './Layout.astro';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { useTranslations } from '../i18n/utils';
+import { normalisePath, type Locale } from '../seo/routes';
+import { apartmentNode, offerNode, apartmentId } from '../seo/schema';
+import type { PropertySlug } from '../seo/property-facts';
+import { SITE_URL } from '../seo/business';
 
 interface Amenity { name: string; icon: string; }
 
@@ -10,7 +14,12 @@ type ImageSrc = ImageMetadata | string;
 
 interface Props {
   title: string;
+  /** Rendered as visible text under the H1 — not the meta description. */
   description: string;
+  /** Search-result title. Falls back to `title` if not supplied. */
+  metaTitle?: string;
+  /** Search-result description. Falls back to `description` if not supplied. */
+  metaDescription?: string;
   heroImage: ImageSrc;
   galleryImages?: ImageSrc[];
   amenities?: Amenity[];
@@ -25,11 +34,17 @@ interface Props {
   openingSoon?: boolean;
   openingDate?: string;
   locale?: string;
+  /** Which unit this is, for structured data. */
+  slug: PropertySlug;
+  /** Alt text per image, in [hero, ...gallery] order. */
+  imageAlts?: readonly string[];
 }
 
 const {
   title,
   description,
+  metaTitle,
+  metaDescription,
   heroImage,
   galleryImages = [],
   amenities = [],
@@ -44,6 +59,8 @@ const {
   openingSoon = false,
   openingDate,
   locale = 'en',
+  slug,
+  imageAlts = [],
 } = Astro.props as Props;
 
 const t = useTranslations(locale);
@@ -57,9 +74,39 @@ const notifyBody  = notifyEmailBody ?? `Hi,\n\nPlease notify me when ${displayNa
 
 const allImages: ImageSrc[] = [heroImage, ...galleryImages];
 const isLocal = (src: ImageSrc): src is ImageMetadata => typeof src === 'object';
+// Falls back to the old indexed label only if an alt is missing, so a new photo
+// can never ship with no alt at all.
+const altFor = (i: number) => imageAlts[i] ?? `${displayName} \u2013 photo ${i + 1}`;
+
+// ── Structured data for this unit ───────────────────────────────
+const propertyPath = normalisePath(Astro.url.pathname);
+const schemaImages = allImages
+  .slice(0, 6)
+  .map((img) => (isLocal(img) ? `${SITE_URL}${img.src}` : img))
+  .filter((url) => url.startsWith('http'));
+
+const propertySchema = [
+  apartmentNode({
+    slug,
+    locale: locale as Locale,
+    name: displayName,
+    description,
+    path: propertyPath,
+    images: schemaImages,
+    amenities,
+  }),
+  offerNode(slug),
+];
 ---
 
-<Layout {title} description={description} {locale}>
+<Layout
+  title={metaTitle ?? title}
+  description={metaDescription ?? description}
+  {locale}
+  schema={propertySchema}
+  breadcrumbName={displayName}
+  schemaAbout={apartmentId(slug)}
+>
 
   <!-- Photo header -->
   <section style="position:relative; background:#f7f7f7;">
@@ -81,7 +128,7 @@ const isLocal = (src: ImageSrc): src is ImageMetadata => typeof src === 'object'
             {isLocal(img) ? (
               <Image
                 src={img}
-                alt={`${displayName} – photo ${i + 1}`}
+                alt={altFor(i)}
                 width={i === 0 ? 900 : 450}
                 height={i === 0 ? 600 : 300}
                 loading={i === 0 ? 'eager' : 'lazy'}
@@ -90,7 +137,7 @@ const isLocal = (src: ImageSrc): src is ImageMetadata => typeof src === 'object'
             ) : (
               <img
                 src={img}
-                alt={`${displayName} – photo ${i + 1}`}
+                alt={altFor(i)}
                 width={i === 0 ? 900 : 450}
                 height={i === 0 ? 600 : 300}
                 loading={i === 0 ? 'eager' : 'lazy'}
@@ -569,7 +616,7 @@ const isLocal = (src: ImageSrc): src is ImageMetadata => typeof src === 'object'
 .lightbox-thumb:hover { opacity: 1; border-color: #fff; }
 </style>
 
-<script is:inline define:vars={{ allImageSrcs: allImages.map(img => isLocal(img) ? img.src : img) }}>
+<script is:inline define:vars={{ allImageSrcs: allImages.map(img => isLocal(img) ? img.src : img), allImageAlts: allImages.map((_, i) => altFor(i)) }}>
 (function () {
   const lightbox    = document.getElementById('lightbox');
   const lbImg       = document.getElementById('lightbox-img');
@@ -581,6 +628,7 @@ const isLocal = (src: ImageSrc): src is ImageMetadata => typeof src === 'object'
   const lbBackdrop  = document.getElementById('lightbox-backdrop');
 
   const srcs   = allImageSrcs;
+  const alts   = allImageAlts;
   const total  = srcs.length;
   let current  = 0;
 
@@ -599,7 +647,7 @@ const isLocal = (src: ImageSrc): src is ImageMetadata => typeof src === 'object'
     lbImg.style.opacity = '0';
     setTimeout(() => {
       lbImg.src           = srcs[current];
-      lbImg.alt           = `Photo ${current + 1} of ${total}`;
+      lbImg.alt           = alts[current] || `Photo ${current + 1} of ${total}`;
       lbCounter.textContent = `${current + 1} / ${total}`;
       lbImg.style.opacity = '1';
     }, 100);

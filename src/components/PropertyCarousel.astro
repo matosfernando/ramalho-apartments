@@ -6,6 +6,8 @@ import { useTranslations } from '../i18n/utils';
 interface Property {
   title:        string;
   image:        ImageMetadata | string;
+  /** Describes the photo. Must not repeat the title, which is visible right below it. */
+  imageAlt?:    string;
   href:         string;
   price?:       string;
   rating?:      number;
@@ -59,7 +61,7 @@ const title = Astro.props.title ?? t('carousel.title');
             {typeof p.image === 'object' ? (
               <Image
                 src={p.image as ImageMetadata}
-                alt={p.title}
+                alt={p.imageAlt ?? p.title}
                 loading={i < 3 ? "eager" : "lazy"}
                 width={480}
                 height={360}
@@ -67,7 +69,7 @@ const title = Astro.props.title ?? t('carousel.title');
             ) : (
               <img
                 src={p.image}
-                alt={p.title}
+                alt={p.imageAlt ?? p.title}
                 loading={i < 3 ? "eager" : "lazy"}
                 width="480"
                 height="360"

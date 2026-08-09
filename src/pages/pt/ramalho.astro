@@ -1,6 +1,7 @@
 ---
 import PropertyLayout from '../../layouts/PropertyLayout.astro';
 import { propertyData } from '../../i18n/properties';
+import { imageAlt } from '../../i18n/image-alt';
 import img5767 from '../../assets/properties/ramalho/IMG_5767.jpeg';
 import img5757 from '../../assets/properties/ramalho/IMG_5757.jpeg';
 import img5759 from '../../assets/properties/ramalho/IMG_5759.jpeg';
@@ -32,6 +33,10 @@ const galleryImages = [
   title={p.title}
   propertyName={p.propertyName}
   description={p.description}
+  metaTitle={p.metaTitle}
+  metaDescription={p.metaDescription}
+  slug="ramalho"
+  imageAlts={imageAlt[locale].ramalho}
   heroImage={img5767}
   {galleryImages}
   amenities={[...p.amenities]}

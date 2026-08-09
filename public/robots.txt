@@ -1,0 +1,38 @@
+# Ramalho Apartments — https://ramalhoapartments.com
+# Short-term rental apartments in Ponta Delgada, São Miguel, Azores, Portugal.
+
+# ── Search engines ──────────────────────────────────────────────
+User-agent: *
+Allow: /
+
+# ── AI assistants ───────────────────────────────────────────────
+# Explicitly allowed. AI assistants are a real discovery channel for
+# accommodation, and we would rather be found and cited than hidden.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://ramalhoapartments.com/sitemap-index.xml

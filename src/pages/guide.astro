@@ -1,8 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const title = "Local Guide – Ramalho Apartments";
-const description = "Your insider guide to Ponta Delgada and São Miguel. Best spots, essentials, transport, and local tips.";
+const title = "Ponta Delgada Guide: Top Spots & Tips | Ramalho";
+const description = "A resident guide to Ponta Delgada and São Miguel: must-see spots, supermarkets, pharmacies, car hire and getting in from the airport, by your hosts.";
 
 const topSpots = [
   { name: "Forte de São Brás",        desc: "Historic fortress with panoramic city views and Azorean military history.",         img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop" },
@@ -62,7 +62,13 @@ const logistics = [
             <div style="overflow:hidden; border-radius:var(--radius-card); aspect-ratio:16/9; margin-bottom:0.875rem;">
               <img
                 src={spot.img}
-                alt={spot.name}
+                {/* Deliberately empty. These are generic Unsplash stock photos, not
+                    pictures of these places — and two of the five entries reuse the
+                    same image. Naming the landmark in alt text would assert something
+                    untrue to anyone who cannot see the image. The <h3> beneath names
+                    the place, so nothing is lost. Replace with real photos and this
+                    becomes descriptive alt text. */}
+                alt=""
                 width="600" height="338" loading={i < 2 ? "eager" : "lazy"}
                 style="width:100%; height:100%; object-fit:cover; transition: transform 0.35s ease; display:block;"
                 class="spot-img"

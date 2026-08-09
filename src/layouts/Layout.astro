@@ -1,53 +1,114 @@
 ---
 import '../styles/global.css';
+import SEO from '../components/SEO.astro';
+import { Font } from 'astro:assets';
 import StickyActionBar from '../components/StickyActionBar.astro';
 import Footer from '../components/Footer.astro';
-import { useTranslations, getLocaleUrl, getAlternateLocale } from '../i18n/utils';
+import { useTranslations, getAlternateLocale } from '../i18n/utils';
+import { switcherPath, findRoute, normalisePath, ROUTES, type Locale, type RouteKey } from '../seo/routes';
+import { baseGraph, type Crumb } from '../seo/schema';
+import { OG } from '../seo/og';
 
 interface Props {
   title?: string;
   description?: string;
   locale?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  /** Extra JSON-LD nodes (e.g. Apartment + Offer) merged into the page graph. */
+  schema?: Record<string, unknown>[];
+  /** Label for the final breadcrumb crumb. Defaults to the route's nav label. */
+  breadcrumbName?: string;
+  /** @id of the thing this page is primarily about. */
+  schemaAbout?: string;
 }
 
 const {
   locale = 'en',
   title,
   description,
+  ogImage,
+  ogImageAlt,
+  schema = [],
+  breadcrumbName,
+  schemaAbout,
 } = Astro.props as Props;
 
 const t = useTranslations(locale);
 const navBase = locale === 'pt' ? '/pt' : '';
-const altLocale = getAlternateLocale(locale as 'en' | 'pt');
-const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
-const currentPath = Astro.url.pathname;
-const altPath = getLocaleUrl(currentPath, altLocale);
-const canonicalUrl = `${siteUrl}${currentPath}`;
-const alternateUrl = `${siteUrl}${altPath}`;
+const altLocale = getAlternateLocale(locale as Locale);
+// Falls back to the target locale's homepage when this page has no translation,
+// so the switcher never points at a 404 (it did on /faq/ and /guide/).
+const altPath = switcherPath(Astro.url.pathname, altLocale);
+// BCP 47: "pt" alone can be read as Brazilian Portuguese. These pages are
+// European Portuguese, and this must match the hreflang the SEO component emits.
+const htmlLang = locale === 'pt' ? 'pt-PT' : 'en';
 
 const resolvedTitle = title ?? t('site.default_title');
 const resolvedDesc  = description ?? t('site.default_description');
 const waBookNow = `https://wa.me/351911031847?text=${encodeURIComponent(t('hero.wa_message'))}`;
+
+// ── Structured data ─────────────────────────────────────────────
+// Every page carries the business, the website and a description of itself.
+// Pages below the homepage also carry a breadcrumb trail.
+const path = normalisePath(Astro.url.pathname);
+const route = findRoute(path);
+const routeKey = (route?.key ?? null) as RouteKey | null;
+const localePrefix = locale === 'pt' ? 'pt' : 'en';
+const routePath = (key: RouteKey) => ROUTES[key][localePrefix] ?? ROUTES[key].en;
+
+const crumbLabels: Record<RouteKey, string> = {
+  home: t('nav.home'),
+  properties: t('nav.properties'),
+  about: t('nav.about'),
+  ramalho: t('footer.ramalho_link'),
+  amorim: t('footer.amorim_link'),
+  duplex: t('footer.duplex_link'),
+  faq: 'FAQ',
+  guide: 'Local guide',
+};
+
+const crumbs: Crumb[] = [{ name: t('nav.home'), path: routePath('home') }];
+if (routeKey && routeKey !== 'home') {
+  // Property pages sit under the properties listing.
+  if (routeKey === 'ramalho' || routeKey === 'amorim' || routeKey === 'duplex') {
+    crumbs.push({ name: t('nav.properties'), path: routePath('properties') });
+  }
+  crumbs.push({ name: breadcrumbName ?? crumbLabels[routeKey] });
+}
+
+// Social preview: falls back to the route's own image so no page can ship
+// without one. Previously no page emitted og:image at all.
+const og = routeKey ? OG[routeKey] : undefined;
+const resolvedOgImage = ogImage ?? og?.image;
+const resolvedOgAlt   = ogImageAlt ?? og?.alt[localePrefix];
+
+const graph = [
+  ...baseGraph({
+    path,
+    locale: localePrefix,
+    routeKey,
+    title: resolvedTitle,
+    crumbs,
+    about: schemaAbout,
+  }),
+  ...schema,
+];
 ---
 
 <!doctype html>
-<html lang={locale}>
+<html lang={htmlLang}>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="description" content={resolvedDesc} />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#ffffff" />
-  <title>{resolvedTitle}</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta property="og:title"       content={resolvedTitle} />
-  <meta property="og:description" content={resolvedDesc} />
-  <meta property="og:type"        content="website" />
-  <link rel="canonical" href={canonicalUrl} />
-  <link rel="alternate" hreflang="en"      href={locale === 'en' ? canonicalUrl : alternateUrl} />
-  <link rel="alternate" hreflang="pt"      href={locale === 'pt' ? canonicalUrl : alternateUrl} />
-  <link rel="alternate" hreflang="x-default" href={locale === 'en' ? canonicalUrl : alternateUrl.replace('/pt', '') || '/'} />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <SEO
+    locale={locale as Locale}
+    title={resolvedTitle}
+    description={resolvedDesc}
+    ogImage={resolvedOgImage}
+    ogImageAlt={resolvedOgAlt}
+    schema={graph}
+  />
+  <!-- Self-hosted Inter. Preloaded because body text cannot paint without it. -->
+  <Font cssVariable="--font-inter" preload />
 </head>
 <body>
 
@@ -55,15 +116,15 @@ const waBookNow = `https://wa.me/351911031847?text=${encodeURIComponent(t('hero.
   <header id="site-header" class="site-header">
     <div class="page-wrap header-inner">
       <!-- Logo -->
-      <a href={navBase || '/'} class="header-logo" aria-label={t('nav.logo_aria')}>
+      <a href={`${navBase}/`} class="header-logo" aria-label={t('nav.logo_aria')}>
         Ramalho<span class="logo-dot">.</span><span class="logo-apartments">Apartments</span>
       </a>
 
       <!-- Desktop nav -->
       <nav class="header-nav" aria-label={t('nav.aria_label')}>
-        <a href={navBase || '/'}             class="nav-link">{t('nav.home')}</a>
-        <a href={`${navBase}/properties`}    class="nav-link">{t('nav.properties')}</a>
-        <a href={`${navBase}/about`}         class="nav-link">{t('nav.about')}</a>
+        <a href={`${navBase}/`}              class="nav-link">{t('nav.home')}</a>
+        <a href={`${navBase}/properties/`}   class="nav-link">{t('nav.properties')}</a>
+        <a href={`${navBase}/about/`}        class="nav-link">{t('nav.about')}</a>
       </nav>
 
       <!-- Desktop CTA + language switcher -->
@@ -85,11 +146,11 @@ const waBookNow = `https://wa.me/351911031847?text=${encodeURIComponent(t('hero.
     </div>
 
     <!-- Mobile nav drawer -->
-    <div id="mobile-nav" class="mobile-nav" aria-hidden="true">
+    <div id="mobile-nav" class="mobile-nav" aria-hidden="true" inert>
       <nav class="mobile-nav-links" aria-label={t('nav.aria_label')}>
-        <a href={navBase || '/'}             class="mobile-nav-link">{t('nav.home')}</a>
-        <a href={`${navBase}/properties`}    class="mobile-nav-link">{t('nav.properties')}</a>
-        <a href={`${navBase}/about`}         class="mobile-nav-link">{t('nav.about')}</a>
+        <a href={`${navBase}/`}              class="mobile-nav-link">{t('nav.home')}</a>
+        <a href={`${navBase}/properties/`}   class="mobile-nav-link">{t('nav.properties')}</a>
+        <a href={`${navBase}/about/`}        class="mobile-nav-link">{t('nav.about')}</a>
         <a href={altPath} class="mobile-nav-link lang-switcher-mobile" lang={altLocale}>
           {altLocale === 'pt' ? '🇵🇹 Português' : '🇬🇧 English'}
         </a>
@@ -266,12 +327,18 @@ hamburger?.addEventListener('click', () => {
   const open = mobileNav?.classList.toggle('open');
   hamburger.setAttribute('aria-expanded', String(open));
   mobileNav?.setAttribute('aria-hidden', String(!open));
+  // The drawer is hidden with max-height:0, not display:none, so without this
+  // its links stay keyboard-focusable while invisible.
+  if (open) mobileNav?.removeAttribute('inert');
+  else mobileNav?.setAttribute('inert', '');
 });
 
 // Active nav link
+const norm = (p: string) => (p.endsWith('/') ? p : p + '/');
+const here = norm(window.location.pathname);
 const links = document.querySelectorAll('.nav-link, .mobile-nav-link');
 links.forEach(link => {
-  if ((link as HTMLAnchorElement).href === window.location.href) {
+  if (norm(new URL((link as HTMLAnchorElement).href).pathname) === here) {
     link.classList.add('active');
   }
 });
