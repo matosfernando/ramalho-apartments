@@ -62,7 +62,7 @@ const properties = [
       <div class="property-list">
         {properties.map(p => (
           <article class="property-card">
-            <a href={`/pt/${p.slug}`} class="property-img-wrap" tabindex="-1" aria-hidden="true">
+            <a href={`/pt/${p.slug}/`} class="property-img-wrap" tabindex="-1" aria-hidden="true">
               {typeof p.heroImage === 'object' ? (
                 <Image
                   src={p.heroImage as ImageMetadata}
@@ -90,7 +90,7 @@ const properties = [
                 <div>
                   <p class="property-tagline">{p.tagline}</p>
                   <h2 class="property-name">
-                    <a href={`/pt/${p.slug}`} class="property-name-link">{p.propertyName}</a>
+                    <a href={`/pt/${p.slug}/`} class="property-name-link">{p.propertyName}</a>
                   </h2>
                   <p class="property-specs">{p.specs}</p>
                   <p class="property-desc">{p.description}</p>
@@ -111,7 +111,7 @@ const properties = [
                         {t('properties.opening')} {'openingDate' in p ? p.openingDate : ''}
                       </div>
                       <div class="property-cta-buttons">
-                        <a href={`/pt/${p.slug}`} class="btn btn-dark">
+                        <a href={`/pt/${p.slug}/`} class="btn btn-dark">
                           {t('properties.view')}
                         </a>
                         <a
@@ -135,7 +135,7 @@ const properties = [
                         </div>
                       )}
                       <div class="property-cta-buttons">
-                        <a href={`/pt/${p.slug}`} class="btn btn-dark">
+                        <a href={`/pt/${p.slug}/`} class="btn btn-dark">
                           {t('properties.view')}
                         </a>
                         <a

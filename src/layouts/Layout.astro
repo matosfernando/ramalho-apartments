@@ -116,15 +116,15 @@ const graph = [
   <header id="site-header" class="site-header">
     <div class="page-wrap header-inner">
       <!-- Logo -->
-      <a href={navBase || '/'} class="header-logo" aria-label={t('nav.logo_aria')}>
+      <a href={`${navBase}/`} class="header-logo" aria-label={t('nav.logo_aria')}>
         Ramalho<span class="logo-dot">.</span><span class="logo-apartments">Apartments</span>
       </a>
 
       <!-- Desktop nav -->
       <nav class="header-nav" aria-label={t('nav.aria_label')}>
-        <a href={navBase || '/'}             class="nav-link">{t('nav.home')}</a>
-        <a href={`${navBase}/properties`}    class="nav-link">{t('nav.properties')}</a>
-        <a href={`${navBase}/about`}         class="nav-link">{t('nav.about')}</a>
+        <a href={`${navBase}/`}              class="nav-link">{t('nav.home')}</a>
+        <a href={`${navBase}/properties/`}   class="nav-link">{t('nav.properties')}</a>
+        <a href={`${navBase}/about/`}        class="nav-link">{t('nav.about')}</a>
       </nav>
 
       <!-- Desktop CTA + language switcher -->
@@ -146,11 +146,11 @@ const graph = [
     </div>
 
     <!-- Mobile nav drawer -->
-    <div id="mobile-nav" class="mobile-nav" aria-hidden="true">
+    <div id="mobile-nav" class="mobile-nav" aria-hidden="true" inert>
       <nav class="mobile-nav-links" aria-label={t('nav.aria_label')}>
-        <a href={navBase || '/'}             class="mobile-nav-link">{t('nav.home')}</a>
-        <a href={`${navBase}/properties`}    class="mobile-nav-link">{t('nav.properties')}</a>
-        <a href={`${navBase}/about`}         class="mobile-nav-link">{t('nav.about')}</a>
+        <a href={`${navBase}/`}              class="mobile-nav-link">{t('nav.home')}</a>
+        <a href={`${navBase}/properties/`}   class="mobile-nav-link">{t('nav.properties')}</a>
+        <a href={`${navBase}/about/`}        class="mobile-nav-link">{t('nav.about')}</a>
         <a href={altPath} class="mobile-nav-link lang-switcher-mobile" lang={altLocale}>
           {altLocale === 'pt' ? '🇵🇹 Português' : '🇬🇧 English'}
         </a>
@@ -327,12 +327,18 @@ hamburger?.addEventListener('click', () => {
   const open = mobileNav?.classList.toggle('open');
   hamburger.setAttribute('aria-expanded', String(open));
   mobileNav?.setAttribute('aria-hidden', String(!open));
+  // The drawer is hidden with max-height:0, not display:none, so without this
+  // its links stay keyboard-focusable while invisible.
+  if (open) mobileNav?.removeAttribute('inert');
+  else mobileNav?.setAttribute('inert', '');
 });
 
 // Active nav link
+const norm = (p: string) => (p.endsWith('/') ? p : p + '/');
+const here = norm(window.location.pathname);
 const links = document.querySelectorAll('.nav-link, .mobile-nav-link');
 links.forEach(link => {
-  if ((link as HTMLAnchorElement).href === window.location.href) {
+  if (norm(new URL((link as HTMLAnchorElement).href).pathname) === here) {
     link.classList.add('active');
   }
 });
