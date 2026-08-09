@@ -1,5 +1,15 @@
 # Server-side fixes — runbook
 
+> **STATUS — all four applied 9 August 2026 and verified from the public internet.**
+> Steps 1-3 are complete. Step 4 (HSTS) is at **stage 1 only**: `max-age=300`.
+> Raise it to a year once you have browsed the site and confirmed nothing breaks
+> — see "Remaining work" at the end.
+>
+> The nginx config now lives in this repo at `deploy/nginx/default.conf` and is
+> mounted into the container, so it deploys itself. The Caddyfile does **not**
+> live here and should not: it is shared with your other sites and contains
+> basic-auth password hashes for them.
+
 Four defects that cannot be fixed from this repository. They live in the nginx
 and Caddy configuration on the VPS at `/srv/ramalho-apartments`.
 
@@ -329,3 +339,111 @@ The nginx config and `docker-compose.yml` are not in this repository, which is
 why the redirect defect survived unnoticed and why it cannot be fixed by a
 deploy. Copy them into `deploy/` here and mount them from the checkout, so
 server behaviour is reviewable in a diff like everything else.
+
+---
+
+## What was actually done, 9 August 2026
+
+Applied over SSH, each step backed up and validated before being applied.
+
+| # | Fix | Where | Result |
+|---|---|---|---|
+| 1 | `absolute_redirect off` | `deploy/nginx/default.conf`, mounted into `ramalho-static` | `location: /properties/` — relative, cannot downgrade |
+| 2 | `charset utf-8` + `charset_types` | same file | `text/plain; charset=utf-8`, `text/xml; charset=utf-8` |
+| 3 | `www` → apex redirect | `/srv/caddy/Caddyfile` | `301` to the apex, path preserved |
+| 4 | HSTS **stage 1** | `/srv/caddy/Caddyfile` | `strict-transport-security: max-age=300` |
+
+`docker-compose.yml` gained the config mount and lost the obsolete `version:` key
+that warned on every command:
+
+```yaml
+volumes:
+  - ./site/dist:/usr/share/nginx/html:ro
+  - ./site/deploy/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+```
+
+### Backups taken
+
+| File | Backup |
+|---|---|
+| `/srv/ramalho-apartments/docker-compose.yml` | `docker-compose.yml.bak.20260809224732` |
+| `/srv/caddy/Caddyfile` | `Caddyfile.bak.20260809224857` |
+
+### Verified after the change
+
+The redirect loop that ran forever now terminates in two hops:
+
+```
+hop 1: https://ramalhoapartments.com/properties  -> 301  /properties/
+hop 2: https://ramalhoapartments.com/properties/ -> 200  (terminal)
+```
+
+All 14 pages, both sitemaps, `robots.txt`, the OG images and both favicons
+return 200. The deleted blog returns 404. The other sites sharing this Caddy —
+`azoresguestguide.com`, `www.azoresguestguide.com`, `dev.azoresguestguide.com` —
+returned exactly what they did before the reload.
+
+---
+
+## Remaining work
+
+### 1. Raise HSTS to a year — after a day or two
+
+Only once you have browsed the live site properly: both languages, all three
+property pages, the photo lightbox, the WhatsApp and email buttons. You are
+checking that nothing is fetched over plain HTTP, because that will now fail.
+
+Edit `/srv/caddy/Caddyfile`:
+
+```caddy
+ramalhoapartments.com {
+    header Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    reverse_proxy ramalho-static:80
+}
+```
+
+```bash
+cd /srv/caddy && cp Caddyfile Caddyfile.bak.$(date +%Y%m%d%H%M%S)
+# make the edit
+docker exec caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+docker exec caddy caddy reload   --config /etc/caddy/Caddyfile --adapter caddyfile
+curl -sSI https://ramalhoapartments.com/ | grep -i strict-transport
+```
+
+`includeSubDomains` applies to subdomains that do not exist yet. If you ever
+put something on plain HTTP under this domain it will be unreachable. Drop that
+directive if you are unsure.
+
+Do **not** add `preload`. Submitting to the browser preload list is effectively
+irreversible.
+
+### 2. Unrelated finding: azoresguestguide.com has the same www duplication
+
+```caddy
+azoresguestguide.com, www.azoresguestguide.com {
+    reverse_proxy azores-guest-guide:3000
+}
+```
+
+Both hostnames serve the site with no redirect between them — the same duplicate
+content problem this runbook just fixed for ramalhoapartments.com. Not touched,
+because it is a different site and was not in scope. The fix is identical.
+
+### 3. Revoke the SSH key when you are done
+
+An ephemeral key was added to `~/.ssh/authorized_keys` for this work. The private
+half is destroyed with the session, so the entry becomes dead weight:
+
+```bash
+sed -i '/claude-code-session-20260809/d' ~/.ssh/authorized_keys
+```
+
+### 4. Optional tidy-ups noticed while in there
+
+- Caddy warns that `basicauth` is deprecated in favour of `basic_auth`, six times
+  on every reload. Cosmetic, but it is noise in the logs.
+- `caddy fmt --overwrite /etc/caddy/Caddyfile` would silence the formatting
+  warning.
+- Long-lived caching headers for `/_astro/*` would be a real performance win:
+  those filenames contain a content hash, so they can safely be cached forever.
+  Not done — it is a behaviour change that was not in scope.
