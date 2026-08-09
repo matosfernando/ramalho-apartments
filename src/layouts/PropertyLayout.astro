@@ -36,6 +36,8 @@ interface Props {
   locale?: string;
   /** Which unit this is, for structured data. */
   slug: PropertySlug;
+  /** Alt text per image, in [hero, ...gallery] order. */
+  imageAlts?: readonly string[];
 }
 
 const {
@@ -58,6 +60,7 @@ const {
   openingDate,
   locale = 'en',
   slug,
+  imageAlts = [],
 } = Astro.props as Props;
 
 const t = useTranslations(locale);
@@ -71,6 +74,9 @@ const notifyBody  = notifyEmailBody ?? `Hi,\n\nPlease notify me when ${displayNa
 
 const allImages: ImageSrc[] = [heroImage, ...galleryImages];
 const isLocal = (src: ImageSrc): src is ImageMetadata => typeof src === 'object';
+// Falls back to the old indexed label only if an alt is missing, so a new photo
+// can never ship with no alt at all.
+const altFor = (i: number) => imageAlts[i] ?? `${displayName} \u2013 photo ${i + 1}`;
 
 // ── Structured data for this unit ───────────────────────────────
 const propertyPath = normalisePath(Astro.url.pathname);
@@ -122,7 +128,7 @@ const propertySchema = [
             {isLocal(img) ? (
               <Image
                 src={img}
-                alt={`${displayName} – photo ${i + 1}`}
+                alt={altFor(i)}
                 width={i === 0 ? 900 : 450}
                 height={i === 0 ? 600 : 300}
                 loading={i === 0 ? 'eager' : 'lazy'}
@@ -131,7 +137,7 @@ const propertySchema = [
             ) : (
               <img
                 src={img}
-                alt={`${displayName} – photo ${i + 1}`}
+                alt={altFor(i)}
                 width={i === 0 ? 900 : 450}
                 height={i === 0 ? 600 : 300}
                 loading={i === 0 ? 'eager' : 'lazy'}
@@ -610,7 +616,7 @@ const propertySchema = [
 .lightbox-thumb:hover { opacity: 1; border-color: #fff; }
 </style>
 
-<script is:inline define:vars={{ allImageSrcs: allImages.map(img => isLocal(img) ? img.src : img) }}>
+<script is:inline define:vars={{ allImageSrcs: allImages.map(img => isLocal(img) ? img.src : img), allImageAlts: allImages.map((_, i) => altFor(i)) }}>
 (function () {
   const lightbox    = document.getElementById('lightbox');
   const lbImg       = document.getElementById('lightbox-img');
@@ -622,6 +628,7 @@ const propertySchema = [
   const lbBackdrop  = document.getElementById('lightbox-backdrop');
 
   const srcs   = allImageSrcs;
+  const alts   = allImageAlts;
   const total  = srcs.length;
   let current  = 0;
 
@@ -640,7 +647,7 @@ const propertySchema = [
     lbImg.style.opacity = '0';
     setTimeout(() => {
       lbImg.src           = srcs[current];
-      lbImg.alt           = `Photo ${current + 1} of ${total}`;
+      lbImg.alt           = alts[current] || `Photo ${current + 1} of ${total}`;
       lbCounter.textContent = `${current + 1} / ${total}`;
       lbImg.style.opacity = '1';
     }, 100);

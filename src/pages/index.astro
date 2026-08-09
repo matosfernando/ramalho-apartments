@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import PropertyCarousel from '../components/PropertyCarousel.astro';
 import { useTranslations } from '../i18n/utils';
+import { imageAlt } from '../i18n/image-alt';
 import ramalhoHero from '../assets/properties/ramalho/IMG_5767.jpeg';
 import amorimHero from '../assets/properties/amorim/Screenshot 2026-05-03 145515.png';
 import duplexHero from '../assets/properties/duplex/Screenshot 2026-05-03 145842.png';
@@ -19,6 +20,7 @@ const properties = [
   {
     title:        "Ramalho Three Bedroom Apartment",
     image:        ramalhoHero,
+imageAlt:    imageAlt[locale].ramalho[0],
     href:         "/ramalho",
     price:        "€80",
     rating:       9.3,
@@ -32,6 +34,7 @@ const properties = [
   {
     title:       "Amorim Two Bedroom Apartment",
     image:       amorimHero,
+imageAlt:    imageAlt[locale].amorim[0],
     href:        "/amorim",
     openingDate: "October 2026",
     bedrooms:    2,
@@ -41,6 +44,7 @@ const properties = [
   {
     title:       "Amorim Two Bedroom Duplex",
     image:       duplexHero,
+imageAlt:    imageAlt[locale].duplex[0],
     href:        "/amorim-duplex",
     openingDate: "October 2026",
     bedrooms:    2,

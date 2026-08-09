@@ -56,7 +56,7 @@ export const ui = {
     'about_strip.h2': 'Genuine Azorean hospitality, no middlemen',
     'about_strip.body': 'We are longtime residents of Ponta Delgada who personally own and operate every property listed here. We believe the best stays come from real connections. Book directly with us and get the best rate, flexible check-in, and the kind of local knowledge no algorithm can match.',
     'about_strip.cta_story': 'Our story',
-    'about_strip.img_alt': 'Our apartments in Ponta Delgada',
+    'about_strip.img_alt': 'Four scenes from São Miguel: an Azorean pineapple, a crater lake, the Portas da Cidade arches in Ponta Delgada, and a guest reading our local guide',
 
     // Bottom CTA banner (index)
     'cta_banner.h2': 'Ready to experience the Azores?',
@@ -121,7 +121,7 @@ export const ui = {
     'about.story_p2': 'As longtime residents and hands-on hosts, we saw countless visitors searching for real connections to local culture, honest recommendations, and genuine hospitality — and finding only corporate, disconnected options.',
     'about.story_p3': "So we carefully chose to operate three properties in the heart of the city, each with its own character but all sharing one thing: they're places where we'd be happy hosting friends and family.",
     'about.story_p4': 'Today, Ramalho Apartments is a gateway to genuine Azorean hospitality. Every property is owned and managed by us directly — no middlemen, no surprises. When you stay with us, you get insider tips, local recommendations, and personal service from people who truly know and love this place.',
-    'about.story_img_alt': 'Ponta Delgada cityscape and our apartments',
+    'about.story_img_alt': 'The black-and-white bell tower of the Igreja Matriz de São Sebastião in central Ponta Delgada',
     'about.values_h2': 'What we stand for',
     'about.value1_title': 'Authentic homes',
     'about.value1_desc': 'Real apartments with character, not sterile hotel rooms.',
@@ -206,7 +206,7 @@ export const ui = {
     'about_strip.h2': 'Hospitalidade açoriana genuína, sem intermediários',
     'about_strip.body': 'Somos residentes de longa data em Ponta Delgada que gerimos pessoalmente todas as propriedades aqui listadas. Acreditamos que as melhores estadias nascem de ligações reais. Reserve diretamente connosco e usufrua da melhor tarifa, check-in flexível e o tipo de conhecimento local que nenhum algoritmo consegue replicar.',
     'about_strip.cta_story': 'A nossa história',
-    'about_strip.img_alt': 'Os nossos apartamentos em Ponta Delgada',
+    'about_strip.img_alt': 'Quatro imagens de São Miguel: um ananás dos Açores, uma lagoa, as Portas da Cidade em Ponta Delgada e uma hóspede a ler o nosso guia local',
 
     // Bottom CTA banner (index)
     'cta_banner.h2': 'Pronto para descobrir os Açores?',
@@ -271,7 +271,7 @@ export const ui = {
     'about.story_p2': 'Como residentes de longa data e anfitriões dedicados, vimos inúmeros visitantes à procura de ligações reais à cultura local, recomendações honestas e hospitalidade genuína — e a encontrarem apenas opções corporativas e distantes.',
     'about.story_p3': 'Por isso, escolhemos cuidadosamente gerir três propriedades no coração da cidade, cada uma com a sua personalidade, mas todas partilhando uma coisa: são lugares onde teríamos gosto em receber amigos e família.',
     'about.story_p4': 'Hoje, a Ramalho Apartments é uma porta de entrada para a hospitalidade açoriana genuína. Todas as propriedades são geridas diretamente por nós — sem intermediários, sem surpresas. Quando fica connosco, recebe dicas de locais, recomendações personalizadas e um serviço de pessoas que verdadeiramente conhecem e amam este lugar.',
-    'about.story_img_alt': 'Vista de Ponta Delgada e os nossos apartamentos',
+    'about.story_img_alt': 'A torre sineira a preto e branco da Igreja Matriz de São Sebastião, no centro de Ponta Delgada',
     'about.values_h2': 'O que defendemos',
     'about.value1_title': 'Casas autênticas',
     'about.value1_desc': 'Apartamentos com personalidade, não quartos de hotel estéreis.',

@@ -1,6 +1,7 @@
 ---
 import PropertyLayout from '../../layouts/PropertyLayout.astro';
 import { propertyData } from '../../i18n/properties';
+import { imageAlt } from '../../i18n/image-alt';
 import amorimHero from '../../assets/properties/amorim/Screenshot 2026-05-03 145515.png';
 import amorim2 from '../../assets/properties/amorim/Screenshot 2026-05-03 145557.png';
 import amorim3 from '../../assets/properties/amorim/Screenshot 2026-05-03 145621.png';
@@ -20,6 +21,7 @@ const galleryImages = [amorim2, amorim3, amorim4];
   metaTitle={p.metaTitle}
   metaDescription={p.metaDescription}
   slug="amorim"
+  imageAlts={imageAlt[locale].amorim}
   heroImage={amorimHero}
   {galleryImages}
   amenities={[...p.amenities]}

@@ -1,6 +1,7 @@
 ---
 import PropertyLayout from '../../layouts/PropertyLayout.astro';
 import { propertyData } from '../../i18n/properties';
+import { imageAlt } from '../../i18n/image-alt';
 import duplexHero from '../../assets/properties/duplex/Screenshot 2026-05-03 145842.png';
 import duplex2 from '../../assets/properties/duplex/Screenshot 2026-05-03 145744.png';
 import duplex3 from '../../assets/properties/duplex/Screenshot 2026-05-03 145812.png';
@@ -24,6 +25,7 @@ const galleryImages = [duplex2, duplex3, duplex4, duplex5, duplex6, duplex7, dup
   metaTitle={p.metaTitle}
   metaDescription={p.metaDescription}
   slug="duplex"
+  imageAlts={imageAlt[locale].duplex}
   heroImage={duplexHero}
   {galleryImages}
   amenities={[...p.amenities]}
