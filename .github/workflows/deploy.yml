@@ -15,10 +15,34 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # Without this the script runs every line regardless of failures and the
+          # job still reports success. That is exactly what happened on
+          # 2026-08-09: `git pull` aborted, the site was rebuilt from stale
+          # source, and the run showed green.
+          script_stop: true
           script: |
+            set -euo pipefail
             cd /srv/ramalho-apartments/site
-            git pull origin main
-            npm install
+
+            git fetch origin main
+
+            # `npm install` rewrites package-lock.json on the server, which left
+            # the working tree dirty and made every subsequent `git pull` abort
+            # with "your local changes would be overwritten". Discard that one
+            # generated file before merging. Using `npm ci` below stops it
+            # recurring, so this is belt and braces.
+            git checkout -- package-lock.json || true
+
+            # Fast-forward only: if the server has diverged, fail loudly rather
+            # than silently deploying something nobody wrote.
+            git merge --ff-only origin/main
+
+            echo "Deploying $(git rev-parse --short HEAD) — $(git log -1 --pretty=%s)"
+
+            # `ci` installs exactly what the lockfile says and does not rewrite
+            # it, unlike `install`.
+            npm ci
             npm run build
+
             cd /srv/ramalho-apartments
             docker-compose restart
