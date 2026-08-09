@@ -1,8 +1,13 @@
 export const ui = {
   en: {
-    // Meta
-    'site.default_title': 'Ramalho Apartments | Premium Stays in Ponta Delgada, Azores',
-    'site.default_description': 'Discover luxury short-term rentals in Ponta Delgada, Azores. Book direct for the best rates on our curated collection of apartments.',
+    // Meta — search-result titles and descriptions only. Never rendered on the page.
+    // "Premium" / "luxury" were dropped: near-zero search volume in this market,
+    // and they crowd out the terms guests actually type (bedroom count, centre,
+    // airport, capacity, book direct).
+    'site.default_title': 'Apartments in Ponta Delgada, Azores | Ramalho Apartments',
+    'site.default_description': 'Three self-catering apartments in central Ponta Delgada, owner-run. Book direct on WhatsApp for the best rate. Sleeps up to 6, 2 km from the airport.',
+    'properties.meta_title': 'Our Apartments in Ponta Delgada | Ramalho Apartments',
+    'properties.meta_description': 'Compare our three Ponta Delgada apartments: a 3-bed from €80/night plus two 2-beds opening October 2026. Each sleeps 6. Book direct, no platform fees.',
 
     // Nav
     'nav.home': 'Home',
@@ -106,8 +111,8 @@ export const ui = {
     'property.no_obligation': 'No obligation · cancel anytime',
 
     // About page
-    'about.title': 'About – Ramalho Apartments',
-    'about.description': 'Learn about Ramalho Apartments and get in touch with our team in Ponta Delgada, Azores.',
+    'about.title': 'About Us | Ramalho Apartments, Ponta Delgada',
+    'about.description': 'We are Ponta Delgada residents who own and run all three apartments ourselves. No agency, no middlemen — book direct and save up to 20% on platform rates.',
     'about.eyebrow': 'About us',
     'about.h1': 'A passion for the Azores and genuine hospitality',
     'about.intro': "We're lifelong residents of Ponta Delgada who opened our homes to the world — so travellers could experience the real Azores, not just a listing.",
@@ -146,9 +151,13 @@ export const ui = {
   },
 
   pt: {
-    // Meta
-    'site.default_title': 'Ramalho Apartments | Alojamento Premium em Ponta Delgada, Açores',
-    'site.default_description': 'Descubra apartamentos de luxo para arrendamento de curta duração em Ponta Delgada, Açores. Reserve diretamente para as melhores tarifas.',
+    // Meta — escrito de raiz em português europeu, não traduzido do inglês.
+    // Usa os termos que os hóspedes portugueses realmente pesquisam:
+    // alojamento local, T3/T2, centro, aeroporto, reserva direta.
+    'site.default_title': 'Apartamentos em Ponta Delgada, Açores | Ramalho Apartments',
+    'site.default_description': 'Três apartamentos de alojamento local no centro de Ponta Delgada, geridos pelos proprietários. Reserve direto por WhatsApp e pague menos. Até 6 hóspedes.',
+    'properties.meta_title': 'Apartamentos em Ponta Delgada Centro | Ramalho Apartments',
+    'properties.meta_description': 'Compare os nossos três apartamentos em Ponta Delgada: T3 desde €80/noite e dois T2 a abrir em outubro de 2026. Reserva direta, sem comissões.',
 
     // Nav
     'nav.home': 'Início',
@@ -252,8 +261,8 @@ export const ui = {
     'property.no_obligation': 'Sem compromisso · cancele a qualquer momento',
 
     // About page
-    'about.title': 'Sobre Nós – Ramalho Apartments',
-    'about.description': 'Conheça a Ramalho Apartments e entre em contacto com a nossa equipa em Ponta Delgada, Açores.',
+    'about.title': 'Sobre Nós | Ramalho Apartments, Ponta Delgada',
+    'about.description': 'Somos residentes em Ponta Delgada e gerimos os três apartamentos pessoalmente. Sem agências nem intermediários: reserve direto e poupe até 20%.',
     'about.eyebrow': 'Sobre nós',
     'about.h1': 'Uma paixão pelos Açores e pela hospitalidade genuína',
     'about.intro': 'Somos residentes de longa data em Ponta Delgada que abriram as suas casas ao mundo — para que os viajantes pudessem conhecer os Açores de verdade, e não apenas uma listagem.',

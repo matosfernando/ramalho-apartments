@@ -2,6 +2,8 @@ export const propertyData = {
   en: {
     ramalho: {
       title: 'Ramalho Three Bedroom Apartment – Ramalho Apartments',
+      metaTitle: '3-Bed Apartment, Ponta Delgada Centre | Ramalho Apartments',
+      metaDescription: 'Three-bedroom apartment on Rua Rodrigo Rodrigues, central Ponta Delgada. Sleeps 6, 2 baths, full kitchen, WiFi. From €80/night booked direct on WhatsApp.',
       propertyName: 'Ramalho Three Bedroom Apartment',
       description: 'Spacious three-bedroom apartment in the heart of Ponta Delgada — comfortably sleeping up to 6 guests.',
       specs: '3 bedrooms · 3 beds · 2 baths · up to 6 guests',
@@ -29,6 +31,8 @@ export const propertyData = {
     },
     amorim: {
       title: 'Amorim Two Bedroom Apartment – Ramalho Apartments',
+      metaTitle: '2-Bed Apartment, Ponta Delgada | Ramalho Apartments',
+      metaDescription: 'Two-bedroom apartment on Rua do Amorim, minutes from Ponta Delgada centre. Sleeps 6, air conditioning, private outdoor space. Opens October 2026.',
       propertyName: 'Amorim Two Bedroom Apartment',
       description: 'Contemporary two-bedroom apartment on Rua do Amorim — stylish interiors, private balcony, and space for up to 6 guests.',
       specs: '2 bedrooms · 2 beds · 1 bath · up to 6 guests',
@@ -54,6 +58,8 @@ export const propertyData = {
     },
     duplex: {
       title: 'Amorim Two Bedroom Duplex – Ramalho Apartments',
+      metaTitle: '2-Bed Duplex, Ponta Delgada | Ramalho Apartments',
+      metaDescription: 'Split-level two-bedroom duplex on Rua do Amorim, Ponta Delgada. Sleeps 6 over two floors, 2 bathrooms, air conditioning. Opens October 2026.',
       propertyName: 'Amorim Two Bedroom Duplex',
       description: 'Split-level two-bedroom duplex on Rua do Amorim — two bathrooms, generous living space, and room for up to 6 guests.',
       specs: '2 bedrooms · 2 beds · 2 baths · up to 6 guests',
@@ -82,6 +88,8 @@ export const propertyData = {
   pt: {
     ramalho: {
       title: 'Apartamento Ramalho T3 – Ramalho Apartments',
+      metaTitle: 'Apartamento T3 em Ponta Delgada Centro | Ramalho',
+      metaDescription: 'Apartamento T3 na Rua Rodrigo Rodrigues, centro de Ponta Delgada. Até 6 hóspedes, 2 casas de banho e cozinha equipada. Desde €80/noite, reserva direta.',
       propertyName: 'Apartamento Ramalho T3',
       description: 'Espaçoso apartamento de três quartos no coração de Ponta Delgada — com capacidade para até 6 hóspedes.',
       specs: '3 quartos · 3 camas · 2 casas de banho · até 6 hóspedes',
@@ -109,6 +117,8 @@ export const propertyData = {
     },
     amorim: {
       title: 'Apartamento Amorim T2 – Ramalho Apartments',
+      metaTitle: 'Apartamento T2 em Ponta Delgada | Ramalho Apartments',
+      metaDescription: 'Apartamento T2 na Rua do Amorim, a minutos do centro de Ponta Delgada. Até 6 hóspedes, ar condicionado e espaço exterior privado. Abre em outubro de 2026.',
       propertyName: 'Apartamento Amorim T2',
       description: 'Moderno apartamento de dois quartos na Rua do Amorim — interiores elegantes, varanda privada e espaço para até 6 hóspedes.',
       specs: '2 quartos · 2 camas · 1 casa de banho · até 6 hóspedes',
@@ -134,6 +144,8 @@ export const propertyData = {
     },
     duplex: {
       title: 'Duplex Amorim T2 – Ramalho Apartments',
+      metaTitle: 'Duplex T2 em Ponta Delgada | Ramalho Apartments',
+      metaDescription: 'Duplex T2 em dois pisos na Rua do Amorim, Ponta Delgada. Até 6 hóspedes, 2 casas de banho e ar condicionado. Abre em outubro de 2026.',
       propertyName: 'Duplex Amorim T2',
       description: 'Duplex de dois quartos em dois pisos na Rua do Amorim — duas casas de banho, ampla sala comum e espaço para até 6 hóspedes.',
       specs: '2 quartos · 2 camas · 2 casas de banho · até 6 hóspedes',

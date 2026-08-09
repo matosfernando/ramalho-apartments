@@ -10,7 +10,12 @@ type ImageSrc = ImageMetadata | string;
 
 interface Props {
   title: string;
+  /** Rendered as visible text under the H1 — not the meta description. */
   description: string;
+  /** Search-result title. Falls back to `title` if not supplied. */
+  metaTitle?: string;
+  /** Search-result description. Falls back to `description` if not supplied. */
+  metaDescription?: string;
   heroImage: ImageSrc;
   galleryImages?: ImageSrc[];
   amenities?: Amenity[];
@@ -30,6 +35,8 @@ interface Props {
 const {
   title,
   description,
+  metaTitle,
+  metaDescription,
   heroImage,
   galleryImages = [],
   amenities = [],
@@ -59,7 +66,7 @@ const allImages: ImageSrc[] = [heroImage, ...galleryImages];
 const isLocal = (src: ImageSrc): src is ImageMetadata => typeof src === 'object';
 ---
 
-<Layout {title} description={description} {locale}>
+<Layout title={metaTitle ?? title} description={metaDescription ?? description} {locale}>
 
   <!-- Photo header -->
   <section style="position:relative; background:#f7f7f7;">
