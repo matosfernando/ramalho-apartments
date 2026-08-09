@@ -6,6 +6,7 @@ import Footer from '../components/Footer.astro';
 import { useTranslations, getAlternateLocale } from '../i18n/utils';
 import { switcherPath, findRoute, normalisePath, ROUTES, type Locale, type RouteKey } from '../seo/routes';
 import { baseGraph, type Crumb } from '../seo/schema';
+import { OG } from '../seo/og';
 
 interface Props {
   title?: string;
@@ -75,6 +76,12 @@ if (routeKey && routeKey !== 'home') {
   crumbs.push({ name: breadcrumbName ?? crumbLabels[routeKey] });
 }
 
+// Social preview: falls back to the route's own image so no page can ship
+// without one. Previously no page emitted og:image at all.
+const og = routeKey ? OG[routeKey] : undefined;
+const resolvedOgImage = ogImage ?? og?.image;
+const resolvedOgAlt   = ogImageAlt ?? og?.alt[localePrefix];
+
 const graph = [
   ...baseGraph({
     path,
@@ -95,8 +102,8 @@ const graph = [
     locale={locale as Locale}
     title={resolvedTitle}
     description={resolvedDesc}
-    {ogImage}
-    {ogImageAlt}
+    ogImage={resolvedOgImage}
+    ogImageAlt={resolvedOgAlt}
     schema={graph}
   />
   <!-- Removed in the font phase, together with the Google Fonts @import in global.css. -->
