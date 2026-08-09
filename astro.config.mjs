@@ -11,6 +11,11 @@ export default defineConfig({
   site: 'https://ramalhoapartments.com',
   output: 'static',
 
+  // The origin serves directory-style URLs (/properties/ -> /properties/index.html).
+  // Making that explicit keeps Astro.url, internal links and canonicals consistent
+  // between dev and production, and stops non-slash URLs bouncing through redirects.
+  trailingSlash: 'always',
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'pt'],
@@ -24,10 +29,30 @@ export default defineConfig({
     sitemap({
       i18n: {
         defaultLocale: 'en',
+        // Must match the hreflang codes emitted by src/components/SEO.astro,
+        // otherwise Google receives two conflicting sets of language annotations.
         locales: {
-          en: 'en-GB',
+          en: 'en',
           pt: 'pt-PT',
         },
+      },
+      serialize(item) {
+        const path = new URL(item.url).pathname;
+        const at = (...suffixes) => suffixes.some((s) => path.endsWith(s));
+
+        if (path === '/' || path === '/pt/') {
+          return { ...item, changefreq: 'weekly', priority: 1.0 };
+        }
+        if (at('/properties/')) {
+          return { ...item, changefreq: 'weekly', priority: 0.9 };
+        }
+        if (at('/ramalho/', '/amorim/', '/amorim-duplex/')) {
+          return { ...item, changefreq: 'weekly', priority: 0.9 };
+        }
+        if (at('/about/')) {
+          return { ...item, changefreq: 'monthly', priority: 0.6 };
+        }
+        return { ...item, changefreq: 'monthly', priority: 0.5 };
       },
     }),
   ],
