@@ -12,9 +12,22 @@
  */
 import type { RouteKey } from './routes';
 
+export interface GeoPoint {
+  latitude: number;
+  longitude: number;
+}
+
 export interface PropertyFacts {
   routeKey: RouteKey;
   streetAddress: string;
+  postalCode?: string;
+  /** Rooftop coordinates, supplied by the owner as Google Maps pins. */
+  geo?: GeoPoint;
+  /**
+   * Count of actual beds, not sleeping capacity. Capacity lives in
+   * maxOccupancy — a sofa bed adds two to capacity but only one to this.
+   */
+  numberOfBeds?: number;
   numberOfBedrooms: number;
   numberOfBathroomsTotal: number;
   maxOccupancy: number;
@@ -32,7 +45,12 @@ export const PROPERTY_FACTS = {
   ramalho: {
     routeKey: 'ramalho',
     streetAddress: 'Rua Rodrigo Rodrigues 4',
+    // postalCode still pending — the owner's map pin carried no address record,
+    // and a street-level guess would defeat the point of NAP consistency.
+    geo: { latitude: 37.743679, longitude: -25.691076 },
     numberOfBedrooms: 3,
+    // Three double bedrooms, sleeping six.
+    numberOfBeds: 3,
     numberOfBathroomsTotal: 2,
     maxOccupancy: 6,
     price: 80,
@@ -41,7 +59,11 @@ export const PROPERTY_FACTS = {
   amorim: {
     routeKey: 'amorim',
     streetAddress: 'Rua do Amorim 15',
+    postalCode: '9500-020',
+    geo: { latitude: 37.7488077, longitude: -25.6669187 },
     numberOfBedrooms: 2,
+    // Two double bedrooms plus a sofa bed: three beds, sleeping six.
+    numberOfBeds: 3,
     numberOfBathroomsTotal: 1,
     maxOccupancy: 6,
     preOrder: true,
@@ -50,7 +72,12 @@ export const PROPERTY_FACTS = {
   duplex: {
     routeKey: 'duplex',
     streetAddress: 'Rua do Amorim 15',
+    postalCode: '9500-020',
+    geo: { latitude: 37.7488077, longitude: -25.6669187 },
     numberOfBedrooms: 2,
+    // One double, one twin room (two singles), plus a sofa bed: four beds
+    // sleeping six. The twin room is read from the renders — confirm.
+    numberOfBeds: 4,
     numberOfBathroomsTotal: 2,
     maxOccupancy: 6,
     preOrder: true,
@@ -63,11 +90,8 @@ export type PropertySlug = keyof typeof PROPERTY_FACTS;
 /**
  * PENDING — see "Information I need from you" in SEO-AUDIT.md:
  *
- *   geo                     no coordinates anywhere in the repo; the map embeds
- *                           use a text query, so nothing usable is stored
- *   postalCode              street and number only
- *   numberOfBeds            the amorim units state "2 beds / sleeps 6", which
- *                           cannot both be true; the real inventory is unknown
+ *   postalCode (ramalho)    the owner's map pin was a dropped coordinate with no
+ *                           address record attached, so no postcode came with it
  *   numberOfRooms           total rooms, not just bedrooms
  *   floorSize               m² per unit
  *   checkinTime/checkoutTime  the FAQ says 15:00 / 11:00, but that is EN-only

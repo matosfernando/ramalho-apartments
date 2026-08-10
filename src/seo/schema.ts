@@ -37,18 +37,22 @@ function compact(node: Node): Node {
   return Object.fromEntries(Object.entries(node).filter(([, v]) => v !== undefined));
 }
 
-const postalAddress = (streetAddress: string): Node => ({
-  '@type': 'PostalAddress',
-  streetAddress,
-  addressLocality: BUSINESS.address.addressLocality,
-  addressRegion: BUSINESS.address.addressRegion,
-  addressCountry: BUSINESS.address.addressCountry,
-  // postalCode omitted until supplied — see property-facts.ts PENDING
-});
+const postalAddress = (streetAddress: string, postalCode?: string): Node =>
+  compact({
+    '@type': 'PostalAddress',
+    streetAddress,
+    addressLocality: BUSINESS.address.addressLocality,
+    addressRegion: BUSINESS.address.addressRegion,
+    postalCode,
+    addressCountry: BUSINESS.address.addressCountry,
+  });
+
+const geoPoint = (geo?: { latitude: number; longitude: number }): Node | undefined =>
+  geo && { '@type': 'GeoCoordinates', latitude: geo.latitude, longitude: geo.longitude };
 
 /** The business itself. Present on every page. */
 export function organisationNode(): Node {
-  return {
+  return compact({
     '@type': 'LodgingBusiness',
     '@id': ORG_ID,
     name: BUSINESS.name,
@@ -58,13 +62,14 @@ export function organisationNode(): Node {
     priceRange: '€€',
     currenciesAccepted: 'EUR',
     address: postalAddress(BUSINESS.address.streetAddress),
+    geo: geoPoint(PROPERTY_FACTS.ramalho.geo),
     areaServed: { '@type': 'AdministrativeArea', name: 'São Miguel, Azores' },
     sameAs: [...BUSINESS.sameAs],
     containsPlace: (Object.keys(PROPERTY_FACTS) as PropertySlug[]).map((slug) => ({
       '@id': apartmentId(slug),
     })),
     // logo / image omitted: no logo asset exists in this repo yet
-  };
+  });
 }
 
 export function websiteNode(): Node {
@@ -138,8 +143,10 @@ export function apartmentNode(input: ApartmentInput): Node {
     description: input.description,
     url: abs(input.path),
     image: input.images.length ? input.images : undefined,
-    address: postalAddress(f.streetAddress),
+    address: postalAddress(f.streetAddress, f.postalCode),
+    geo: geoPoint(f.geo),
     numberOfBedrooms: f.numberOfBedrooms,
+    numberOfBeds: f.numberOfBeds,
     numberOfBathroomsTotal: f.numberOfBathroomsTotal,
     occupancy: {
       '@type': 'QuantitativeValue',
@@ -154,8 +161,8 @@ export function apartmentNode(input: ApartmentInput): Node {
         value: true,
       })),
     containedInPlace: { '@id': ORG_ID },
-    // geo, numberOfBeds, numberOfRooms, floorSize, petsAllowed, smokingAllowed,
-    // checkinTime and checkoutTime are omitted until confirmed.
+    // numberOfRooms, floorSize, petsAllowed, smokingAllowed, checkinTime and
+    // checkoutTime are still omitted — see property-facts.ts PENDING.
   });
 }
 
