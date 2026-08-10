@@ -32,6 +32,8 @@ export const BUSINESS = {
   sameAs: [
     'https://www.facebook.com/RamalhoApartments',
     'https://www.booking.com/hotel/pt/ramalho-apartments-t3-cidade-ponta-delgada.html',
+    'https://www.airbnb.pt/h/ramalhoapartments',
+    'https://www.vrbo.com/pt-pt/arrendamento-ferias/p10981843',
   ],
 } as const;
 
@@ -43,7 +45,6 @@ export const BUSINESS = {
  *   geo               latitude/longitude for both buildings
  *   logo              no logo image exists in this repo (the header logo is CSS text)
  *   instagram         footer currently links to a bare instagram.com
- *   airbnb, vrbo      listing URLs for sameAs
  *   checkinTime       FAQ says 15:00 / 11:00 — needs confirming as authoritative
  *   petsAllowed       FAQ says "generally yes"; schema needs a boolean
  *   smokingAllowed    not stated anywhere
