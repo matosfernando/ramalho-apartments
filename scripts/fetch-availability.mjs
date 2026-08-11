@@ -179,6 +179,12 @@ for (const [slug, config] of Object.entries(UNITS)) {
     continue;
   }
 
+  // Loudly, because a partially configured unit still renders a calendar — one
+  // that shows nights as free which another channel has already sold.
+  for (const env of missing) {
+    console.log(`  ${slug}: WARNING — ${env} is not set. Bookings from that channel will show as AVAILABLE.`);
+  }
+
   const ranges = [];
   const channels = [];
   let failed = false;

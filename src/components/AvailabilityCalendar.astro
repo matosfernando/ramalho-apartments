@@ -105,9 +105,9 @@ const footnote = `${t('availability.updated')} ${updatedAt} · ${t('availability
       <span class="legend-item"><span class="legend-swatch is-taken" aria-hidden="true"></span>{t('availability.taken')}</span>
     </p>
 
-    <div class="scroll-track cal-track">
-      {months.map((m) => (
-        <table class="cal-month">
+    <div class="cal-grid">
+      {months.map((m, i) => (
+        <table class={`cal-month${i < 2 ? ' is-visible' : ''}`} data-index={i}>
           <caption>{m.label}</caption>
           <thead>
             <tr>{weekdayNames.map((w) => <th scope="col">{w}</th>)}</tr>
@@ -161,15 +161,20 @@ const footnote = `${t('availability.updated')} ${updatedAt} · ${t('availability
   background: linear-gradient(to top right, transparent 45%, var(--clr-text-3) 45%, var(--clr-text-3) 55%, transparent 55%);
 }
 
-.cal-track { display: flex; gap: 1.5rem; padding-bottom: 0.5rem; scroll-behavior: smooth; }
-
-.cal-month {
-  flex: 0 0 auto;
-  width: min(100%, 260px);
-  border-collapse: collapse;
-  scroll-snap-align: start;
+/* Two months side by side, paginated — the pattern Airbnb, Booking.com and
+   Vrbo all use. A twelve-month scroll overflowed the content column and left
+   most months off-screen. Every month is in the document; the arrows only
+   change which two are shown, so paging is instant and works from cold. */
+.cal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem 2rem;
+  max-width: 560px;
 }
-@media (min-width: 768px) { .cal-month { width: 260px; } }
+@media (min-width: 620px) { .cal-grid { grid-template-columns: 1fr 1fr; } }
+
+.cal-month { border-collapse: collapse; width: 100%; display: none; }
+.cal-month.is-visible { display: table; }
 
 .cal-month caption {
   caption-side: top; text-align: left;
@@ -205,27 +210,38 @@ const footnote = `${t('availability.updated')} ${updatedAt} · ${t('availability
 </style>
 
 <script>
-  // Paging only — the months are already in the document, so this scrolls
-  // rather than loads. Matches the property carousel's behaviour.
   document.querySelectorAll<HTMLElement>('.availability').forEach((root) => {
-    const track = root.querySelector<HTMLElement>('.cal-track');
+    const months = Array.from(root.querySelectorAll<HTMLElement>('.cal-month'));
     const prev = root.querySelector<HTMLButtonElement>('.cal-prev');
     const next = root.querySelector<HTMLButtonElement>('.cal-next');
-    if (!track) return;
+    if (months.length === 0) return;
 
-    const step = () => {
-      const month = track.querySelector<HTMLElement>('.cal-month');
-      return month ? month.offsetWidth + 24 : 280;
-    };
-    prev?.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
-    next?.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+    // Two months on a wide screen, one on a phone — matching the grid.
+    const twoUp = window.matchMedia('(min-width: 620px)');
+    let page = 0;
 
-    const sync = () => {
-      const max = track.scrollWidth - track.clientWidth - 4;
-      if (prev) prev.disabled = track.scrollLeft <= 4;
-      if (next) next.disabled = track.scrollLeft >= max;
+    const perPage = () => (twoUp.matches ? 2 : 1);
+    const pages = () => Math.ceil(months.length / perPage());
+
+    const render = () => {
+      const size = perPage();
+      page = Math.min(page, pages() - 1);
+      const first = page * size;
+      months.forEach((m, i) => m.classList.toggle('is-visible', i >= first && i < first + size));
+      if (prev) prev.disabled = page === 0;
+      if (next) next.disabled = page >= pages() - 1;
     };
-    track.addEventListener('scroll', sync, { passive: true });
-    sync();
+
+    prev?.addEventListener('click', () => { if (page > 0) { page--; render(); } });
+    next?.addEventListener('click', () => { if (page < pages() - 1) { page++; render(); } });
+
+    // Keep the same month in view when the layout switches between one and two up.
+    twoUp.addEventListener('change', () => {
+      const anchor = page * (twoUp.matches ? 1 : 2);
+      page = Math.floor(anchor / perPage());
+      render();
+    });
+
+    render();
   });
 </script>
