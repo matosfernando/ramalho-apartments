@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main
+  # Hourly refresh of the availability calendar. The site is static, so booked
+  # dates are baked into the HTML at build time and only change when we rebuild.
+  # Offset from the hour because GitHub's scheduler is busiest exactly on it.
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -20,6 +26,9 @@ jobs:
           # 2026-08-09: `git pull` aborted, the site was rebuilt from stale
           # source, and the run showed green.
           script_stop: true
+          # Forward the iCal feed URL to the build. It stays a GitHub secret and
+          # is never written to the server or the repo.
+          envs: AIRBNB_ICAL_RAMALHO,TRIGGER
           script: |
             set -euo pipefail
             cd /srv/ramalho-apartments/site
@@ -37,12 +46,26 @@ jobs:
             # than silently deploying something nobody wrote.
             git merge --ff-only origin/main
 
-            echo "Deploying $(git rev-parse --short HEAD) — $(git log -1 --pretty=%s)"
+            echo "Deploying $(git rev-parse --short HEAD) — $(git log -1 --pretty=%s) [${TRIGGER}]"
 
-            # `ci` installs exactly what the lockfile says and does not rewrite
-            # it, unlike `install`.
-            npm ci
+            # Dependencies cannot have changed on a scheduled rebuild, and `npm ci`
+            # wipes and reinstalls node_modules every time. Skip it hourly.
+            if [ "${TRIGGER}" != "schedule" ]; then
+              npm ci
+            fi
+
+            # prebuild fetches the iCal feeds; a channel being unreachable falls
+            # back to the previous data rather than failing the build.
             npm run build
 
-            cd /srv/ramalho-apartments
-            docker-compose restart
+            # nginx serves ./site/dist through a read-only bind mount, so new
+            # files are live the moment the build finishes. A restart is only
+            # needed when the container's own config could have changed, which
+            # is on a real push — not on an hourly content refresh.
+            if [ "${TRIGGER}" != "schedule" ]; then
+              cd /srv/ramalho-apartments
+              docker-compose restart
+            fi
+        env:
+          AIRBNB_ICAL_RAMALHO: ${{ secrets.AIRBNB_ICAL_RAMALHO }}
+          TRIGGER: ${{ github.event_name }}

@@ -1,0 +1,231 @@
+---
+/**
+ * Read-only availability calendar.
+ *
+ * Every date is rendered at build time from src/data/availability.json, which
+ * scripts/fetch-availability.mjs produces from the unit's iCal feeds. Nothing is
+ * fetched in the browser, so there is no loading state, no CORS problem and no
+ * way for the feed URL to reach a visitor.
+ *
+ * Deliberately not a date picker. It answers "are my dates free?" and hands the
+ * conversation to WhatsApp, which is where this business actually books.
+ *
+ * Renders nothing at all when the unit has no feed configured or the last fetch
+ * failed with no cached data — an empty calendar is worse than no calendar.
+ */
+import { useTranslations } from '../i18n/utils';
+import availability from '../data/availability.json';
+
+interface Props {
+  slug: string;
+  locale: string;
+}
+
+const { slug, locale } = Astro.props as Props;
+const t = useTranslations(locale);
+
+const unit = (availability.units as Record<string, any>)[slug];
+const show = Boolean(unit?.ok && Array.isArray(unit.blocked));
+
+const intlLocale = locale === 'pt' ? 'pt-PT' : 'en-GB';
+const blocked = new Set<string>(show ? unit.blocked : []);
+
+// ── build the month grids ───────────────────────────────────────────────
+const key = (d: Date) => d.toISOString().slice(0, 10);
+const today = new Date();
+const todayKey = key(today);
+
+const monthFmt = new Intl.DateTimeFormat(intlLocale, { month: 'long', year: 'numeric', timeZone: 'UTC' });
+const dayFmt = new Intl.DateTimeFormat(intlLocale, { day: 'numeric', month: 'long', timeZone: 'UTC' });
+
+/** Monday-first, which is the convention in both the UK and Portugal. */
+const weekdayFmt = new Intl.DateTimeFormat(intlLocale, { weekday: 'short', timeZone: 'UTC' });
+const weekdayNames = Array.from({ length: 7 }, (_, i) =>
+  // 2024-01-01 was a Monday. Trimmed to three characters: this ICU build
+  // returns full names for pt-PT ("segunda"), which will not fit seven columns,
+  // and three letters gives the conventional abbreviations in both languages —
+  // Mon/Tue and seg/ter — with no two days sharing a label.
+  weekdayFmt.format(new Date(Date.UTC(2024, 0, 1 + i))).replace(/\.$/, '').slice(0, 3),
+);
+
+const horizon = availability.horizonMonths ?? 12;
+const months = Array.from({ length: horizon }, (_, offset) => {
+  const first = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth() + offset, 1));
+  const year = first.getUTCFullYear();
+  const month = first.getUTCMonth();
+  const daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+  // getUTCDay(): 0 = Sunday. Shift so Monday is 0.
+  const leadingBlanks = (first.getUTCDay() + 6) % 7;
+
+  const days = Array.from({ length: daysInMonth }, (_, i) => {
+    const date = new Date(Date.UTC(year, month, i + 1));
+    const k = key(date);
+    return {
+      day: i + 1,
+      iso: k,
+      label: dayFmt.format(date),
+      isPast: k < todayKey,
+      isToday: k === todayKey,
+      isBlocked: blocked.has(k),
+    };
+  });
+
+  return { label: monthFmt.format(first), leadingBlanks, days };
+});
+
+const updatedAt = new Intl.DateTimeFormat(intlLocale, {
+  day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', timeZone: 'UTC',
+}).format(new Date(availability.generatedAt ?? Date.now()));
+const footnote = `${t('availability.updated')} ${updatedAt} · ${t('availability.confirm')}`;
+---
+
+{show && (
+  <div class="availability">
+    <hr class="divider" />
+    <div class="availability-head">
+      <h2 style="font-size:1.2rem; margin:0;">{t('availability.title')}</h2>
+      <div class="carousel-arrows" aria-label={t('availability.controls')}>
+        <button class="cal-prev btn btn-outline btn-sm" type="button" aria-label={t('availability.prev')}
+                style="padding:0.4rem 0.6rem; border-radius:50%;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <button class="cal-next btn btn-outline btn-sm" type="button" aria-label={t('availability.next')}
+                style="padding:0.4rem 0.6rem; border-radius:50%;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <p class="availability-legend">
+      <span class="legend-item"><span class="legend-swatch is-free" aria-hidden="true"></span>{t('availability.free')}</span>
+      <span class="legend-item"><span class="legend-swatch is-taken" aria-hidden="true"></span>{t('availability.taken')}</span>
+    </p>
+
+    <div class="scroll-track cal-track">
+      {months.map((m) => (
+        <table class="cal-month">
+          <caption>{m.label}</caption>
+          <thead>
+            <tr>{weekdayNames.map((w) => <th scope="col">{w}</th>)}</tr>
+          </thead>
+          <tbody>
+            {Array.from({ length: Math.ceil((m.leadingBlanks + m.days.length) / 7) }, (_, week) => (
+              <tr>
+                {Array.from({ length: 7 }, (_, dow) => {
+                  const index = week * 7 + dow - m.leadingBlanks;
+                  const d = m.days[index];
+                  if (!d) return <td class="cal-pad"></td>;
+                  return (
+                    <td class={`cal-day${d.isBlocked ? ' is-blocked' : ''}${d.isPast ? ' is-past' : ''}${d.isToday ? ' is-today' : ''}`}>
+                      <time datetime={d.iso}>{d.day}</time>
+                      {d.isBlocked && !d.isPast && <span class="cal-sr">{d.label} — {t('availability.taken')}</span>}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ))}
+    </div>
+
+    <p class="availability-note">
+      {footnote}
+    </p>
+  </div>
+)}
+
+<style>
+.availability-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; margin-bottom: 0.75rem;
+}
+
+.availability-legend {
+  display: flex; flex-wrap: wrap; gap: 1rem;
+  font-size: 0.8rem; color: var(--clr-text-2); margin: 0 0 1.25rem;
+}
+.legend-item { display: inline-flex; align-items: center; gap: 0.4rem; }
+.legend-swatch {
+  width: 14px; height: 14px; border-radius: 4px; display: inline-block;
+  border: 1px solid var(--clr-border);
+}
+.legend-swatch.is-free  { background: var(--clr-bg); }
+.legend-swatch.is-taken { background: var(--clr-bg-subtle); position: relative; }
+.legend-swatch.is-taken::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to top right, transparent 45%, var(--clr-text-3) 45%, var(--clr-text-3) 55%, transparent 55%);
+}
+
+.cal-track { display: flex; gap: 1.5rem; padding-bottom: 0.5rem; scroll-behavior: smooth; }
+
+.cal-month {
+  flex: 0 0 auto;
+  width: min(100%, 260px);
+  border-collapse: collapse;
+  scroll-snap-align: start;
+}
+@media (min-width: 768px) { .cal-month { width: 260px; } }
+
+.cal-month caption {
+  caption-side: top; text-align: left;
+  font-size: 0.9rem; font-weight: 600; color: var(--clr-text);
+  padding-bottom: 0.6rem; white-space: nowrap;
+}
+.cal-month th {
+  font-size: 0.7rem; font-weight: 500; color: var(--clr-text-3);
+  padding-bottom: 0.35rem; text-align: center; font-variant-numeric: tabular-nums;
+}
+.cal-day, .cal-pad {
+  text-align: center; padding: 0.3rem 0;
+  font-size: 0.82rem; font-variant-numeric: tabular-nums;
+  color: var(--clr-text);
+}
+.cal-day time { display: block; line-height: 1.9; border-radius: 6px; }
+
+.cal-day.is-blocked        { color: var(--clr-text-3); }
+.cal-day.is-blocked time   { background: var(--clr-bg-subtle); text-decoration: line-through; }
+.cal-day.is-past           { color: var(--clr-text-3); opacity: 0.45; }
+.cal-day.is-past time      { text-decoration: none; background: none; }
+.cal-day.is-today time     { box-shadow: inset 0 0 0 1.5px var(--clr-heart); font-weight: 600; }
+
+.availability-note {
+  font-size: 0.78rem; color: var(--clr-text-2); margin: 1rem 0 0; line-height: 1.6;
+}
+
+/* Text alternative for cells whose meaning is carried visually. */
+.cal-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+</style>
+
+<script>
+  // Paging only — the months are already in the document, so this scrolls
+  // rather than loads. Matches the property carousel's behaviour.
+  document.querySelectorAll<HTMLElement>('.availability').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('.cal-track');
+    const prev = root.querySelector<HTMLButtonElement>('.cal-prev');
+    const next = root.querySelector<HTMLButtonElement>('.cal-next');
+    if (!track) return;
+
+    const step = () => {
+      const month = track.querySelector<HTMLElement>('.cal-month');
+      return month ? month.offsetWidth + 24 : 280;
+    };
+    prev?.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next?.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+
+    const sync = () => {
+      const max = track.scrollWidth - track.clientWidth - 4;
+      if (prev) prev.disabled = track.scrollLeft <= 4;
+      if (next) next.disabled = track.scrollLeft >= max;
+    };
+    track.addEventListener('scroll', sync, { passive: true });
+    sync();
+  });
+</script>

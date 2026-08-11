@@ -3,6 +3,7 @@ import Layout from './Layout.astro';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import { useTranslations } from '../i18n/utils';
+import AvailabilityCalendar from '../components/AvailabilityCalendar.astro';
 import { normalisePath, type Locale } from '../seo/routes';
 import { apartmentNode, offerNode, apartmentId } from '../seo/schema';
 import type { PropertySlug } from '../seo/property-facts';
@@ -191,6 +192,8 @@ const propertySchema = [
             </div>
           </div>
         )}
+
+        <AvailabilityCalendar {slug} {locale} />
 
         {mapEmbedUrl && (
           <div>

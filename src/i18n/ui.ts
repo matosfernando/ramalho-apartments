@@ -110,6 +110,16 @@ export const ui = {
     'property.early_bird': 'Early-bird priority for waitlist members',
     'property.no_obligation': 'No obligation · cancel anytime',
 
+    // Availability calendar
+    'availability.title': 'Availability',
+    'availability.free': 'Available',
+    'availability.taken': 'Booked',
+    'availability.updated': 'Updated',
+    'availability.confirm': 'Message us on WhatsApp to confirm your dates.',
+    'availability.controls': 'Calendar controls',
+    'availability.prev': 'Previous months',
+    'availability.next': 'Next months',
+
     // About page
     'about.title': 'About Us | Ramalho Apartments, Ponta Delgada',
     'about.description': 'We are Ponta Delgada residents who own and run all three apartments ourselves. No agency, no middlemen — book direct and save up to 20% on platform rates.',
@@ -259,6 +269,16 @@ export const ui = {
     'property.notify_email': 'Ser notificado por email',
     'property.early_bird': 'Prioridade para membros da lista de espera',
     'property.no_obligation': 'Sem compromisso · cancele a qualquer momento',
+
+    // Availability calendar
+    'availability.title': 'Disponibilidade',
+    'availability.free': 'Disponível',
+    'availability.taken': 'Reservado',
+    'availability.updated': 'Atualizado a',
+    'availability.confirm': 'Envie-nos mensagem no WhatsApp para confirmar as suas datas.',
+    'availability.controls': 'Controlos do calendário',
+    'availability.prev': 'Meses anteriores',
+    'availability.next': 'Meses seguintes',
 
     // About page
     'about.title': 'Sobre Nós | Ramalho Apartments, Ponta Delgada',

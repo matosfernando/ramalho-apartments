@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "verify": "node scripts/verify/index.mjs"
+    "verify": "node scripts/verify/index.mjs",
+    "prebuild": "node scripts/fetch-availability.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.4",
