@@ -26,9 +26,11 @@ jobs:
           # 2026-08-09: `git pull` aborted, the site was rebuilt from stale
           # source, and the run showed green.
           script_stop: true
-          # Forward the iCal feed URL to the build. It stays a GitHub secret and
-          # is never written to the server or the repo.
-          envs: AIRBNB_ICAL_RAMALHO,TRIGGER
+          # Forward the iCal feed URLs to the build. They stay GitHub secrets and
+          # are never written to the server or the repo. Every feed in
+          # scripts/fetch-availability.mjs must be listed here AND in env: below,
+          # or the build silently treats that channel as having no bookings.
+          envs: AIRBNB_ICAL_RAMALHO,BOOKING_ICAL_RAMALHO,VRBO_ICAL_RAMALHO,TRIGGER
           script: |
             set -euo pipefail
             cd /srv/ramalho-apartments/site
@@ -68,4 +70,6 @@ jobs:
             fi
         env:
           AIRBNB_ICAL_RAMALHO: ${{ secrets.AIRBNB_ICAL_RAMALHO }}
+          BOOKING_ICAL_RAMALHO: ${{ secrets.BOOKING_ICAL_RAMALHO }}
+          VRBO_ICAL_RAMALHO: ${{ secrets.VRBO_ICAL_RAMALHO }}
           TRIGGER: ${{ github.event_name }}
