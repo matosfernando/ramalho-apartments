@@ -36,8 +36,14 @@ const HORIZON_MONTHS = 12;
  */
 const UNITS = {
   ramalho: {
-    minimumNights: 2,
-    feeds: [{ channel: 'airbnb', env: 'AIRBNB_ICAL_RAMALHO' }],
+    // The owner advertises a two-night standard but accepts single nights, so
+    // no gap is closed. Raise this to 2 to hide unsellable orphan nights.
+    minimumNights: 1,
+    feeds: [
+      { channel: 'airbnb', env: 'AIRBNB_ICAL_RAMALHO' },
+      { channel: 'booking', env: 'BOOKING_ICAL_RAMALHO' },
+      { channel: 'vrbo', env: 'VRBO_ICAL_RAMALHO' },
+    ],
   },
   // amorim / duplex open in October 2026 and have no live calendar yet.
 };
@@ -48,19 +54,40 @@ const fromICal = (s) =>
   new Date(Date.UTC(+s.slice(0, 4), +s.slice(4, 6) - 1, +s.slice(6, 8)));
 const addDays = (d, n) => new Date(d.getTime() + n * 86400000);
 
+/**
+ * A single event longer than this is treated as "this channel is closed for that
+ * period", not as a booking. Vrbo in particular exports the far end of a
+ * listing's availability window as one enormous Blocked event — currently
+ * 2027-01-01 to 2029-01-01. Merging that would black out two years of a
+ * calendar whose whole purpose is to show direct availability.
+ */
+const CHANNEL_CLOSURE_NIGHTS = 90;
+
 /** Unfold RFC 5545 line continuations, then pull out the VEVENT date ranges. */
 function parseICal(text) {
   const unfolded = text.replace(/\r\n[ \t]/g, '').replace(/\n[ \t]/g, '');
   const ranges = [];
+  const skipped = [];
 
   for (const [, body] of unfolded.matchAll(/BEGIN:VEVENT([\s\S]*?)END:VEVENT/g)) {
     const start = body.match(/^DTSTART(?:;[^:]*)?:(\d{8})/m);
     const end = body.match(/^DTEND(?:;[^:]*)?:(\d{8})/m);
     if (!start || !end) continue;
-    // Deliberately nothing else is read from the event.
-    ranges.push({ start: fromICal(start[1]), end: fromICal(end[1]) });
+
+    const from = fromICal(start[1]);
+    const to = fromICal(end[1]);
+    const length = Math.round((to - from) / 86400000);
+
+    // SUMMARY is read here only to count closures for the build log. It is not
+    // returned, stored or rendered — Vrbo puts guest names in it
+    // ("Reserved - <name>") and none of that may reach the page.
+    if (length > CHANNEL_CLOSURE_NIGHTS) {
+      skipped.push({ from: toKey(from), to: toKey(to), nights: length });
+      continue;
+    }
+    ranges.push({ start: from, end: to });
   }
-  return ranges;
+  return { ranges, skipped };
 }
 
 /**
@@ -159,10 +186,16 @@ for (const [slug, config] of Object.entries(UNITS)) {
   for (const feed of configured) {
     try {
       const text = await fetchFeed(process.env[feed.env]);
-      const parsed = parseICal(text);
+      const { ranges: parsed, skipped } = parseICal(text);
       ranges.push(...parsed);
       channels.push(feed.channel);
-      console.log(`  ${slug}/${feed.channel}: ${parsed.length} event(s)`);
+      console.log(`  ${slug}/${feed.channel}: ${parsed.length} booking event(s)`);
+      for (const s of skipped) {
+        console.log(
+          `  ${slug}/${feed.channel}: IGNORED ${s.nights}-night block ${s.from} to ${s.to} ` +
+          `— longer than ${CHANNEL_CLOSURE_NIGHTS} nights, treated as a closed channel window`,
+        );
+      }
     } catch (err) {
       failed = true;
       console.log(`  ${slug}/${feed.channel}: FAILED — ${err.message}`);
